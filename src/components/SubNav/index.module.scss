@@ -28,16 +28,16 @@
         color: currentColor;
 
         &:hover {
-          background-color: lighten(#F5F5F5, 5);
+          color: darken(#e2ccff, 30);
         }
 
         &:active {
-          background-color: lighten(#F5F5F5, 3);
+          background-color: lighten(#e2ccff, 3);
         }
       }
 
       .selected {
-        background-color: #F5F5F5;
+        background-color: #e2ccff;
       }
     }
   }

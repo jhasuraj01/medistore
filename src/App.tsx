@@ -1,6 +1,6 @@
 import { Nav } from './components/Nav'
 import style from './App.module.scss'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import navData from './data/nav'
 import { AppSection } from './components/AppSection'
 
@@ -10,7 +10,8 @@ function App() {
       <div className={style.layout}>
         <Nav />
         <Routes>
-          <Route path='/*' element={<AppSection navProps={navData.home}/>} />
+          <Route path='/' element={<Navigate to='home' />} />
+          <Route path='/home/*' element={<AppSection navProps={navData.home}/>} />
           <Route path='/search/*' element={<AppSection navProps={navData.search} />} />
           <Route path='/sales/*' element={<AppSection navProps={navData.sales} />} />
           <Route path='/store/*' element={<AppSection navProps={navData.store} />} />

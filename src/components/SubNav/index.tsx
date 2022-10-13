@@ -20,7 +20,14 @@ export function SubNav({ title, upperOptions, lowerOptions }: SubNavProps) {
       <div className={style.subnav}>
         <div className={style.subnavSection}>
           {
-            upperOptions.map(option => <NavLinkPersist to={option.link} key={option.name} className={style.subnavOption}>{option.name}</NavLinkPersist>)
+            upperOptions.map(option =>
+              <NavLinkPersist 
+                to={option.link}
+                key={option.name}
+                className={({ isActive }) => isActive ? `${style.subnavOption} ${style.selected}` : `${style.subnavOption}`}
+              >{option.name}
+              </NavLinkPersist>
+            )
           }
         </div>
         <div className={style.subnavSection}>

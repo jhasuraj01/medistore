@@ -20,12 +20,24 @@
       outline: none;
       background: none;
       -webkit-tap-highlight-color: transparent;
-      color: #8D33FF;
+      color: hsl(0, 0%, 40%);
 
       svg {
         width: 24px;
         height: 24px;
       }
+    
+      &:hover {
+        color: darken(#e2ccff, 30);
+      }
+
+      &:active {
+        background-color: lighten(#e2ccff, 3);
+      }
+    }
+
+    .selected {
+      background-color: #e2ccff;
     }
   }
 }

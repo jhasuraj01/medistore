@@ -14,10 +14,26 @@ export function Nav() {
     <nav className={style.nav}>
       <div className={style.navSection}>
         <button className={style.navOption}><Menu /></button>
-        <NavLinkPersist className={style.navOption} to={`/${navData.home.upperOptions[0].link}`} ><Home /></NavLinkPersist>
-        <NavLinkPersist className={style.navOption} to={`/search/${navData.search.upperOptions[0].link}`} ><Search /></NavLinkPersist>
-        <NavLinkPersist className={style.navOption} to={`/sales/${navData.sales.upperOptions[0].link}`} ><Sales /></NavLinkPersist>
-        <NavLinkPersist className={style.navOption} to={`/store/${navData.store.upperOptions[0].link}`} ><Store /></NavLinkPersist>
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${style.navOption} ${style.selected}` : `${style.navOption}`}
+          to='/home'
+        ><Home /></NavLinkPersist>
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${style.navOption} ${style.selected}` : `${style.navOption}`}
+          to='/search'
+        ><Search /></NavLinkPersist>
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${style.navOption} ${style.selected}` : `${style.navOption}`}
+          to='/sales'
+        ><Sales /></NavLinkPersist>
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${style.navOption} ${style.selected}` : `${style.navOption}`}
+          to='/store'
+        ><Store /></NavLinkPersist>
+
       </div>
       <div className={style.navSection}>
         <div className={style.navOption}><Logo /></div>
