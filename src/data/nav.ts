@@ -19,8 +19,8 @@ const navData: Record<string, SubNavProps> = {
     ],
     lowerOptions: [
       {
-        name: 'support',
-        link: 'Help and Support',
+        name: 'Help and Support',
+        link: 'support',
       }
     ]
   },
@@ -42,8 +42,8 @@ const navData: Record<string, SubNavProps> = {
     ],
     lowerOptions: [
       {
-        name: 'support',
-        link: 'Help and Support',
+        name: 'Help and Support',
+        link: 'support',
       }
     ]
   },
@@ -77,8 +77,8 @@ const navData: Record<string, SubNavProps> = {
     ],
     lowerOptions: [
       {
-        name: 'support',
-        link: 'Help and Support',
+        name: 'Help and Support',
+        link: 'support',
       }
     ]
   },
@@ -96,8 +96,8 @@ const navData: Record<string, SubNavProps> = {
     ],
     lowerOptions: [
       {
-        name: 'support',
-        link: 'Help and Support',
+        name: 'Help and Support',
+        link: 'support',
       }
     ]
   }

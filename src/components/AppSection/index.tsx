@@ -15,7 +15,7 @@ export function AppSection({ navProps }: AppSectionProps) {
       <Routes>
         {/* <Route path='/' element={<Navigate to={options[0].link} />} /> */}
         <Route path='/' element={ <Navigate to={options[0].link} /> } />
-        {options.map(option => <Route key={option.link} path={ '/' + option.link} element={<Page />} />)}
+        {options.map(option => <Route key={option.link} path={ '/' + option.link} element={<Page text={option.name} />} />)}
       </Routes>
     </>
   )

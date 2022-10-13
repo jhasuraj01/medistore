@@ -1,9 +1,13 @@
 import style from './index.module.scss'
 
-export function Page() {
+interface PageProps {
+  text: string,
+}
+
+export function Page({ text }: PageProps) {
   return (
     <div className={style.page}>
-      I am a Page!
+      I am {text} Page!
     </div>
   )
 }
