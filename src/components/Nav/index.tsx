@@ -7,7 +7,6 @@ import { ReactComponent as Sales } from '../../icons/sales.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
-import navData from '../../data/nav'
 
 export function Nav() {
   return (
