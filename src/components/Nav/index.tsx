@@ -7,8 +7,8 @@ import { ReactComponent as Sales } from '../../icons/sales.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
-
 export function Nav() {
+
   return (
     <nav className={style.nav}>
       <div className={style.navSection}>
