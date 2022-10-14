@@ -3,3 +3,7 @@
   grid-template-columns: 64px 300px 1fr;
   min-height: 100vh;
 }
+
+.subnav_hide {
+  grid-template-columns: 64px 0 1fr;
+}

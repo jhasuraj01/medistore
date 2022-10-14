@@ -7,12 +7,20 @@ import { ReactComponent as Sales } from '../../icons/sales.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
+import { useAppDispatch } from '../../app/hooks'
+import { toggleExpansion } from '../../features/SubNav/subNavSlice'
+
 export function Nav() {
+  const dispatch = useAppDispatch()
+
+  const handleMenuClick = () => {
+    dispatch(toggleExpansion())
+  }
 
   return (
     <nav className={style.nav}>
       <div className={style.navSection}>
-        <button className={style.navOption}><Menu /></button>
+        <button className={style.navOption} onClick={handleMenuClick}><Menu /></button>
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${style.navOption} ${style.selected}` : `${style.navOption}`}
           to='/home'

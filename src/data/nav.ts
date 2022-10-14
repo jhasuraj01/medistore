@@ -1,4 +1,4 @@
-import { SubNavProps } from '../components/SubNav'
+import { SubNavProps } from '../features/SubNav'
 
 const navData: Record<string, SubNavProps> = {
   home: {

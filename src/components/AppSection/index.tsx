@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Page } from '../Page'
-import { SubNav, SubNavProps } from '../SubNav'
+import { SubNav, SubNavProps } from '../../features/SubNav'
 
 interface AppSectionProps {
   navProps: SubNavProps

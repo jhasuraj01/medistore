@@ -3,11 +3,16 @@ import style from './App.module.scss'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import navData from './data/nav'
 import { AppSection } from './components/AppSection'
+import { useAppSelector } from './app/hooks'
+import { selectSubNavExpanded } from './features/SubNav/subNavSlice'
 
 function App() {
+  
+  const subnavExpanded = useAppSelector(selectSubNavExpanded)
+
   return (
     <>
-      <div className={style.layout}>
+      <div className={subnavExpanded ? `${style.layout}` : `${style.layout} ${style.subnav_hide}`}>
         <Nav />
         <Routes>
           <Route path='/' element={<Navigate to='home' />} />
