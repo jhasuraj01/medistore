@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { Page } from '../Page'
 import { SubNav, SubNavProps } from '../../features/SubNav'
 import { NavigatePersist } from '../../supports/Persistence'
