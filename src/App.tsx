@@ -1,10 +1,11 @@
 import { Nav } from './components/Nav'
 import style from './App.module.scss'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import navData from './data/nav'
 import { AppSection } from './components/AppSection'
 import { useAppSelector } from './app/hooks'
 import { selectSubNavExpanded } from './features/SubNav/subNavSlice'
+import { NavigatePersist } from './supports/Persistence'
 
 function App() {
   
@@ -15,7 +16,7 @@ function App() {
       <div className={subnavExpanded ? `${style.layout}` : `${style.layout} ${style.subnav_hide}`}>
         <Nav />
         <Routes>
-          <Route path='/' element={<Navigate to='home' />} />
+          <Route path='/' element={<NavigatePersist to='home' />} />
           <Route path='/home/*' element={<AppSection navProps={navData.home}/>} />
           <Route path='/search/*' element={<AppSection navProps={navData.search} />} />
           <Route path='/sales/*' element={<AppSection navProps={navData.sales} />} />
