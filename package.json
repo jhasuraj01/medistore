@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "install": "npm install --prefix client && npm install --prefix server",
     "build": "npm run build --prefix client && npm run build --prefix server",
     "client": "npm run start --prefix client",
     "server": "npm run start --prefix server",
     "dev": "npm run client && npm run server",
-    "start": "npm run client && npm run server"
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",

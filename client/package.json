@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH='../build/client' react-scripts build",
+    "build": "BUILD_PATH='build' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.ts,.jsx,.tsx",
@@ -51,5 +51,6 @@
     "@typescript-eslint/parser": "^5.34.0",
     "eslint": "^8.22.0",
     "eslint-plugin-react": "^7.30.1"
-  }
+  },
+  "proxy": "http://localhost:4000"
 }
