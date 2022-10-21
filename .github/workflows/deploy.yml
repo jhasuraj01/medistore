@@ -33,5 +33,7 @@ jobs:
       - name: Use gcloud CLI
       
         run: |
+          npm install
+          npm run build
           gcloud init
           gcloud app deploy
