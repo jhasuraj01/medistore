@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-weight: normal;
+    padding: 32px;
+  }
+
+  .records {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 32px;
+
+    &:hover {
+      background-color: lighten(#e2ccff, 3);
+    }
+  }
+}
