@@ -7,12 +7,6 @@ import { BrowserRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals'
 import './index.css'
 import { PersistSelectedStates } from './supports/Persistence'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-
-const client = new ApolloClient({
-  uri: '/graphql',
-  cache: new InMemoryCache(),
-})
 
 const container = document.getElementById('root')!
 const root = createRoot(container)
@@ -22,9 +16,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <PersistSelectedStates>
-          <ApolloProvider client={client}>
-            <App />
-          </ApolloProvider>
+          <App />
         </PersistSelectedStates>
       </BrowserRouter>
     </Provider>
