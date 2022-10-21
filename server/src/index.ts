@@ -18,20 +18,9 @@ const typeDefs = `#graphql
     platform: String!
   }
   type Query {
-    metadata: MetaData
+    metadata: MetaData!
   }
 `;
-
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
 
 const resolvers = {
   Query: {

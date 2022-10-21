@@ -11,6 +11,4 @@ const output = [
   `}`
 ]
 
-console.log(process)
-
 writeFileSync('./src/metadata.ts', output.join('\n'));
