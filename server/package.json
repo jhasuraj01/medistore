@@ -8,10 +8,9 @@
   "scripts": {
     "prebuild": "node meta.js",
     "build": "tsc",
-    "prestart": "npm run build",
     "start": "node ./build/index.js",
     "start:nodemon": "./node_modules/nodemon/bin/nodemon.js",
-    "start:dev": "nodemon"
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",

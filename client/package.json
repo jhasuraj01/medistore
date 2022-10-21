@@ -23,9 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "npm run codegen",
     "start": "react-scripts start",
-    "prebuild": "npm run codegen",
     "build": "BUILD_PATH='build' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -62,5 +60,5 @@
     "eslint-plugin-react": "^7.31.10",
     "@graphql-codegen/client-preset": "1.1.0"
   },
-  "proxy": "http://localhost:4000/graphql"
+  "proxy": "http://localhost:4000"
 }
