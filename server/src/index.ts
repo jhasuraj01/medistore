@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import metadata from './metadata.js';
 
 import * as dotenv from 'dotenv';
+import { ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 dotenv.config()
 
 const typeDefs = `#graphql
@@ -37,7 +38,21 @@ const httpServer = http.createServer(app);
 const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [
+    ApolloServerPluginLandingPageProductionDefault({
+      embed: {
+        displayOptions: {
+          theme: 'dark',
+          docsPanelState: 'open',
+          showHeadersAndEnvVars: true
+        },
+        persistExplorerState: true
+      },
+      graphRef: "MedistoreGraph@current"
+    }),
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+  ],
+  introspection: true
 });
 
 await server.start();
