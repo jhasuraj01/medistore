@@ -6,17 +6,19 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import metadata from './metadata.js';
 
 import * as dotenv from 'dotenv';
 dotenv.config()
 
 const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
+  type MetaData {
+    version: String!
+    buildAt: String!
+    platform: String!
   }
   type Query {
-    books: [Book]
+    metadata: MetaData
   }
 `;
 
@@ -33,7 +35,7 @@ const books = [
 
 const resolvers = {
   Query: {
-    books: () => books,
+    metadata: () => metadata,
   },
 };
 

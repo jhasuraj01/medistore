@@ -9,7 +9,7 @@
     "build": "npm run build --prefix client && npm run build --prefix server",
     "client": "npm run start --prefix client",
     "server": "npm run start --prefix server",
-    "dev": "npm run client && npm run server",
+    "dev": "concurrently 'npm:client' 'npm:server'",
     "start": "npm run server"
   },
   "repository": {
@@ -22,5 +22,8 @@
     "url": "https://github.com/jhasuraj01/medistore/issues"
   },
   "homepage": "https://github.com/jhasuraj01/medistore#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^7.4.0"
+  }
 }
