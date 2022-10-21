@@ -37,7 +37,7 @@ export function AboutPage() {
   if(data?.metadata) {
     metadata = [
       ['App Version', data.metadata.version],
-      ['Build Time', data.metadata.buildAt],
+      ['Build Time', new Date(data.metadata.buildAt).toString()],
       ['Build Platform', data.metadata.platform],
     ]
   }

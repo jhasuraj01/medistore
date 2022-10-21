@@ -10,6 +10,7 @@
     "build": "tsc",
     "start": "node ./build/index.js",
     "start:nodemon": "./node_modules/nodemon/bin/nodemon.js",
+    "predev": "npm run build",
     "dev": "nodemon"
   },
   "keywords": [],
