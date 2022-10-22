@@ -26,6 +26,12 @@
         width: 24px;
         height: 24px;
       }
+
+      .photo {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
     
       &:hover {
         color: darken(#e2ccff, 30);

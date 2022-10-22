@@ -1,5 +1,5 @@
 import { useQuery, gql } from '@apollo/client'
-import { GetMetaDataQuery, GetMetaDataQueryVariables } from '../../../gql/graphql'
+import { GetMetaDataQuery, GetMetaDataQueryVariables } from '../../gql/graphql'
 import styles from './index.module.scss'
 
 const GET_METADATA = gql`
