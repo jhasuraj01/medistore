@@ -26,7 +26,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     metadata: () => metadata,
-  },
+   },
 };
 
 interface MyContext {
