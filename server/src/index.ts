@@ -26,7 +26,7 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     metadata: () => metadata,
-  },
+   },
 };
 
 interface MyContext {
@@ -56,11 +56,11 @@ const server = new ApolloServer<MyContext>({
 });
 
 await server.start();
+app.use(express.static(path.resolve('../', 'landing/build')));
 app.use(express.static(path.resolve('../', 'client/build')));
 
-app.get("*", (req, res, next) => {
-  if(req.path == '/graphql') next();
-  else res.sendFile(path.resolve('../', 'client/build', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve('../', 'landing/build', 'index.html'));
 });
 
 app.use(
@@ -71,6 +71,10 @@ app.use(
     context: async ({ req }) => ({ token: req.headers.token }),
   }),
 );
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve('../', 'client/build', 'index.html'));
+});
 
 // Modified server startup
 const port:Number = Number(process.env.PORT) || 4000;

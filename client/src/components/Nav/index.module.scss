@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 1px 0 0 0 #e2ccff;
 
   .navSection {
     display: flex;
@@ -25,6 +26,12 @@
       svg {
         width: 24px;
         height: 24px;
+      }
+
+      .photo {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
       }
     
       &:hover {

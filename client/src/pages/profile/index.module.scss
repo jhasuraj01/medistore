@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-weight: normal;
+    padding: 32px;
+  }
+
+  .records {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 16px 32px;
+
+    &:hover {
+      background-color: lighten(#e2ccff, 3);
+    }
+  }
+
+  .buttons {
+    margin: 24px 0;
+    display: flex;
+    justify-content: center;
+
+    .button {
+      background: none;
+      border: none;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: lighten(#e2ccff, 5);
+  
+      &:hover {
+        color: darken(#e2ccff, 30);
+      }
+  
+      &:active {
+        background-color: lighten(#e2ccff, 3);
+      }
+    }
+  }
+}

@@ -1,9 +1,6 @@
-.layout {
-  display: grid;
-  grid-template-columns: 64px 300px 1fr;
+.app {
+  position: relative;
+  width: 100%;
   min-height: 100vh;
-}
-
-.subnav_hide {
-  grid-template-columns: 64px 0 1fr;
+  overflow: hidden;
 }

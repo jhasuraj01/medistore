@@ -5,13 +5,18 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "install": "npm install --prefix client && npm install --prefix server",
-    "build": "npm run build --prefix client && npm run build --prefix server",
-    "client": "npm run start --prefix client",
-    "server": "npm run start --prefix server",
-    "server:dev": "npm run dev --prefix server",
-    "dev": "concurrently 'npm:client' 'npm:server:dev'",
-    "start": "npm run server"
+    "install:landing": "npm run build --prefix landing",
+    "install:client": "npm run build --prefix client",
+    "install:server": "npm run build --prefix server",
+    "install": "npm run install:landing && npm run install:client && npm run install:server",
+    "build:landing": "npm run build --prefix landing",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "build": "npm run build:landing && npm run build:client && npm run build:server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev": "concurrently 'npm:dev:client' 'npm:dev:server'",
+    "start": "npm run start --prefix server"
   },
   "repository": {
     "type": "git",
