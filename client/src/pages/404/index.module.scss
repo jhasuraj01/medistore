@@ -1,0 +1,41 @@
+.container {
+	padding: 48px;
+	user-select: none;
+	.title {
+		color: #B780FF;
+		font-size: 48px;
+		font-weight: 700;
+		margin-top: 48px;
+	}
+	.subtitle {
+		color: #C599FF;
+		font-size: 22px;
+		font-weight: 700;
+		margin-top: 0;
+	}
+	.error {
+		color: hsl(0, 0%, 50%);
+		font-size: 16px;
+		font-weight: 700;
+		margin-top: 48px;
+	}
+	.message {
+		color: hsl(0, 0%, 30%);
+		font-size: 16px;
+		font-weight: 400;
+	}
+	.conclusion {
+		color: hsl(0, 0%, 30%);
+		font-size: 16px;
+		font-weight: 400;
+		margin-top: 8px;
+	}
+	.link {
+		display: block;
+		color: #A866FF;
+		text-decoration: none;
+		font-size: 18px;
+		font-weight: 400;
+		margin-top: 48px;
+	}
+}

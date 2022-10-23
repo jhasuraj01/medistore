@@ -1,0 +1,9 @@
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 100vh;
+}
+
+.subnav_hide {
+  grid-template-columns: 0 1fr;
+}

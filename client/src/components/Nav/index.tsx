@@ -26,25 +26,25 @@ export function Nav() {
         <button className={styles.navOption} onClick={handleMenuClick}><Menu /></button>
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='/home'
+          to='home'
           title='Home'
         ><Home /></NavLinkPersist>
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='/search'
+          to='search'
           title='Search'
         ><Search /></NavLinkPersist>
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='/sales'
+          to='sales'
           title='Sales'
         ><Sales /></NavLinkPersist>
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='/store'
+          to='store'
           title='Store'
         ><Store /></NavLinkPersist>
 
@@ -52,7 +52,7 @@ export function Nav() {
       <div className={styles.navSection}>
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='/profile'
+          to='my'
           title='My Account'>
           {
             photoURL && displayName

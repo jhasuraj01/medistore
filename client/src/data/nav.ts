@@ -105,7 +105,7 @@ const navData: Record<string, SubNavProps> = {
     title: 'My Account',
     upperOptions: [
       {
-        name: 'Profile',
+        name: 'My Profile',
         link: 'profile',
       },
     ],
