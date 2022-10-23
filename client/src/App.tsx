@@ -54,6 +54,7 @@ function App() {
           <Route path='*' element={<NotFoundPage />} />
         </Route>
         <Route path='login' element={<LoginPage />} />
+        <Route path='signup' element={<LoginPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </div>
