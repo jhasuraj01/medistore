@@ -60,7 +60,7 @@ export function Nav() {
               : <ProfileIcon/>
           }
         </NavLinkPersist>
-        <div className={styles.navOption}><Logo /></div>
+        <a href='/' className={styles.navOption}><Logo /></a>
       </div>
     </nav>
   )

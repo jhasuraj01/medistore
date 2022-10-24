@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "install:landing": "npm run build --prefix landing",
-    "install:client": "npm run build --prefix client",
-    "install:server": "npm run build --prefix server",
+    "install:landing": "npm install --prefix landing",
+    "install:client": "npm install --prefix client",
+    "install:server": "npm install --prefix server",
     "install": "npm run install:landing && npm run install:client && npm run install:server",
     "build:landing": "npm run build --prefix landing",
     "build:client": "npm run build --prefix client",
