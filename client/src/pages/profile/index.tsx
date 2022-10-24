@@ -1,6 +1,7 @@
 import { useAppSelector } from '../../app/hooks'
 import { selectAuth } from '../../features/Auth/authSlice'
 import { auth } from '../../firebase'
+import { NavLinkPersist } from '../../supports/Persistence'
 import styles from './index.module.scss'
 
 export function ProfilePage() {
@@ -46,7 +47,7 @@ export function ProfilePage() {
       {
         user.active
           ? <button className={styles.button} onClick={handleSignOut}>Sign Out</button>
-          : <a className={styles.button} href={`/login?return=${location.pathname}`}>Sign In / Resigter</a>
+          : <NavLinkPersist className={styles.button} to={`/auth?return=${location.pathname}`}>Sign In / Resigter</NavLinkPersist>
       }
     </div>
 
