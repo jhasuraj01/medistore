@@ -4,7 +4,7 @@ import { auth } from '../../firebase'
 import StyledFirebaseAuth from './StyledFirebaseAuth'
 import styles from './index.module.scss'
 import { useSearchParams } from 'react-router-dom'
-import { NavLinkPersist } from '../../supports/Persistence'
+// import { NavLinkPersist } from '../../supports/Persistence'
 import * as firebaseui from 'firebaseui'
 
 export function AuthPage() {
