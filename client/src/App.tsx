@@ -12,7 +12,7 @@ import { ProfilePage } from './pages/profile'
 import { NotFoundPage } from './pages/404'
 import { AppLayout } from './components/AppLayout'
 import styles from './App.module.scss'
-import { LoginPage } from './pages/login'
+import { AuthPage } from './pages/auth'
 
 function App() {
 
@@ -53,7 +53,9 @@ function App() {
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Route>
-        <Route path='login' element={<LoginPage />} />
+        <Route path='login' element={<NavigatePersist to='/auth' />} />
+        <Route path='signup' element={<NavigatePersist to='/auth' />} />
+        <Route path='auth' element={<AuthPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </div>
