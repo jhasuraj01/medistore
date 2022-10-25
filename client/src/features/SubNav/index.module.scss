@@ -5,6 +5,8 @@
   flex-direction: column;
   background-color: $section-background;
   overflow-x: hidden;
+  gap: 16px;
+  padding: 16px 0;
   border-radius: 6px;
 
   .header {
@@ -14,7 +16,7 @@
     font-weight: 500;
     font-size: 24px;
     color: #8D33FF;
-    padding: 16px;
+    padding: 0 16px;
   }
 
   .subnav {
@@ -22,37 +24,34 @@
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
-    padding: 16px 0;
-
-    .subnavSection {
-      .subnavOption {
-        background: none;
-        text-decoration: none;
-        border: none;
-        color: inherit;
-        font-style: inherit;
-        font-size: inherit;
-        -webkit-tap-highlight-color: transparent;
-        cursor: pointer;
-        user-select: none;
-        display: block;
-        box-sizing: border-box;
-        width: 100%;
-        padding: 8px 16px;
-        text-align: left;
-
-        &:hover {
-          color: darken(#e2ccff, 30);
-        }
-
-        &:active {
-          background-color: lighten(#e2ccff, 3);
-        }
-      }
-
-      .selected {
-        background-color: #e2ccff;
-      }
-    }
   }
+}
+
+.subnavOption {
+  background: none;
+  text-decoration: none;
+  border: none;
+  color: inherit;
+  font-style: inherit;
+  font-size: inherit;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+
+  &:hover {
+    color: darken(#e2ccff, 30);
+  }
+
+  &:active {
+    background-color: lighten(#e2ccff, 3);
+  }
+}
+
+.selected {
+  background-color: #e2ccff;
 }

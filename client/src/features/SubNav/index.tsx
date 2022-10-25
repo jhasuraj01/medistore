@@ -9,7 +9,7 @@ export function SubNavLink(props: NavLinkProps) {
   return (<>
     <NavLinkPersist
       {...props}
-      className={({ isActive }) => `${className} ${isActive && styles.selected}`}>
+      className={({ isActive }) => `${className || ''} ${isActive && styles.selected}`}>
       { props.children }
     </NavLinkPersist>
   </>)
@@ -20,7 +20,7 @@ interface SubNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 }
 
 export function SubNavButton(props: SubNavButtonProps) {
-  const className = `${props.className && ''} ${styles.subnavOption}`
+  const className = `${props.className || ''} ${styles.subnavOption}`
   return (<>
     <button
       {...props}

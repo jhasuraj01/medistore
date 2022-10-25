@@ -1,3 +1,4 @@
+import styles from './index.module.scss'
 import { Route, Routes } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { AppSectionLayout } from '../../components/AppSectionLayout'
@@ -21,7 +22,7 @@ function CartPageSubNav() {
   return (
     <SubNav title='Carts'>
       <SubNavSection>
-        <SubNavButton onClick={createNewCart}>Create New Cart</SubNavButton>
+        <SubNavButton className={styles.newCartButton} onClick={createNewCart}>Create New Cart</SubNavButton>
         { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
       </SubNavSection>
     </SubNav>
