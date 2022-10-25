@@ -1,5 +1,8 @@
 .container {
   display: grid;
-  grid-template-columns: 64px 1fr;
-  min-height: 100vh;
+  box-sizing: border-box;
+  grid-template-columns: 56px 1fr;
+  grid-template-rows: calc(100vh - 16px);
+  gap: 8px;
+  padding: 8px;
 }

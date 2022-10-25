@@ -1,8 +1,11 @@
+@import '../../variables.scss';
+
 .nav {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 1px 0 0 0 #e2ccff;
+  background-color: $section-background;
+  border-radius: 6px;
 
   .navSection {
     display: flex;

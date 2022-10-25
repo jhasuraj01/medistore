@@ -1,5 +1,8 @@
+@import '../../variables.scss';
+
 .page {
-  padding: 16px;
-  background-color: #FAFAFA;
-  color: black;
+  background-color: $section-background;
+  color: hsl(0, 0%, 25%);
+  border-radius: 6px;
+  overflow-y: overlay;
 }

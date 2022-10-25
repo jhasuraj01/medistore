@@ -1,13 +1,14 @@
+import { ReactNode } from 'react'
 import style from './index.module.scss'
 
 interface PageProps {
-  text: string,
+  children: ReactNode | ReactNode[]
 }
 
-export function Page({ text }: PageProps) {
+export function Page({ children }: PageProps) {
   return (
     <div className={style.page}>
-      I am {text} Page!
+      {children}
     </div>
   )
 }

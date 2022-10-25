@@ -1,29 +1,36 @@
-import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { AppSectionLayout } from '../../components/AppSectionLayout'
-import { Cart } from '../../features/Cart'
+import { Cart } from '../../features/Carts'
+import { addNewCart, selectCarts, } from '../../features/Carts/cartsSlice'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../features/SubNav'
-import { NavigatePersist, useNavigatePersist } from '../../supports/Persistence'
+import { useNavigatePersist } from '../../supports/Persistence'
 import { NotFoundPage } from '../404'
 
 function CartPageSubNav() {
-  const [carts, setCarts] = useState<string[]>([])
+  const carts = useAppSelector(selectCarts)
+  const dispatch = useAppDispatch()
   const navigate = useNavigatePersist()
 
-  const createNewBill = () => {
+  const createNewCart = () => {
     const id = String(Date.now())
-    setCarts([id, ...carts])
+    dispatch(addNewCart({ id }))
     navigate(id)
   }
 
   return (
     <SubNav title='Carts'>
       <SubNavSection>
-        <SubNavButton onClick={createNewBill}>Create New Cart</SubNavButton>
-        { carts.map(cart => <SubNavLink key={cart} to={cart}>{cart}</SubNavLink>)}
-        <SubNavLink to='sample-cart'>Sample Bill</SubNavLink>
+        <SubNavButton onClick={createNewCart}>Create New Cart</SubNavButton>
+        { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
       </SubNavSection>
     </SubNav>
+  )
+}
+
+function CartHomePage() {
+  return (
+    <p>Click on Create Cart and start with your sales :)</p>
   )
 }
 
@@ -31,7 +38,7 @@ export function CartPage() {
   return (
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<CartPageSubNav />}  />} >
-        <Route index element={<NavigatePersist to='create-new-bill' />} />
+        <Route index element={<CartHomePage />} />
         <Route path=':id' element={<Cart />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>

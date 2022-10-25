@@ -12,8 +12,6 @@ const isValidID = (id: string) => {
 export function Cart() {
   const { id } = useParams()
 
-  console.log(id)
-
   if(!id || !isValidID(id)) {
     return <NotFoundPage />
   }

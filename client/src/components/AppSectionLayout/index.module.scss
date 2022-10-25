@@ -1,9 +1,11 @@
 .layout {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 300px 1fr;
-  min-height: 100vh;
+  gap: 8px;
 }
 
 .subnav_hide {
   grid-template-columns: 0 1fr;
+  gap: 0;
 }

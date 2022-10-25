@@ -1,10 +1,16 @@
+@import '../../variables.scss';
+
 .container {
   display: flex;
   flex-direction: column;
-  background-color: #F5F5F5;
-  overflow: hidden;
+  background-color: $section-background;
+  overflow-x: hidden;
+  border-radius: 6px;
 
   .header {
+    position: sticky;
+    top: 0;
+    background-color: inherit;
     font-weight: 500;
     font-size: 32px;
     color: #8D33FF;

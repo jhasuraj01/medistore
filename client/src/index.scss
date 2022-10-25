@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --scrollbar-thumb: #CCCCCC;
+  --scrollbar-thumb_hover: #B3B3B3;
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+  // outline: 1px solid red;
+}
+
+$scroll-bar-width: 12px;
+@mixin scrollbar {
+  body {
+    overflow: auto;
+    overflow: overlay;
+  }
+  ::-webkit-scrollbar {
+    width: $scroll-bar-width;
+    height: $scroll-bar-width;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-thumb);
+    border-radius: $scroll-bar-width;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    border: 3px solid transparent;
+    background-color: var(--scrollbar-thumb_hover);
+    cursor: pointer;
+  }
+}
+
+@media not screen and (hover: none) {
+    @include scrollbar
+}
