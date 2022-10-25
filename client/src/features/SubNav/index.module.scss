@@ -19,8 +19,7 @@
     padding: 16px 0;
 
     .subnavSection {
-
-      .subnavOption {
+      & > div, & > a, & > button {
         display: block;
         text-decoration: none;
         padding: 8px 16px;

@@ -1,7 +1,7 @@
-import { useAppSelector } from '../../app/hooks'
-import { selectAuth } from '../../features/Auth/authSlice'
-import { auth } from '../../firebase'
-import { NavLinkPersist } from '../../supports/Persistence'
+import { useAppSelector } from '../../../app/hooks'
+import { selectAuth } from '../../../features/Auth/authSlice'
+import { auth } from '../../../firebase'
+import { NavLinkPersist } from '../../../supports/Persistence'
 import styles from './index.module.scss'
 
 export function ProfilePage() {

@@ -52,7 +52,7 @@ export function Nav() {
       <div className={styles.navSection}>
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='my'
+          to='account'
           title='My Account'>
           {
             photoURL && displayName
