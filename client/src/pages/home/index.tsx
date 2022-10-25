@@ -13,9 +13,6 @@ function HomePageSubNav() {
         <SubNavLink to='plans'>Plans</SubNavLink>
         <SubNavLink to='contacts'>Contacts</SubNavLink>
       </SubNavSection>
-      <SubNavSection>
-        <SubNavLink to='support'>Help and Support</SubNavLink>
-      </SubNavSection>
     </SubNav>
   )
 }

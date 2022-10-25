@@ -11,7 +11,7 @@ import styles from './App.module.scss'
 import { AuthPage } from './pages/auth'
 import { HomePage } from './pages/home'
 import { SearchPage } from './pages/search'
-import { SalesPage } from './pages/sales'
+import { CartPage } from './pages/carts'
 import { StorePage } from './pages/store'
 import { AccountPage } from './pages/account'
 
@@ -32,7 +32,7 @@ function App() {
           <Route index element={<NavigatePersist to='home' />} />
           <Route path='home/*' element={<HomePage />} />
           <Route path='search/*' element={<SearchPage />} />
-          <Route path='sales/*' element={<SalesPage />} />
+          <Route path='carts/*' element={<CartPage />} />
           <Route path='store/*' element={<StorePage />} />
           <Route path='account/*' element={<AccountPage />} />
           <Route path='*' element={<NotFoundPage />} />

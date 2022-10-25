@@ -12,9 +12,6 @@ function SearchPageSubNav() {
         <SubNavLink to='medicines'>Medicines</SubNavLink>
         <SubNavLink to='people'>People</SubNavLink>
       </SubNavSection>
-      <SubNavSection>
-        <SubNavLink to='support'>Help and Support</SubNavLink>
-      </SubNavSection>
     </SubNav>
   )
 }

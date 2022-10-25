@@ -1,11 +1,12 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { store } from './app/store'
+import { persistor, store } from './app/store'
+import { PersistGate } from 'redux-persist/integration/react'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals'
-import './index.css'
+import './index.scss'
 import { PersistSelectedStates } from './supports/Persistence'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
@@ -20,13 +21,15 @@ const root = createRoot(container)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <PersistSelectedStates>
-          <ApolloProvider client={client}>
-            <App />
-          </ApolloProvider>
-        </PersistSelectedStates>
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <PersistSelectedStates>
+            <ApolloProvider client={client}>
+              <App />
+            </ApolloProvider>
+          </PersistSelectedStates>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 )

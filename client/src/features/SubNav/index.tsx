@@ -1,15 +1,32 @@
+import React from 'react'
 import { NavLinkProps } from 'react-router-dom'
 import { NavLinkPersist } from '../../supports/Persistence'
-import style from './index.module.scss'
+import styles from './index.module.scss'
 
 
 export function SubNavLink(props: NavLinkProps) {
+  const className = `${props.className && ''} ${styles.subnavOption}`
   return (<>
     <NavLinkPersist
       {...props}
-      className={({ isActive }) => `${props.className && ''} ${isActive && style.selected}`}>
+      className={({ isActive }) => `${className || ''} ${isActive && styles.selected}`}>
       { props.children }
     </NavLinkPersist>
+  </>)
+}
+
+interface SubNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string
+}
+
+export function SubNavButton(props: SubNavButtonProps) {
+  const className = `${props.className || ''} ${styles.subnavOption}`
+  return (<>
+    <button
+      {...props}
+      className={className}>
+      { props.children }
+    </button>
   </>)
 }
 
@@ -19,29 +36,23 @@ export interface SubNavSectionProps {
 
 export function SubNavSection({ children }: SubNavSectionProps) {
   return (
-    <>
+    <div className={styles.subnavSection}>
       { children }
-    </>
+    </div>
   )
 }
 
 export interface SubNavProps {
   title: string,
-  children: React.ReactNode[]
+  children: React.ReactNode | React.ReactNode[]
 }
 
-export function SubNav({ title, children }: SubNavProps) {
-  const [topNav, bottonNav] = children
+export function SubNav({ title, children }: SubNavProps) {  
   return (
-    <div className={style.container}>
-      <div className={style.header}>{title}</div>
-      <div className={style.subnav}>
-        <div className={style.subnavSection}>
-          { topNav }
-        </div>
-        <div className={style.subnavSection}>
-          { bottonNav }
-        </div>
+    <div className={styles.container}>
+      <div className={styles.header}>{title}</div>
+      <div className={styles.subnav}>
+        {children}
       </div>
     </div>
   )

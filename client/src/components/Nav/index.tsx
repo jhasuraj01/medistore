@@ -3,7 +3,7 @@ import { NavLinkPersist } from '../../supports/Persistence'
 // import { ReactComponent as PlaceHolderIcon } from '../../icons/placeholder.svg'
 import { ReactComponent as Home } from '../../icons/home.svg'
 import { ReactComponent as Menu } from '../../icons/menu.svg'
-import { ReactComponent as Sales } from '../../icons/sales.svg'
+import { ReactComponent as Cart } from '../../icons/cart.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
@@ -38,9 +38,9 @@ export function Nav() {
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='sales'
-          title='Sales'
-        ><Sales /></NavLinkPersist>
+          to='carts'
+          title='Cart'
+        ><Cart /></NavLinkPersist>
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
