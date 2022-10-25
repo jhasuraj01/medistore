@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { useAppSelector } from '../../app/hooks'
 import { selectSubNavExpanded } from '../../features/SubNav/subNavSlice'
-import { Page } from '../Page'
 import styles from './index.module.scss'
 
 interface AppSectionLayoutProps {
@@ -13,9 +12,9 @@ export function AppSectionLayout({ subnav }: AppSectionLayoutProps) {
   return (
     <div className={subnavExpanded ? `${styles.layout}` : `${styles.layout} ${styles.subnav_hide}`}>
       {subnav}
-      <Page>
+      <div className={styles.page}>
         <Outlet />
-      </Page>
+      </div>
     </div>
   )
 }
