@@ -7,6 +7,9 @@ import { addNewCart, selectCarts, } from '../../features/Carts/cartsSlice'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../features/SubNav'
 import { useNavigatePersist } from '../../supports/Persistence'
 import { NotFoundPage } from '../404'
+import { CartHomePage } from './CartHomePage'
+
+
 
 function CartPageSubNav() {
   const carts = useAppSelector(selectCarts)
@@ -26,12 +29,6 @@ function CartPageSubNav() {
         { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
       </SubNavSection>
     </SubNav>
-  )
-}
-
-function CartHomePage() {
-  return (
-    <p>Click on Create Cart and start with your sales :)</p>
   )
 }
 
