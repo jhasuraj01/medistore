@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import counterReducer from '../features/counter/counterSlice'
@@ -9,11 +9,11 @@ import cartsReducer from '../features/Carts/cartsSlice'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    subNav: persistReducer({ key: 'subNav', storage, serialize: true }, subNavReducer),
+    subNav: persistReducer<ReturnType<typeof subNavReducer>>({ key: 'subNav', storage }, subNavReducer),
     auth: authReducer,
-    carts: persistReducer({ key: 'carts', storage, serialize: true }, cartsReducer),
+    carts: persistReducer<ReturnType<typeof cartsReducer>>({ key: 'carts', storage }, cartsReducer),
   },
-  middleware: getDefaultMiddleware({
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
     }
