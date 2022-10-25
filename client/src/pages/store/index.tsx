@@ -11,9 +11,6 @@ function StorePageSubNav() {
         <SubNavLink to='stock'>Stock</SubNavLink>
         <SubNavLink to='orders'>Orders</SubNavLink>
       </SubNavSection>
-      <SubNavSection>
-        <SubNavLink to='support'>Help and Support</SubNavLink>
-      </SubNavSection>
     </SubNav>
   )
 }

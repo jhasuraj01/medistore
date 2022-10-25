@@ -15,9 +15,6 @@ function SalesPageSubNav() {
         <SubNavLink to='draft-bill-4'>Draft Bill 4</SubNavLink>
         <SubNavLink to='draft-bill-5'>Draft Bill 5</SubNavLink>
       </SubNavSection>
-      <SubNavSection>
-        <SubNavLink to='support'>Help and Support</SubNavLink>
-      </SubNavSection>
     </SubNav>
   )
 }

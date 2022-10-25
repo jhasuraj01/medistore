@@ -20,29 +20,23 @@ export interface SubNavSectionProps {
 
 export function SubNavSection({ children }: SubNavSectionProps) {
   return (
-    <>
+    <div className={styles.subnavSection}>
       { children }
-    </>
+    </div>
   )
 }
 
 export interface SubNavProps {
   title: string,
-  children: React.ReactNode[]
+  children: React.ReactNode | React.ReactNode[]
 }
 
-export function SubNav({ title, children }: SubNavProps) {
-  const [topNav, bottonNav] = children
+export function SubNav({ title, children }: SubNavProps) {  
   return (
     <div className={styles.container}>
       <div className={styles.header}>{title}</div>
       <div className={styles.subnav}>
-        <div className={styles.subnavSection}>
-          { topNav }
-        </div>
-        <div className={styles.subnavSection}>
-          { bottonNav }
-        </div>
+        {children}
       </div>
     </div>
   )
