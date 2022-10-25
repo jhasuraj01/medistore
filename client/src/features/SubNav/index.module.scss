@@ -27,16 +27,19 @@
     .subnavSection {
       .subnavOption {
         background: none;
-        border: none;
-        display: block;
         text-decoration: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        user-select: none;
-        color: currentColor;
+        border: none;
+        color: inherit;
         font-style: inherit;
         font-size: inherit;
         -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+        user-select: none;
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 8px 16px;
+        text-align: left;
 
         &:hover {
           color: darken(#e2ccff, 30);
