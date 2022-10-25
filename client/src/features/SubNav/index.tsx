@@ -1,13 +1,14 @@
 import { NavLinkProps } from 'react-router-dom'
 import { NavLinkPersist } from '../../supports/Persistence'
-import style from './index.module.scss'
+import styles from './index.module.scss'
 
 
 export function SubNavLink(props: NavLinkProps) {
+  const className = `${props.className} ${styles.subnavOption}`
   return (<>
     <NavLinkPersist
       {...props}
-      className={({ isActive }) => `${props.className && ''} ${isActive && style.selected}`}>
+      className={({ isActive }) => `${className} ${isActive && styles.selected}`}>
       { props.children }
     </NavLinkPersist>
   </>)
@@ -33,13 +34,13 @@ export interface SubNavProps {
 export function SubNav({ title, children }: SubNavProps) {
   const [topNav, bottonNav] = children
   return (
-    <div className={style.container}>
-      <div className={style.header}>{title}</div>
-      <div className={style.subnav}>
-        <div className={style.subnavSection}>
+    <div className={styles.container}>
+      <div className={styles.header}>{title}</div>
+      <div className={styles.subnav}>
+        <div className={styles.subnavSection}>
           { topNav }
         </div>
-        <div className={style.subnavSection}>
+        <div className={styles.subnavSection}>
           { bottonNav }
         </div>
       </div>
