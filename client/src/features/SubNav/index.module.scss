@@ -20,12 +20,17 @@
 
     .subnavSection {
       .subnavOption {
+        background: none;
+        border: none;
         display: block;
         text-decoration: none;
         padding: 8px 16px;
         cursor: pointer;
         user-select: none;
         color: currentColor;
+        font-style: inherit;
+        font-size: inherit;
+        -webkit-tap-highlight-color: transparent;
 
         &:hover {
           color: darken(#e2ccff, 30);
