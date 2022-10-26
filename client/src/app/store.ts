@@ -11,7 +11,7 @@ export const store = configureStore({
     counter: counterReducer,
     subNav: persistReducer<ReturnType<typeof subNavReducer>>({ key: 'subNav', storage }, subNavReducer),
     auth: authReducer,
-    carts: persistReducer<ReturnType<typeof cartsReducer>>({ key: 'carts', storage }, cartsReducer),
+    carts: persistReducer<ReturnType<typeof cartsReducer>>({ key: 'carts', storage, version: 1 }, cartsReducer),
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
