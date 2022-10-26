@@ -5,8 +5,7 @@
   flex-direction: column;
   background-color: $section-background;
   overflow-x: hidden;
-  gap: 16px;
-  padding: 16px 0;
+  padding-bottom: 16px;
   border-radius: 6px;
 
   .header {
@@ -16,7 +15,7 @@
     font-weight: 500;
     font-size: 24px;
     color: #8D33FF;
-    padding: 0 16px;
+    padding: 16px;
   }
 
   .subnav {
