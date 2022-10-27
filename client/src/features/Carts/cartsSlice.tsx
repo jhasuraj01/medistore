@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, RootState } from '../../app/store'
 
-interface CartItem {
+export interface CartItem {
   id: string,
   name: string,
   pricePerQuantity: number,
@@ -9,7 +9,7 @@ interface CartItem {
   quantity: number
 }
 
-interface Cart {
+export interface Cart {
   id: string,
   customer: {
     name: string | null,

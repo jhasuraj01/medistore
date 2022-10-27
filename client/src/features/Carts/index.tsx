@@ -10,6 +10,7 @@ import { ReactComponent as MathPlusIcon } from '../../icons/math-plus.svg'
 import { ReactComponent as TrashIcon } from '../../icons/trash.svg'
 import { ReactComponent as FileDocumentIcon } from '../../icons/file-document.svg'
 import { IconButton } from '../../components/IconButton'
+import { CartProxy } from './CartProxy'
 
 /**
  * Validate Cart ID
@@ -28,12 +29,13 @@ export function Cart() {
   
   const dispatch = useAppDispatch()
   const navigate = useNavigatePersist()
-  const cart = useAppSelector(selectCart(id))
+  const cartOriginal = useAppSelector(selectCart(id))
 
-  if(!cart) {
+  if(!cartOriginal) {
     return <NotFoundPage />
   }
-
+  
+  const cart = new CartProxy(cartOriginal)
   const nextCart = useAppSelector(selectNextCart(id))
   const prevCart = useAppSelector(selectPrevCart(id))
 
@@ -53,7 +55,7 @@ export function Cart() {
     <div className={styles.container}>
 
       <div className={styles.header}>
-        <InputButton placeholder='Product ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
+        <InputButton placeholder='item ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
         <div className={styles.actionButtons}>
           <IconButton title='Delete Cart' onClick={handleDeleteCart}><TrashIcon /></IconButton>
           <IconButton title='Generate Bill' onClick={() => {alert('TODO: Bill Generation')}}><FileDocumentIcon /></IconButton>
@@ -90,8 +92,8 @@ export function Cart() {
           <tr>
             <td scope="col">#</td>
             <td scope="col"></td>
-            <td scope="col">Product ID</td>
-            <td scope="col">Product Name</td>
+            <td scope="col">item ID</td>
+            <td scope="col">item Name</td>
             <td scope="col" title='Price Per Quantity'>P / Q</td>
             <td scope="col">Discount</td>
             <td scope="col" title='Final Price Per Quantity'>FP / Q</td>
@@ -101,27 +103,27 @@ export function Cart() {
         </thead>
         <tbody>
           {
-            cart.items.map((product, index) => {
+            cart.items.map((item, index) => {
               return (
-                <tr key={product.id}>
+                <tr key={item.id}>
                   <td scope="row">{index + 1}</td>
                   <td className={styles.buttonBlock}>
                     <IconButton
-                      onClick={() => dispatch(removeItemFromCart({ cartID: id, itemID: product.id }))}
-                      title={`Remove ${product.name} from cart`}><TrashIcon /></IconButton>
+                      onClick={() => dispatch(removeItemFromCart({ cartID: id, itemID: item.id }))}
+                      title={`Remove ${item.name} from cart`}><TrashIcon /></IconButton>
                   </td>
-                  <td>{product.id}</td>
-                  <td>{product.name}</td>
-                  <td>{product.pricePerQuantity}</td>
-                  <td>{product.discount}</td>
-                  <td>{product.pricePerQuantity * (100 - product.discount) / 100}</td>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.pricePerQuantity}</td>
+                  <td>{item.discount}</td>
+                  <td>{item.finalPricePerQuantity}</td>
                   <td className={styles.editableBlock}>
                     <TouchInput
-                      onSubmit={({ value }) => value != 'Enter Name' && !isNaN(Number(value)) && dispatch(updateItemQuantity({ cartID: id, itemID: product.id, quantity: Number(value) }))}
-                      text={product.quantity}
+                      onSubmit={({ value }) => value != 'Enter Name' && !isNaN(Number(value)) && dispatch(updateItemQuantity({ cartID: id, itemID: item.id, quantity: Number(value) }))}
+                      text={item.quantity}
                       default='0' />
                   </td>
-                  <td>{product.quantity * product.pricePerQuantity * (100 - product.discount) / 100}</td>
+                  <td>{item.totalPrice}</td>
                 </tr>
               )
             })
