@@ -61,6 +61,7 @@
   td {
     box-sizing: border-box;
     padding: 4px 8px;
+    min-height: 30px;
     border: 1px solid #E2CCFF;
     background-color: $section-background;
     cursor: default;
@@ -89,10 +90,12 @@
       flex: 9% 0 0;
     }
 
+    &:last-child {
+      text-align: right;
+    }
   }
 
   thead, tfoot {
-    font-weight: bold;
     td {
       background-color: #F1E5FF;
     }
