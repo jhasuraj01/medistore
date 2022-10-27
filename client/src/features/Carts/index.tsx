@@ -106,9 +106,9 @@ export function Cart() {
                 <tr key={product.id}>
                   <td scope="row">{index + 1}</td>
                   <td className={styles.buttonBlock}>
-                    <button
+                    <IconButton
                       onClick={() => dispatch(removeItemFromCart({ cartID: id, itemID: product.id }))}
-                      title={`Remove ${product.name} from cart`}><TrashIcon /></button>
+                      title={`Remove ${product.name} from cart`}><TrashIcon /></IconButton>
                   </td>
                   <td>{product.id}</td>
                   <td>{product.name}</td>
