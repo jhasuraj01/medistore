@@ -3,6 +3,7 @@ import { AppSectionLayout } from '../../components/AppSectionLayout'
 import { SubNav, SubNavLink, SubNavSection } from '../../features/SubNav'
 import { NavigatePersist } from '../../supports/Persistence'
 import { NotFoundPage } from '../404'
+import { StockPage } from './stock'
 
 function StorePageSubNav() {
   return (
@@ -20,6 +21,7 @@ export function StorePage() {
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<StorePageSubNav />}  />} >
         <Route index element={<NavigatePersist to='stock' />} />
+        <Route path='stock' element={<StockPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>

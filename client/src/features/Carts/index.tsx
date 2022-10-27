@@ -11,6 +11,7 @@ import { ReactComponent as TrashIcon } from '../../icons/trash.svg'
 import { ReactComponent as FileDocumentIcon } from '../../icons/file-document.svg'
 import { IconButton } from '../../components/IconButton'
 import { CartProxy } from './CartProxy'
+import { Table, TableBody, TableFooter, TableHead } from '../../components/Table'
 
 /**
  * Validate Cart ID
@@ -67,53 +68,60 @@ export function Cart() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <InputButton placeholder='item ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
+        <InputButton placeholder='Item ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
         <div className={styles.actionButtons}>
           <IconButton title='Delete Cart' onClick={handleDeleteCart}><TrashIcon /></IconButton>
           <IconButton title='Generate Bill' onClick={() => {alert('TODO: Bill Generation')}}><FileDocumentIcon /></IconButton>
         </div>
       </div>
 
-      <div className={styles.customerDetails}>
-        <div>Cart ID: <b>{id}</b></div>
-        <div>
-          Customer Name:&nbsp;
-          <TouchInput
-            onSubmit={({ value }) => value != 'Enter Name' && dispatch(updateCustomerDetails({ id, name: value }))}
-            text={cart.customer.name}
-            default='Enter Name' />
-        </div>
-        <div>
-          Email ID:&nbsp;
-          <TouchInput
-            onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, email: value }))}
-            text={cart.customer.email}
-            default='Enter Email' />
-        </div>
-        <div>
-          Phone Number:&nbsp;
-          <TouchInput
-            onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, phone: value }))}
-            text={cart.customer.phone}
-            default='Enter Phone' />
-        </div>
-      </div>
-
-      <table className={styles.table}>
-        <thead>
+      <Table className={styles.customerDetails}>
+        <TableHead>
+          <th>Cart ID</th>
+          <th>Customer Name</th>
+          <th>Email ID</th>
+          <th>Phone Number</th>
+        </TableHead>
+        <TableBody>
           <tr>
-            <td scope="col">#</td>
-            <td scope="col"></td>
-            <td scope="col">Product ID</td>
-            <td scope="col">Product Name</td>
-            <td scope="col" title='Price Per Quantity'>P / Q</td>
-            <td scope="col">Discount</td>
-            <td scope="col" title='Final Price Per Quantity'>FP / Q</td>
-            <td scope="col">Quantity</td>
-            <td scope="col">Total</td>
+            <td>
+              <i>{id}</i>
+            </td>
+            <td className={styles.editableBlock}>
+              <TouchInput
+                onSubmit={({ value }) => value != 'Enter Name' && dispatch(updateCustomerDetails({ id, name: value }))}
+                text={cart.customer.name}
+                default='Enter Name' />
+            </td>
+            <td className={styles.editableBlock}>
+              <TouchInput
+                onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, email: value }))}
+                text={cart.customer.email}
+                default='Enter Email' />
+            </td>
+            <td className={styles.editableBlock}>
+              <TouchInput
+                onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, phone: value }))}
+                text={cart.customer.phone}
+                default='Enter Phone' />
+            </td>
           </tr>
-        </thead>
-        <tbody>
+        </TableBody>
+      </Table>
+
+      <Table className={styles.cartTable}>
+        <TableHead>
+          <th scope="col">#</th>
+          <th scope="col"></th>
+          <th scope="col">Product ID</th>
+          <th scope="col">Product Name</th>
+          <th scope="col" title='Price Per Quantity'>P / Q</th>
+          <th scope="col">Discount</th>
+          <th scope="col" title='Final Price Per Quantity'>FP / Q</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </TableHead>
+        <TableBody>
           {
             cart.items.map((item, index) => {
               return (
@@ -140,14 +148,12 @@ export function Cart() {
               )
             })
           }
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={8} title='Inclusive of Taxes and Discounts (if any)'>Total Bill Value</td>
-            <td>{currency.format(cart.totalBillValue)}</td>
-          </tr>
-        </tfoot>
-      </table>
+        </TableBody>
+        <TableFooter>
+          <td colSpan={8} title='Inclusive of Taxes and Discounts (if any)'>Total Bill Value</td>
+          <td>{currency.format(cart.totalBillValue)}</td>
+        </TableFooter>
+      </Table>
     </div>
   )
 }
