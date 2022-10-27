@@ -9,6 +9,8 @@ export interface InputButton {
   onChange?: (payload: InputButtonPayload) => void
   onSubmit?: (payload: InputButtonPayload) => void
   placeholder?: string
+  children: React.ReactNode
+  className?: string
 }
 
 export function InputButton (props: InputButton) {
@@ -35,10 +37,12 @@ export function InputButton (props: InputButton) {
       props.onChange({ value: inputRef.current?.value || '' })
   }
 
+  const className = `${styles.form} ${props.className || ''}`
+
   return (
-    <form onSubmit={props.onSubmit && handleSubmit} className={styles.form}>
+    <form onSubmit={props.onSubmit && handleSubmit} className={className}>
       <input autoFocus={true} ref={inputRef} placeholder={props.placeholder} onChange={props.onChange && handleChange} type="text" />
-      <button type='submit'>+</button>
+      <button type='submit'>{props.children}</button>
     </form>
   )
 }

@@ -6,6 +6,10 @@ import { addItemToCart, removeCart, removeItemFromCart, selectCart, selectNextCa
 import { useNavigatePersist } from '../../supports/Persistence'
 import { InputButton, InputButtonPayload } from '../../components/InputButton'
 import { TouchInput } from '../../components/TouchInput'
+import { ReactComponent as MathPlusIcon } from '../../icons/math-plus.svg'
+import { ReactComponent as TrashIcon } from '../../icons/trash.svg'
+import { ReactComponent as FileDocumentIcon } from '../../icons/file-document.svg'
+import { IconButton } from '../../components/IconButton'
 
 /**
  * Validate Cart ID
@@ -49,16 +53,15 @@ export function Cart() {
     <div className={styles.container}>
 
       <div className={styles.header}>
-        <div>Cart ID: <b>{id}</b></div>
+        <InputButton placeholder='Product ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
         <div className={styles.actionButtons}>
-          <InputButton placeholder='Product ID: 1234567' onSubmit={handleSubmit}/>
-          <button onClick={handleDeleteCart}>Delete Cart</button>
-          {/* <button>Payment</button> */}
-          <button onClick={() => {alert('TODO: Bill Generation')}}>Generate Bill</button>
+          <IconButton title='Delete Cart' onClick={handleDeleteCart}><TrashIcon /></IconButton>
+          <IconButton title='Generate Bill' onClick={() => {alert('TODO: Bill Generation')}}><FileDocumentIcon /></IconButton>
         </div>
       </div>
 
       <div className={styles.customerDetails}>
+        <div>Cart ID: <b>{id}</b></div>
         <div>
           Customer Name:&nbsp;
           <TouchInput
@@ -85,8 +88,8 @@ export function Cart() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <td scope="col">Sr no.</td>
-            <td scope="col">Remove Item</td>
+            <td scope="col">#</td>
+            <td scope="col"></td>
             <td scope="col">Product ID</td>
             <td scope="col">Product Name</td>
             <td scope="col" title='Price Per Quantity'>P / Q</td>
@@ -105,7 +108,7 @@ export function Cart() {
                   <td className={styles.buttonBlock}>
                     <button
                       onClick={() => dispatch(removeItemFromCart({ cartID: id, itemID: product.id }))}
-                      title={`Remove ${product.name} from cart`}>Delete</button>
+                      title={`Remove ${product.name} from cart`}><TrashIcon /></button>
                   </td>
                   <td>{product.id}</td>
                   <td>{product.name}</td>
