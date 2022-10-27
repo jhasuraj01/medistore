@@ -21,7 +21,7 @@ export class CartItemProxy implements CartItem {
     return this.item.quantity
   }
   get finalPricePerQuantity(): number {
-    return this.pricePerQuantity * (100 - this.discount) / 100
+    return this.pricePerQuantity * (1 - this.discount)
   }
   get totalPrice(): number {
     return this.finalPricePerQuantity * this.quantity

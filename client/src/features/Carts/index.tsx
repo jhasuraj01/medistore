@@ -33,8 +33,6 @@ const percent = new Intl.NumberFormat('en-IN', {
   maximumFractionDigits: 2,
 })
 
-const number = new Intl.NumberFormat('en-IN')
-
 export function Cart() {
   const { id } = useParams()
 

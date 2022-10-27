@@ -84,12 +84,12 @@ export const cartSlice = createSlice({
           id: payload.itemID,
           name: 'Lorem Ipsum Dolar Shit',
           quantity: 1,
-          discount: 0,
+          discount: 0.1,
           pricePerQuantity: 100
         }
         cart.items.unshift(item)
       }
-      cart.totalBillValue += item.pricePerQuantity * (100 - item.discount) / 100
+      cart.totalBillValue += item.pricePerQuantity * (1 - item.discount)
     },
     updateItemQuantity: (state, { payload }: PayloadAction<UpdateItemQuantityPayload> ) => {
 
@@ -105,7 +105,7 @@ export const cartSlice = createSlice({
       if(item) {
         const difference = Math.max(payload.quantity, 0) - item.quantity
         item.quantity = Math.max(payload.quantity, 0)
-        cart.totalBillValue += difference * item.pricePerQuantity * (100 - item.discount) / 100
+        cart.totalBillValue += difference * item.pricePerQuantity * (1 - item.discount)
 
         if(item.quantity === 0) {
           cart.items = cart.items.filter(item => item.id != payload.itemID)
