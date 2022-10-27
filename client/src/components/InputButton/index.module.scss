@@ -7,14 +7,13 @@
     border-radius: 0;
     margin: 0;
     height: auto;
-    font-size: inherit;
     font-style: inherit;
     color: inherit;
   }
   input {
     border-right: 1px solid #E2CCFF;
     border-radius: 6px 0 0 6px;
-    padding: 8px 16px;
+    padding: 4px 8px;
 
     &::placeholder {
       color: #E2CCFF;
@@ -23,6 +22,11 @@
   button {
     border-left: 1px solid #E2CCFF;
     border-radius: 0 6px 6px 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   button {
