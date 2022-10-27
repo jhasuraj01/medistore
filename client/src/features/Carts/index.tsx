@@ -20,6 +20,21 @@ const isValidID = (id: string) => {
   return (new Date(Number(id))).getTime() > 0
 }
 
+const currency = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+const percent = new Intl.NumberFormat('en-IN', {
+  style: 'percent',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+const number = new Intl.NumberFormat('en-IN')
+
 export function Cart() {
   const { id } = useParams()
 
@@ -53,7 +68,6 @@ export function Cart() {
 
   return (
     <div className={styles.container}>
-
       <div className={styles.header}>
         <InputButton placeholder='item ID: 1234567' onSubmit={handleSubmit}><MathPlusIcon /></InputButton>
         <div className={styles.actionButtons}>
@@ -92,8 +106,8 @@ export function Cart() {
           <tr>
             <td scope="col">#</td>
             <td scope="col"></td>
-            <td scope="col">item ID</td>
-            <td scope="col">item Name</td>
+            <td scope="col">Product ID</td>
+            <td scope="col">Product Name</td>
             <td scope="col" title='Price Per Quantity'>P / Q</td>
             <td scope="col">Discount</td>
             <td scope="col" title='Final Price Per Quantity'>FP / Q</td>
@@ -114,16 +128,16 @@ export function Cart() {
                   </td>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
-                  <td>{item.pricePerQuantity}</td>
-                  <td>{item.discount}</td>
-                  <td>{item.finalPricePerQuantity}</td>
+                  <td>{currency.format(item.pricePerQuantity)}</td>
+                  <td>{percent.format(item.discount)}</td>
+                  <td>{currency.format(item.finalPricePerQuantity)}</td>
                   <td className={styles.editableBlock}>
                     <TouchInput
                       onSubmit={({ value }) => value != 'Enter Name' && !isNaN(Number(value)) && dispatch(updateItemQuantity({ cartID: id, itemID: item.id, quantity: Number(value) }))}
                       text={item.quantity}
                       default='0' />
                   </td>
-                  <td>{item.totalPrice}</td>
+                  <td>{currency.format(item.totalPrice)}</td>
                 </tr>
               )
             })
@@ -132,7 +146,7 @@ export function Cart() {
         <tfoot>
           <tr>
             <td colSpan={8} title='Inclusive of Taxes and Discounts (if any)'>Total Bill Value</td>
-            <td>{cart.totalBillValue}</td>
+            <td>{currency.format(cart.totalBillValue)}</td>
           </tr>
         </tfoot>
       </table>
