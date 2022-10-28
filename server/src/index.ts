@@ -6,28 +6,11 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import metadata from './metadata.js';
+import { schema } from './graphql/index.js';
 
 import * as dotenv from 'dotenv';
 import { ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 dotenv.config()
-
-const typeDefs = `#graphql
-  type MetaData {
-    version: String!
-    buildAt: String!
-    platform: String!
-  }
-  type Query {
-    metadata: MetaData!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    metadata: () => metadata,
-   },
-};
 
 interface MyContext {
   token?: String;
@@ -36,8 +19,7 @@ interface MyContext {
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer<MyContext>({
-  typeDefs,
-  resolvers,
+  schema,
   plugins: [
     ApolloServerPluginLandingPageProductionDefault({
       embed: {
