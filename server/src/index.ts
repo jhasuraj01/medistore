@@ -9,10 +9,12 @@ import bodyParser from 'body-parser';
 import { schema } from './graphql/index.js';
 
 import * as dotenv from 'dotenv';
-import { ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
+import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 dotenv.config()
 
-interface MyContext {
+const devenv = process.env.NODE_ENV === 'development'
+
+export interface MyContext {
   token?: String;
 }
 
@@ -21,20 +23,15 @@ const httpServer = http.createServer(app);
 const server = new ApolloServer<MyContext>({
   schema,
   plugins: [
-    ApolloServerPluginLandingPageProductionDefault({
-      embed: {
-        displayOptions: {
-          theme: 'dark',
-          docsPanelState: 'open',
-          showHeadersAndEnvVars: true
-        },
-        persistExplorerState: true
-      },
-      graphRef: "MedistoreGraph@current"
-    }),
+    devenv
+      ? ApolloServerPluginLandingPageLocalDefault()
+      : ApolloServerPluginLandingPageProductionDefault({
+        embed: true,
+        graphRef: "MedistoreGraph@current"
+      }),
     ApolloServerPluginDrainHttpServer({ httpServer }),
   ],
-  introspection: true
+  introspection: true,
 });
 
 await server.start();

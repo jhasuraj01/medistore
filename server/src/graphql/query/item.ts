@@ -20,8 +20,8 @@ export const resolvers = {
         name: 'Lorem Ipsum',
         quantity: 50,
         costPerUnit: 85,
-        pricePerUnit: 100,
-        discount: 0.1
+        pricePerUnit: 1000,
+        discount: 0.3
       }
     },
   }

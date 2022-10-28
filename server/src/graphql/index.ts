@@ -9,7 +9,6 @@ export const typeDefs = `#graphql
   }
 `;
 
-
 export const schema = makeExecutableSchema({
   typeDefs: [ typeDefs, MetaData, Item],
   resolvers: merge(metadataResolvers, itemResolvers),
