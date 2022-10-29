@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "strict": true,
     "rootDirs": ["src"],
     "outDir": "build",
-    "lib": ["es2020"],
-    "target": "es2020",
+    "lib": ["esnext"],
+    "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "types": ["node"],

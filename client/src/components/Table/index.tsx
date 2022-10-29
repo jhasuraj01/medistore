@@ -5,14 +5,14 @@ interface TableHeadProps {
   children: React.ReactNode | React.ReactNode[]
 }
 export function TableHead({ children }: TableHeadProps) {
-  return <> {children} </>
+  return <>{children}</>
 }
 
 interface TableBodyProps {
   children?: React.ReactNode | React.ReactNode[]
 }
 export function TableBody({ children }: TableBodyProps) {
-  return <> {children} </>
+  return <>{children}</>
 }
 
 interface TableFooterProps {
@@ -20,7 +20,7 @@ interface TableFooterProps {
 }
 export function TableFooter({ children }: TableFooterProps) {
   return (
-    <> {children} </>
+    <>{children}</>
   )
 }
 

@@ -1,58 +1,41 @@
-import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServer } from '@apollo/server';
 import path from "path";
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import metadata from './metadata.js';
+import { schema } from './graphql/index.js';
+import { applicationDefault, initializeApp } from 'firebase-admin/app';
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth'
 
 import * as dotenv from 'dotenv';
-import { ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 dotenv.config()
 
-const typeDefs = `#graphql
-  type MetaData {
-    version: String!
-    buildAt: String!
-    platform: String!
-  }
-  type Query {
-    metadata: MetaData!
-  }
-`;
+const devenv = process.env.NODE_ENV === 'development'
 
-const resolvers = {
-  Query: {
-    metadata: () => metadata,
-   },
-};
+initializeApp({ credential: applicationDefault() })
 
-interface MyContext {
-  token?: String;
+export interface MyContext {
+  user?: DecodedIdToken;
 }
 
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer<MyContext>({
-  typeDefs,
-  resolvers,
+  schema,
   plugins: [
-    ApolloServerPluginLandingPageProductionDefault({
-      embed: {
-        displayOptions: {
-          theme: 'dark',
-          docsPanelState: 'open',
-          showHeadersAndEnvVars: true
-        },
-        persistExplorerState: true
-      },
-      graphRef: "MedistoreGraph@current"
-    }),
+    devenv
+      ? ApolloServerPluginLandingPageLocalDefault()
+      : ApolloServerPluginLandingPageProductionDefault({
+        embed: true,
+        graphRef: "MedistoreGraph@current"
+      }),
     ApolloServerPluginDrainHttpServer({ httpServer }),
   ],
-  introspection: true
+  introspection: true,
 });
 
 await server.start();
@@ -65,10 +48,24 @@ app.get("/", (req, res) => {
 
 app.use(
   '/graphql',
-  cors<cors.CorsRequest>(),
+  cors<cors.CorsRequest>({
+    credentials: true
+  }),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req }) => {
+      try {
+        const token = req.headers.authorization.split(' ')[1]
+        const decodedToken = await getAuth().verifyIdToken(token);
+        return {
+          user: decodedToken
+        }
+      } catch (error) {
+        return {
+          user: null
+        }
+      }
+    },
   }),
 );
 
@@ -77,6 +74,6 @@ app.get("*", (req, res) => {
 });
 
 // Modified server startup
-const port:Number = Number(process.env.PORT) || 4000;
+const port: Number = Number(process.env.PORT) || 4000;
 await new Promise<void>((resolve) => httpServer.listen({ port: port }, resolve));
 console.log(`🚀 Server ready at http://localhost:${port}/`);

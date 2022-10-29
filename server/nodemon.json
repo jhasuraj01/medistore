@@ -1,6 +1,6 @@
 {
-  "ignore": [".git", "node_modules", "dist", "src/metadata.ts"],
-  "watch": ["./src"],
-  "exec": "npm run build && npm start",
-  "ext": "ts"
+  "ignore": [".git", "node_modules"],
+  "watch": ["./build"],
+  "exec": "npm start",
+  "ext": "js"
 }

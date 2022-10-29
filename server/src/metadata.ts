@@ -1,5 +1,5 @@
 export default {
 version: "1.0.0",
-buildAt: "2022-10-24T18:03:08.167Z",
+buildAt: "2022-10-28T17:10:03.958Z",
 platform: "linux",
 }
