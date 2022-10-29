@@ -55,7 +55,7 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req }) => {
       try {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers.authorization?.split(' ')[1] || ''
         const decodedToken = await getAuth().verifyIdToken(token);
         return {
           user: decodedToken
