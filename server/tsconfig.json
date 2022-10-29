@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "strict": true,
     "rootDirs": ["src"],
     "outDir": "build",
     "lib": ["esnext"],

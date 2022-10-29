@@ -1,21 +1,25 @@
-import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServer } from '@apollo/server';
 import path from "path";
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { schema } from './graphql/index.js';
+import { applicationDefault, initializeApp } from 'firebase-admin/app';
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth'
 
 import * as dotenv from 'dotenv';
-import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 dotenv.config()
 
 const devenv = process.env.NODE_ENV === 'development'
 
+initializeApp({ credential: applicationDefault() })
+
 export interface MyContext {
-  token?: String;
+  user?: DecodedIdToken;
 }
 
 const app = express();
@@ -44,10 +48,24 @@ app.get("/", (req, res) => {
 
 app.use(
   '/graphql',
-  cors<cors.CorsRequest>(),
+  cors<cors.CorsRequest>({
+    credentials: true
+  }),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req }) => {
+      try {
+        const token = req.headers.authorization.split(' ')[1]
+        const decodedToken = await getAuth().verifyIdToken(token);
+        return {
+          user: decodedToken
+        }
+      } catch (error) {
+        return {
+          user: null
+        }
+      }
+    },
   }),
 );
 
@@ -56,6 +74,6 @@ app.get("*", (req, res) => {
 });
 
 // Modified server startup
-const port:Number = Number(process.env.PORT) || 4000;
+const port: Number = Number(process.env.PORT) || 4000;
 await new Promise<void>((resolve) => httpServer.listen({ port: port }, resolve));
 console.log(`🚀 Server ready at http://localhost:${port}/`);

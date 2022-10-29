@@ -1,6 +1,9 @@
+import { Resolvers } from "../types";
+
 export const typeDefs = `#graphql
   extend type Query {
-    item(id: String!): Item!
+    itemByID(id: String!): Item!
+    itemByName(name: String!): [Item!]!
   }
   type Item {
     id: String!
@@ -12,17 +15,29 @@ export const typeDefs = `#graphql
   }
 `;
 
-export const resolvers = {
+export const resolvers: Resolvers = {
   Query: {
-    item: async (parent, args, context, info) => {
+    itemByID: async (parent, args, context, info) => {
       return {
         id: args.id,
         name: 'Lorem Ipsum',
         quantity: 50,
         costPerUnit: 85,
         pricePerUnit: 1000,
-        discount: 0.3
+        discount: 0.1
       }
+    },
+    itemByName: async (parent, args, context, info) => {
+      return [
+        {
+          id: "asjhhhb",
+          name: args.name,
+          quantity: 50,
+          costPerUnit: 85,
+          pricePerUnit: 1000,
+          discount: 0.1
+        }
+      ]
     },
   }
 };

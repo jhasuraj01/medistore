@@ -35,13 +35,25 @@ export type MetaData = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
-  item: Item;
+  itemByID: Item;
+  itemByName: Array<Item>;
   metadata: MetaData;
+  user: User;
 };
 
 
-export type QueryItemArgs = {
+export type QueryItemByIdArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryItemByNameArgs = {
+  name: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  uid?: Maybe<Scalars['String']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -121,6 +133,7 @@ export type ResolversTypes = ResolversObject<{
   MetaData: ResolverTypeWrapper<MetaData>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -132,6 +145,7 @@ export type ResolversParentTypes = ResolversObject<{
   MetaData: MetaData;
   Query: {};
   String: Scalars['String'];
+  User: User;
 }>;
 
 export type ItemResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = ResolversObject<{
@@ -153,13 +167,21 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  item?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemArgs, 'id'>>;
+  itemByID?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemByIdArgs, 'id'>>;
+  itemByName?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemByNameArgs, 'name'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+}>;
+
+export type UserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  uid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
   Item?: ItemResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 

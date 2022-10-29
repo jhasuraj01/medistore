@@ -1,6 +1,7 @@
 # This configuration file tells GraphQL Code Generator how
 # to generate types based on our schema.
 schema: "./build/graphql/index.js"
+overwrite: true
 emitLegacyCommonJSImports: False
 generates:
   # Specify where our generated types should live.
@@ -8,6 +9,7 @@ generates:
     plugins:
       - "typescript"
       - "typescript-resolvers"
+      - "typescript-operations"
     config:
       useIndexSignature: true
       # More on this below!

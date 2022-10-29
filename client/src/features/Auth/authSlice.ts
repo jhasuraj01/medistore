@@ -40,6 +40,10 @@ export const updateAuthState = createAsyncThunk(
   'auth/updateAuthState',
   async () => {
     const token: AuthToken = await auth.currentUser?.getIdToken(true) || undefined
+    if(token)
+      localStorage.setItem('token', token)
+    else
+      localStorage.removeItem('token')
     return { token }
   }
 )

@@ -1,4 +1,5 @@
 import metadata from '../../metadata.js';
+import { Resolvers } from '../types.js';
 
 export const typeDefs = `#graphql
   extend type Query {
@@ -11,8 +12,10 @@ export const typeDefs = `#graphql
   }
 `;
 
-export const resolvers = {
+export const resolvers: Resolvers = {
   Query: {
-    metadata: () => metadata,
+    metadata: (parent, args, context, info) => {
+      return metadata
+    },
   }
 };
