@@ -11,7 +11,7 @@
     "start": "node ./build/index.js",
     "codegen": "graphql-codegen-esm --config codegen.yml",
     "codegen:watch": "graphql-codegen-esm --config codegen.yml --watch",
-    "dev": "concurrently 'npm:codegen:watch' 'tsc --watch' 'nodemon'"
+    "dev": "concurrently 'tsc --watch' 'nodemon'"
   },
   "keywords": [],
   "author": "",
