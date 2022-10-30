@@ -19,7 +19,7 @@ const devenv = process.env.NODE_ENV === 'development'
 initializeApp({ credential: applicationDefault() })
 
 export interface MyContext {
-  user?: DecodedIdToken;
+  user: DecodedIdToken | null;
 }
 
 const app = express();
