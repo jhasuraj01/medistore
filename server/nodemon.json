@@ -1,6 +1,6 @@
 {
   "ignore": [".git", "node_modules"],
   "watch": ["./build"],
-  "exec": "concurrently 'npm:codegen' 'npm:start'",
+  "exec": "npm start",
   "ext": "js"
 }

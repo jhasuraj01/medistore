@@ -1,19 +1,4 @@
-import { Resolvers } from "../types";
-
-export const typeDefs = `#graphql
-  extend type Query {
-    itemByID(id: String!): Item!
-    itemByName(name: String!): [Item!]!
-  }
-  type Item {
-    id: String!
-    name: String!
-    quantity: Int!
-    costPerUnit: Float!
-    pricePerUnit: Float!
-    discount: Float!
-  }
-`;
+import { Resolvers } from "../../types";
 
 export const resolvers: Resolvers = {
   Query: {

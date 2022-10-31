@@ -1,6 +1,6 @@
 # This configuration file tells GraphQL Code Generator how
 # to generate types based on our schema.
-schema: "./build/graphql/index.js"
+schema: "./src/graphql/**/*.graphql"
 overwrite: true
 emitLegacyCommonJSImports: False
 generates:
@@ -14,3 +14,4 @@ generates:
       useIndexSignature: true
       # More on this below!
       contextType: "../index.js#MyContext"
+      resolverTypeWrapperSignature: "T | Promise<T> | Partial<T> | Promise<Partial<T>>"

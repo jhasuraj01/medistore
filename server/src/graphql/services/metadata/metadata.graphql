@@ -1,0 +1,9 @@
+extend type Query {
+  metadata: MetaData!
+}
+
+type MetaData {
+  version: String!
+  buildAt: String!
+  platform: String!
+}

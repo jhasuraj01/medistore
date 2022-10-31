@@ -1,0 +1,10 @@
+extend type Query {
+  user: User!
+}
+type User {
+  uid: String
+  email: String
+  emailVerified: Boolean
+  phoneNumber: String
+  photoURL: String
+}

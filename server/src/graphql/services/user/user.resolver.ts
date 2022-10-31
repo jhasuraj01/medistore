@@ -1,17 +1,4 @@
-import { Resolvers } from '../types.js';
-
-export const typeDefs = `#graphql
-  extend type Query {
-    user: User!
-  }
-  type User {
-    uid: String
-    email: String
-    emailVerified: Boolean
-    phoneNumber: String
-    photoURL: String
-  }
-`;
+import { Resolvers } from '../../types.js';
 
 export const resolvers: Resolvers = {
   Query: {
