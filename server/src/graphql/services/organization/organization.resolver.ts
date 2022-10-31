@@ -17,7 +17,7 @@ const shops = [
   {
     id: "shop1",
     name: "Sun Pharma Shop 1",
-    organization: "org1"
+    organization: "org1",
   },
   {
     id: "shop2",

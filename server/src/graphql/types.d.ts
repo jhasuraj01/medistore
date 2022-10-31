@@ -77,12 +77,19 @@ export type Shop = {
   id: Scalars['ID'];
   name: Scalars['String'];
   organization: Organization;
+  store?: Maybe<Store>;
+};
+
+export type Store = {
+  __typename?: 'Store';
+  items: Array<Item>;
 };
 
 export type User = {
   __typename?: 'User';
   email?: Maybe<Scalars['String']>;
   emailVerified?: Maybe<Scalars['Boolean']>;
+  organization?: Maybe<Organization>;
   phoneNumber?: Maybe<Scalars['String']>;
   photoURL?: Maybe<Scalars['String']>;
   uid?: Maybe<Scalars['String']>;
@@ -167,6 +174,7 @@ export type ResolversTypes = ResolversObject<{
   Organization: ResolverTypeWrapper<Organization>;
   Query: ResolverTypeWrapper<{}>;
   Shop: ResolverTypeWrapper<Shop>;
+  Store: ResolverTypeWrapper<Store>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
 }>;
@@ -182,6 +190,7 @@ export type ResolversParentTypes = ResolversObject<{
   Organization: Organization;
   Query: {};
   Shop: Shop;
+  Store: Store;
   String: Scalars['String'];
   User: User;
 }>;
@@ -226,12 +235,19 @@ export type ShopResolvers<ContextType = MyContext, ParentType extends ResolversP
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   organization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType>;
+  store?: Resolver<Maybe<ResolversTypes['Store']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type StoreResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = ResolversObject<{
+  items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type UserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   emailVerified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  organization?: Resolver<Maybe<ResolversTypes['Organization']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   photoURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   uid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -244,6 +260,7 @@ export type Resolvers<ContextType = MyContext> = ResolversObject<{
   Organization?: OrganizationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Shop?: ShopResolvers<ContextType>;
+  Store?: StoreResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 

@@ -7,4 +7,5 @@ type User {
   emailVerified: Boolean
   phoneNumber: String
   photoURL: String
+  organization: Organization
 }

@@ -1,0 +1,7 @@
+extend type Shop {
+  store: Store
+}
+
+type Store {
+  items: [Item!]!
+}
