@@ -14,6 +14,16 @@ export type Scalars = {
   Float: number;
 };
 
+export type Item = {
+  __typename?: 'Item';
+  costPerUnit: Scalars['Float'];
+  discount: Scalars['Float'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  pricePerUnit: Scalars['Float'];
+  quantity: Scalars['Int'];
+};
+
 export type MetaData = {
   __typename?: 'MetaData';
   buildAt: Scalars['String'];
@@ -21,9 +31,60 @@ export type MetaData = {
   version: Scalars['String'];
 };
 
+export type Organization = {
+  __typename?: 'Organization';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  shops: Array<Shop>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  _empty?: Maybe<Scalars['String']>;
+  itemByID: Item;
+  itemByName: Array<Item>;
   metadata: MetaData;
+  organization?: Maybe<Organization>;
+  organizations: Array<Organization>;
+  shop?: Maybe<Shop>;
+  shops: Array<Shop>;
+  user: User;
+};
+
+
+export type QueryItemByIdArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryItemByNameArgs = {
+  name: Scalars['String'];
+};
+
+
+export type QueryOrganizationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryShopArgs = {
+  id: Scalars['ID'];
+};
+
+export type Shop = {
+  __typename?: 'Shop';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  organization: Organization;
+};
+
+export type User = {
+  __typename?: 'User';
+  email?: Maybe<Scalars['String']>;
+  emailVerified?: Maybe<Scalars['Boolean']>;
+  phoneNumber?: Maybe<Scalars['String']>;
+  photoURL?: Maybe<Scalars['String']>;
+  uid?: Maybe<Scalars['String']>;
 };
 
 export type GetMetaDataQueryVariables = Exact<{ [key: string]: never; }>;
