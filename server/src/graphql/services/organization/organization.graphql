@@ -1,16 +1,14 @@
 extend type Query {
   organization(id: ID!): Organization
-  shop(id: ID!): Shop
   organizations: [Organization!]!
-  shops: [Shop!]!
+  branch(organizationID: ID!, branchID: ID!): Branch
 }
 type Organization {
   id: ID!
   name: String!
-  shops: [Shop!]!
+  branches: [Branch!]!
 }
-type Shop {
+type Branch {
   id: ID!
   name: String!
-  organization: Organization!
 }

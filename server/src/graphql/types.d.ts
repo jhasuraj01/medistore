@@ -15,6 +15,13 @@ export type Scalars = {
   Float: number;
 };
 
+export type Branch = {
+  __typename?: 'Branch';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  store?: Maybe<Store>;
+};
+
 export type Item = {
   __typename?: 'Item';
   costPerUnit: Scalars['Float'];
@@ -34,22 +41,27 @@ export type MetaData = {
 
 export type Organization = {
   __typename?: 'Organization';
+  branches: Array<Branch>;
   id: Scalars['ID'];
   name: Scalars['String'];
-  shops: Array<Shop>;
 };
 
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
+  branch?: Maybe<Branch>;
   itemByID: Item;
   itemByName: Array<Item>;
   metadata: MetaData;
   organization?: Maybe<Organization>;
   organizations: Array<Organization>;
-  shop?: Maybe<Shop>;
-  shops: Array<Shop>;
   user: User;
+};
+
+
+export type QueryBranchArgs = {
+  branchID: Scalars['ID'];
+  organizationID: Scalars['ID'];
 };
 
 
@@ -65,19 +77,6 @@ export type QueryItemByNameArgs = {
 
 export type QueryOrganizationArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryShopArgs = {
-  id: Scalars['ID'];
-};
-
-export type Shop = {
-  __typename?: 'Shop';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  organization: Organization;
-  store?: Maybe<Store>;
 };
 
 export type Store = {
@@ -166,6 +165,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Branch: ResolverTypeWrapper<Branch>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -173,7 +173,6 @@ export type ResolversTypes = ResolversObject<{
   MetaData: ResolverTypeWrapper<MetaData>;
   Organization: ResolverTypeWrapper<Organization>;
   Query: ResolverTypeWrapper<{}>;
-  Shop: ResolverTypeWrapper<Shop>;
   Store: ResolverTypeWrapper<Store>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
@@ -182,6 +181,7 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  Branch: Branch;
   Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
@@ -189,10 +189,16 @@ export type ResolversParentTypes = ResolversObject<{
   MetaData: MetaData;
   Organization: Organization;
   Query: {};
-  Shop: Shop;
   Store: Store;
   String: Scalars['String'];
   User: User;
+}>;
+
+export type BranchResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Branch'] = ResolversParentTypes['Branch']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  store?: Resolver<Maybe<ResolversTypes['Store']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ItemResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = ResolversObject<{
@@ -213,30 +219,21 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 }>;
 
 export type OrganizationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']> = ResolversObject<{
+  branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  shops?: Resolver<Array<ResolversTypes['Shop']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  branch?: Resolver<Maybe<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchID' | 'organizationID'>>;
   itemByID?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemByIdArgs, 'id'>>;
   itemByName?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemByNameArgs, 'name'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
   organization?: Resolver<Maybe<ResolversTypes['Organization']>, ParentType, ContextType, RequireFields<QueryOrganizationArgs, 'id'>>;
   organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;
-  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
-  shops?: Resolver<Array<ResolversTypes['Shop']>, ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-}>;
-
-export type ShopResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  organization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType>;
-  store?: Resolver<Maybe<ResolversTypes['Store']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type StoreResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = ResolversObject<{
@@ -255,11 +252,11 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
 }>;
 
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
+  Branch?: BranchResolvers<ContextType>;
   Item?: ItemResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
   Organization?: OrganizationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  Shop?: ShopResolvers<ContextType>;
   Store?: StoreResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;

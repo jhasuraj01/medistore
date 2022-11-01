@@ -1,71 +1,81 @@
-import { Resolvers } from "../../types"
-
-const orgs = [
-  {
-    id: 'org1',
-    name: 'Sun Pharma',
-    shops: [ "shop1", "shop2"]
-  },
-  {
-    id: 'org2',
-    name: 'Reliance Drugs',
-    shops: [ "red1"]
-  }
-]
-
-const shops = [
-  {
-    id: "shop1",
-    name: "Sun Pharma Shop 1",
-    organization: "org1",
-  },
-  {
-    id: "shop2",
-    name: "Sun Pharma Shop 2",
-    organization: "org1"
-  },
-  {
-    id: "red1",
-    name: "Reliance Drugs Shop 1",
-    organization: "org2"
-  }
-]
+import { Branch, Organization, Resolvers } from "../../types"
 
 export const resolvers: Resolvers = {
   Query: {
     organization: async (parent, args, context, info) => {
-      return orgs
-        .filter(org => org.id === args.id)
-        .map(org => ({ id: org.id, name: org.name }))
-        [0]
+      const orgRef = context.db.collection('organizations').doc(args.id);
+      const org = await orgRef.get()
+
+      if(!org.exists) return null
+
+      const orgData = org.data()
+
+      if(orgData === undefined) return null
+
+      return {
+        id: orgRef.id,
+        name: String(orgData.name)
+      }
+
     },
     organizations: async (parent, args, context, info) => {
-      return orgs
-        .map(org => ({ id: org.id, name: org.name }))
+        const snapshot = await context.db.collection('/organizations').get();
+        const result: Partial<Organization>[] = []
+
+        snapshot.forEach(doc => {
+          const data = doc.data()
+          result.push({
+            id: doc.id,
+            name: String(data.name),
+          })
+        })
+
+        return result
     },
-    shop: async (parent, args, context, info) => {
-      return shops
-        .filter(shop => shop.id === args.id)
-        .map(shop => ({ id: shop.id, name: shop.name }))
-        [0]
-    },
-    shops: async (parent, args, context, info) => {
-      return shops
-        .map(shop => ({ id: shop.id, name: shop.name }))
+    branch: async (parent, args, context, info) => {
+
+      const branchRef = context.db
+        .collection('organizations')
+        .doc(args.organizationID)
+        .collection('branches')
+        .doc(args.branchID)
+
+      const branch = await branchRef.get()
+
+      if(!branch.exists) return null
+
+      const branchData = branch.data()
+
+      if(branchData === undefined) return null
+
+      return {
+        id: branch.id,
+        name: String(branchData.name)
+      }
     },
   },
   Organization: {
-    shops: async (parent, args, context, info) => {
-      return shops
-        .filter(shop => shop.organization === parent.id)
-        .map(shop => ({ id: shop.id, name: shop.name }))
+    branches: async (parent, args, context, info) => {
+
+      console.log("All Branches: " + parent.id)
+
+      const snapshot = await context.db
+        .collection('organizations')
+        .doc(parent.id)
+        .collection('branches')
+        .get()
+
+      const result: Partial<Branch>[] = []
+
+      snapshot.forEach(doc => {
+        const data = doc.data()
+        result.push({
+          id: doc.id,
+          name: String(data.name),
+        })
+      })
+
+      return result
     }
   },
-  Shop: {
-    organization: async (parent, args, context, info) => {
-      return orgs
-        .filter(org => org.shops.includes(parent.id))
-        .map(org => ({ id: org.id, name: org.name }))[0]
-    }
-  }
 }

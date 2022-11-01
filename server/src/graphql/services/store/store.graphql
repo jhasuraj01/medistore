@@ -1,4 +1,4 @@
-extend type Shop {
+extend type Branch {
   store: Store
 }
 

@@ -1,7 +1,7 @@
 import { Resolvers } from "../../types"
 
 export const resolvers: Resolvers = {
-  Shop: {
+  Branch: {
     store: async (parent, args, context, info) => {
       return {
         items: [{
