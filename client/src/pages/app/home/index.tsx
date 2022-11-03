@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
-import { AppSectionLayout } from '../../components/AppSectionLayout'
-import { SubNav, SubNavLink, SubNavSection } from '../../features/SubNav'
-import { NavigatePersist } from '../../supports/Persistence'
-import { NotFoundPage } from '../404'
+import { AppSectionLayout } from '../../../components/AppSectionLayout'
+import { SubNav, SubNavLink, SubNavSection } from '../../../features/SubNav'
+import { NavigatePersist } from '../../../supports/Persistence'
+import { NotFoundPage } from '../../404'
 import { AboutPage } from './about'
 
 function HomePageSubNav() {

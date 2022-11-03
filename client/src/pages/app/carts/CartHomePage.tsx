@@ -1,4 +1,4 @@
-import { ReactComponent as CartIcon } from '../../icons/shopping-cart.svg'
+import { ReactComponent as CartIcon } from '../../../icons/shopping-cart.svg'
 import styles from './index.module.scss'
 
 export function CartHomePage() {

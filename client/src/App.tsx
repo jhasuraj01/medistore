@@ -9,11 +9,13 @@ import { NotFoundPage } from './pages/404'
 import { AppLayout } from './components/AppLayout'
 import styles from './App.module.scss'
 import { AuthPage } from './pages/auth'
-import { HomePage } from './pages/home'
-import { SearchPage } from './pages/search'
-import { CartPage } from './pages/carts'
-import { StorePage } from './pages/store'
-import { AccountPage } from './pages/account'
+import { HomePage } from './pages/app/home'
+import { SearchPage } from './pages/app/search'
+import { CartPage } from './pages/app/carts'
+import { StorePage } from './pages/app/store'
+import { AccountPage } from './pages/app/account'
+import { OrganizationPage } from './pages/app/organization'
+import { AccountSetupPage } from './pages/setup'
 
 function App() {
 
@@ -35,11 +37,11 @@ function App() {
           <Route path='carts/*' element={<CartPage />} />
           <Route path='store/*' element={<StorePage />} />
           <Route path='account/*' element={<AccountPage />} />
+          <Route path='organization/*' element={<OrganizationPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>
-        <Route path='login' element={<NavigatePersist to='/auth' />} />
-        <Route path='signup' element={<NavigatePersist to='/auth' />} />
         <Route path='auth' element={<AuthPage />} />
+        <Route path='setup/*' element={<AccountSetupPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </div>

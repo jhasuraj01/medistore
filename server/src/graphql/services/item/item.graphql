@@ -1,6 +1,6 @@
 extend type Query {
-  itemByID(id: String!): Item!
-  itemByName(name: String!): [Item!]!
+  items(organizationId: ID!, branchId: ID!): [Item!]!
+  item(organizationId: ID!, branchId: ID!, itemId: ID!): Item
 }
 
 type Item {

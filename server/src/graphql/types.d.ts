@@ -50,8 +50,8 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   branch?: Maybe<Branch>;
-  itemByID: Item;
-  itemByName: Array<Item>;
+  item?: Maybe<Item>;
+  items: Array<Item>;
   metadata: MetaData;
   organization?: Maybe<Organization>;
   organizations: Array<Organization>;
@@ -65,13 +65,16 @@ export type QueryBranchArgs = {
 };
 
 
-export type QueryItemByIdArgs = {
-  id: Scalars['String'];
+export type QueryItemArgs = {
+  branchId: Scalars['ID'];
+  itemId: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
-export type QueryItemByNameArgs = {
-  name: Scalars['String'];
+export type QueryItemsArgs = {
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -228,8 +231,8 @@ export type OrganizationResolvers<ContextType = MyContext, ParentType extends Re
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   branch?: Resolver<Maybe<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchID' | 'organizationID'>>;
-  itemByID?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemByIdArgs, 'id'>>;
-  itemByName?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemByNameArgs, 'name'>>;
+  item?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'itemId' | 'organizationId'>>;
+  items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemsArgs, 'branchId' | 'organizationId'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
   organization?: Resolver<Maybe<ResolversTypes['Organization']>, ParentType, ContextType, RequireFields<QueryOrganizationArgs, 'id'>>;
   organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;

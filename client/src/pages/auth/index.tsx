@@ -10,10 +10,11 @@ import * as firebaseui from 'firebaseui'
 export function AuthPage() {
 
   const [ params ] = useSearchParams()
+  const returnAddress = params.get('return') || '/app'
 
   const uiConfig: firebaseui.auth.Config = {
     signInFlow: 'popup',
-    signInSuccessUrl: params.get('return') || '/app',
+    signInSuccessUrl: `/setup?return=${returnAddress}`,
     signInOptions: [
       {
         provider: EmailAuthProvider.PROVIDER_ID,

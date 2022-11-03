@@ -6,6 +6,7 @@ import { ReactComponent as Menu } from '../../icons/menu.svg'
 import { ReactComponent as Cart } from '../../icons/cart.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
+import { ReactComponent as Organization } from '../../icons/organization.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
 import { ReactComponent as ProfileIcon } from '../../icons/profile.svg'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -47,6 +48,12 @@ export function Nav() {
           to='store'
           title='Store'
         ><Store /></NavLinkPersist>
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
+          to='organization'
+          title='Organization'
+        ><Organization /></NavLinkPersist>
 
       </div>
       <div className={styles.navSection}>

@@ -1,4 +1,4 @@
-import { Table, TableBody, TableHead } from '../../../components/Table'
+import { Table, TableBody, TableHead } from '../../../../components/Table'
 import styles from './index.module.scss'
 
 const stock = [
