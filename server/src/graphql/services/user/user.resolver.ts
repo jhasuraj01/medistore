@@ -2,13 +2,21 @@ import { Resolvers } from '../../types.js';
 
 export const resolvers: Resolvers = {
   Query: {
-    user: (parent, args, context, info) => {
+    currentUser: async (parent, args, context, info) => {
+
+      if(context.user == null) return null
+
+      const userRef = context.db.collection('users').doc(context.user.uid)
+      const user = await userRef.get()
+
+      if(!user.exists) return null
+
+      const userData = user.data()
+
+      if(userData === undefined) return null
+
       return {
-        uid: context.user?.uid,
-        email: context.user?.email,
-        emailVerified: context.user?.email_verified,
-        phoneNumber: context.user?.phone_number,
-        photoURL: context.user?.picture,
+        organizationId: userData.organization
       }
     },
   }

@@ -14,6 +14,18 @@ export type Scalars = {
   Float: number;
 };
 
+export type Branch = {
+  __typename?: 'Branch';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  store?: Maybe<Store>;
+};
+
+export type CurrentUser = {
+  __typename?: 'CurrentUser';
+  organizationId?: Maybe<Scalars['ID']>;
+};
+
 export type Item = {
   __typename?: 'Item';
   costPerUnit: Scalars['Float'];
@@ -33,32 +45,40 @@ export type MetaData = {
 
 export type Organization = {
   __typename?: 'Organization';
+  branches: Array<Branch>;
   id: Scalars['ID'];
   name: Scalars['String'];
-  shops: Array<Shop>;
 };
 
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
-  itemByID: Item;
-  itemByName: Array<Item>;
+  branch?: Maybe<Branch>;
+  currentUser?: Maybe<CurrentUser>;
+  item?: Maybe<Item>;
+  items: Array<Item>;
   metadata: MetaData;
   organization?: Maybe<Organization>;
   organizations: Array<Organization>;
-  shop?: Maybe<Shop>;
-  shops: Array<Shop>;
-  user: User;
 };
 
 
-export type QueryItemByIdArgs = {
-  id: Scalars['String'];
+export type QueryBranchArgs = {
+  branchID: Scalars['ID'];
+  organizationID: Scalars['ID'];
 };
 
 
-export type QueryItemByNameArgs = {
-  name: Scalars['String'];
+export type QueryItemArgs = {
+  branchId: Scalars['ID'];
+  itemId: Scalars['ID'];
+  organizationId: Scalars['ID'];
+};
+
+
+export type QueryItemsArgs = {
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -66,25 +86,9 @@ export type QueryOrganizationArgs = {
   id: Scalars['ID'];
 };
 
-
-export type QueryShopArgs = {
-  id: Scalars['ID'];
-};
-
-export type Shop = {
-  __typename?: 'Shop';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  organization: Organization;
-};
-
-export type User = {
-  __typename?: 'User';
-  email?: Maybe<Scalars['String']>;
-  emailVerified?: Maybe<Scalars['Boolean']>;
-  phoneNumber?: Maybe<Scalars['String']>;
-  photoURL?: Maybe<Scalars['String']>;
-  uid?: Maybe<Scalars['String']>;
+export type Store = {
+  __typename?: 'Store';
+  items: Array<Item>;
 };
 
 export type GetMetaDataQueryVariables = Exact<{ [key: string]: never; }>;
@@ -92,5 +96,11 @@ export type GetMetaDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMetaDataQuery = { __typename?: 'Query', metadata: { __typename?: 'MetaData', platform: string, buildAt: string, version: string } };
 
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'CurrentUser', organizationId?: string | null } | null };
+
 
 export const GetMetaDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMetaData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"metadata"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"platform"}},{"kind":"Field","name":{"kind":"Name","value":"buildAt"}},{"kind":"Field","name":{"kind":"Name","value":"version"}}]}}]}}]} as unknown as DocumentNode<GetMetaDataQuery, GetMetaDataQueryVariables>;
+export const GetCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<GetCurrentUserQuery, GetCurrentUserQueryVariables>;

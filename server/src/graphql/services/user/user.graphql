@@ -1,11 +1,7 @@
 extend type Query {
-  user: User!
+  currentUser: CurrentUser
 }
-type User {
-  uid: String
-  email: String
-  emailVerified: Boolean
-  phoneNumber: String
-  photoURL: String
-  organization: Organization
+
+type CurrentUser {
+  organizationId: ID
 }
