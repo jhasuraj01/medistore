@@ -4,9 +4,11 @@ import { useAppSelector } from '../../app/hooks'
 import { selectAuth } from '../../features/Auth/authSlice'
 import { GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../gql/graphql'
 import { ReactComponent as Ripple } from '../../icons/ripple.svg'
-import { NavLinkPersist, useNavigatePersist } from '../../supports/Persistence'
+import { NavigatePersist, useNavigatePersist } from '../../supports/Persistence'
 import { NotFoundPage } from '../404'
+import { CreateOrganizationPage } from './CreateOrganizationPage'
 import styles from './index.module.scss'
+import { OrganizationSetupLayout } from './layout'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -15,20 +17,6 @@ const GET_CURRENTUSER = gql`
     }
   }
 `
-
-function AccountSetupMenu() {
-  const [ params ] = useSearchParams()
-  const returnAddress = params.get('return') || '/app'
-
-  return (
-    <div>
-      <NavLinkPersist to='organization/create'>Create Organization</NavLinkPersist>
-      <NavLinkPersist to='organization/join'>Join Organization</NavLinkPersist>
-      <NavLinkPersist to='organization/invitations'>Organization Invitations</NavLinkPersist>
-      <NavLinkPersist to={returnAddress}>Skip</NavLinkPersist>
-    </div>
-  )
-}
 
 export function AccountSetupPage() {
 
@@ -44,6 +32,10 @@ export function AccountSetupPage() {
       search: `?return=${returnAddress}`
     })
   }
+
+  console.table({
+    loading, error, data: JSON.stringify(data), active: user.active, token: user.token
+  })
 
   if(loading || user.loading) {
     return (
@@ -62,8 +54,8 @@ export function AccountSetupPage() {
     )
   }
 
-  
-  if(data.currentUser?.organizationId) {
+  const navigateNext = () => {
+    console.log('Called!!')
     setTimeout(() => {
       navigate({
         pathname: returnAddress,
@@ -72,13 +64,18 @@ export function AccountSetupPage() {
     }, 1)
   }
 
+  
+  if(data.currentUser?.organizationId) {
+    navigateNext()
+  }
+
   return (
     <Routes>
-      <Route index element={<AccountSetupMenu />}/>
-      <Route path='organization'>
-        <Route path='create' element={<div>Create Organization</div>} />
-        <Route path='join' element={<div>Create Organization</div>} />
-        <Route path='invitation' element={<div>Create Organization</div>} />
+      <Route index element={<NavigatePersist to='organization/create' />} />
+      <Route path='organization' element={<OrganizationSetupLayout onSkip={navigateNext}/>}>
+        <Route path='create' element={<CreateOrganizationPage navigateNext={navigateNext}/>} />
+        <Route path='join' element={<div style={{ textAlign: 'center' }}>Coming Soon!</div>} />
+        <Route path='invitations' element={<div style={{ textAlign: 'center' }}>Coming Soon!</div>} />
       </Route>
       <Route path='*' element={<NotFoundPage />} />
     </Routes>

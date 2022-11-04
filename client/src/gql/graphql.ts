@@ -43,6 +43,17 @@ export type MetaData = {
   version: Scalars['String'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  _empty?: Maybe<Scalars['String']>;
+  setupOrganization: SetupOrganizationResponse;
+};
+
+
+export type MutationSetupOrganizationArgs = {
+  name: Scalars['String'];
+};
+
 export type Organization = {
   __typename?: 'Organization';
   branches: Array<Branch>;
@@ -86,6 +97,23 @@ export type QueryOrganizationArgs = {
   id: Scalars['ID'];
 };
 
+export enum ResponseCode {
+  Alreadyexists = 'ALREADYEXISTS',
+  Invalidinput = 'INVALIDINPUT',
+  Notfound = 'NOTFOUND',
+  Ok = 'OK',
+  Unauthenticated = 'UNAUTHENTICATED',
+  Unauthorized = 'UNAUTHORIZED',
+  Unknownerror = 'UNKNOWNERROR'
+}
+
+export type SetupOrganizationResponse = {
+  __typename?: 'SetupOrganizationResponse';
+  code: ResponseCode;
+  ok: Scalars['Boolean'];
+  organizationId?: Maybe<Scalars['ID']>;
+};
+
 export type Store = {
   __typename?: 'Store';
   items: Array<Item>;
@@ -96,6 +124,13 @@ export type GetMetaDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMetaDataQuery = { __typename?: 'Query', metadata: { __typename?: 'MetaData', platform: string, buildAt: string, version: string } };
 
+export type SetupOrganizationMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type SetupOrganizationMutation = { __typename?: 'Mutation', setupOrganization: { __typename?: 'SetupOrganizationResponse', ok: boolean, code: ResponseCode, organizationId?: string | null } };
+
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -103,4 +138,5 @@ export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __type
 
 
 export const GetMetaDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMetaData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"metadata"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"platform"}},{"kind":"Field","name":{"kind":"Name","value":"buildAt"}},{"kind":"Field","name":{"kind":"Name","value":"version"}}]}}]}}]} as unknown as DocumentNode<GetMetaDataQuery, GetMetaDataQueryVariables>;
+export const SetupOrganizationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetupOrganization"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setupOrganization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<SetupOrganizationMutation, SetupOrganizationMutationVariables>;
 export const GetCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<GetCurrentUserQuery, GetCurrentUserQueryVariables>;

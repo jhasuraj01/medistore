@@ -4,10 +4,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 
 const documents = {
     "\n  query GetMetaData {\n    metadata {\n      platform\n      buildAt\n      version\n    }\n  }\n": types.GetMetaDataDocument,
+    "\n  mutation SetupOrganization($name: String!) {\n    setupOrganization(name: $name) {\n      ok\n      code\n      organizationId\n    }\n  }\n": types.SetupOrganizationDocument,
     "\n  query GetCurrentUser {\n    currentUser {\n      organizationId\n    }\n  }\n": types.GetCurrentUserDocument,
 };
 
 export function graphql(source: "\n  query GetMetaData {\n    metadata {\n      platform\n      buildAt\n      version\n    }\n  }\n"): (typeof documents)["\n  query GetMetaData {\n    metadata {\n      platform\n      buildAt\n      version\n    }\n  }\n"];
+export function graphql(source: "\n  mutation SetupOrganization($name: String!) {\n    setupOrganization(name: $name) {\n      ok\n      code\n      organizationId\n    }\n  }\n"): (typeof documents)["\n  mutation SetupOrganization($name: String!) {\n    setupOrganization(name: $name) {\n      ok\n      code\n      organizationId\n    }\n  }\n"];
 export function graphql(source: "\n  query GetCurrentUser {\n    currentUser {\n      organizationId\n    }\n  }\n"): (typeof documents)["\n  query GetCurrentUser {\n    currentUser {\n      organizationId\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;

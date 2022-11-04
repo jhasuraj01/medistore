@@ -5,3 +5,14 @@ extend type Query {
 type CurrentUser {
   organizationId: ID
 }
+
+
+type SetupOrganizationResponse {
+  ok: Boolean!
+  code: ResponseCode!
+  organizationId: ID
+}
+
+extend type Mutation {
+  setupOrganization(name: String!): SetupOrganizationResponse!
+}

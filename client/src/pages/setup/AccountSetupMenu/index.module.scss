@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 48px;
+  gap: 48px;
+  color: currentColor;
+
+  .title {
+		color: #B780FF;
+		font-size: 36px;
+		font-weight: 700;
+    text-align: center;
+	}
+	.subtitle {
+		color: #C599FF;
+		font-size: 22px;
+		font-weight: 700;
+		margin-top: 0;
+    text-align: center;
+	}
+	.secondaryTitle {
+		color: hsl(0, 0%, 50%);
+		font-size: 16px;
+		margin-top: 24px;
+    text-align: center;
+	}
+
+  .options {
+    display: flex;
+
+    .option {
+      border: none;
+      border-bottom: 3px solid #E2CCFF;
+      border-radius: 0;
+      padding: 16px 28px;
+      font-size: large;
+      text-decoration: none;
+      text-align: center;
+      color: #7029CC;
+
+      &:visited {
+        color: #7029CC;
+      }
+
+      &:hover {
+        background: #E2CCFF;
+        border-color: #E2CCFF;
+      }
+
+      &:active {
+        background: #d4b3ff;
+        border-color: #d4b3ff;
+      }
+    }
+
+    .option.active {
+      border-color: #ad66ff;
+    }
+  }
+}

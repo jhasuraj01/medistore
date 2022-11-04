@@ -1,0 +1,27 @@
+.container {
+  
+}
+
+
+.form {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+
+  input {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: xxx-large;
+  }
+
+  button {
+    align-self: flex-end;
+    padding: 16px 32px;
+    background: #8D33FF;
+    color: #F1E5FF;
+    font-size: larger;
+  }
+}

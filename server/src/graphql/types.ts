@@ -44,6 +44,17 @@ export type MetaData = {
   version: Scalars['String'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  _empty?: Maybe<Scalars['String']>;
+  setupOrganization: SetupOrganizationResponse;
+};
+
+
+export type MutationSetupOrganizationArgs = {
+  name: Scalars['String'];
+};
+
 export type Organization = {
   __typename?: 'Organization';
   branches: Array<Branch>;
@@ -85,6 +96,23 @@ export type QueryItemsArgs = {
 
 export type QueryOrganizationArgs = {
   id: Scalars['ID'];
+};
+
+export enum ResponseCode {
+  Alreadyexists = 'ALREADYEXISTS',
+  Invalidinput = 'INVALIDINPUT',
+  Notfound = 'NOTFOUND',
+  Ok = 'OK',
+  Unauthenticated = 'UNAUTHENTICATED',
+  Unauthorized = 'UNAUTHORIZED',
+  Unknownerror = 'UNKNOWNERROR'
+}
+
+export type SetupOrganizationResponse = {
+  __typename?: 'SetupOrganizationResponse';
+  code: ResponseCode;
+  ok: Scalars['Boolean'];
+  organizationId?: Maybe<Scalars['ID']>;
 };
 
 export type Store = {
@@ -170,8 +198,11 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Item: ResolverTypeWrapper<Item>;
   MetaData: ResolverTypeWrapper<MetaData>;
+  Mutation: ResolverTypeWrapper<{}>;
   Organization: ResolverTypeWrapper<Organization>;
   Query: ResolverTypeWrapper<{}>;
+  ResponseCode: ResponseCode;
+  SetupOrganizationResponse: ResolverTypeWrapper<SetupOrganizationResponse>;
   Store: ResolverTypeWrapper<Store>;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
@@ -186,8 +217,10 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int'];
   Item: Item;
   MetaData: MetaData;
+  Mutation: {};
   Organization: Organization;
   Query: {};
+  SetupOrganizationResponse: SetupOrganizationResponse;
   Store: Store;
   String: Scalars['String'];
 }>;
@@ -221,6 +254,11 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  setupOrganization?: Resolver<ResolversTypes['SetupOrganizationResponse'], ParentType, ContextType, RequireFields<MutationSetupOrganizationArgs, 'name'>>;
+}>;
+
 export type OrganizationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']> = ResolversObject<{
   branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -239,6 +277,13 @@ export type QueryResolvers<ContextType = MyContext, ParentType extends Resolvers
   organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;
 }>;
 
+export type SetupOrganizationResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['SetupOrganizationResponse'] = ResolversParentTypes['SetupOrganizationResponse']> = ResolversObject<{
+  code?: Resolver<ResolversTypes['ResponseCode'], ParentType, ContextType>;
+  ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  organizationId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type StoreResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = ResolversObject<{
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -249,8 +294,10 @@ export type Resolvers<ContextType = MyContext> = ResolversObject<{
   CurrentUser?: CurrentUserResolvers<ContextType>;
   Item?: ItemResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Organization?: OrganizationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SetupOrganizationResponse?: SetupOrganizationResponseResolvers<ContextType>;
   Store?: StoreResolvers<ContextType>;
 }>;
 
