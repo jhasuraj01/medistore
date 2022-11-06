@@ -2,8 +2,14 @@ extend type Query {
   currentUser: CurrentUser!
 }
 
+enum Privilege {
+  admin
+}
+
 type CurrentUser {
   organizationId: ID!
+  branchId: ID
+  privilege: Privilege
 }
 
 

@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
-import { Collections, converter, Organization, Privilege, User } from '../../../db.js';
-import { SetupOrganizationResponse, Resolvers, ResponseCode } from '../../types.js';
+import { Collections, converter, Organization, User } from '../../../db.js';
+import { Resolvers, Privilege } from '../../types.js';
 
 const organizationName = new RegExp('^[a-zA-Z ]+$')
 
@@ -23,7 +23,8 @@ export const resolvers: Resolvers = {
       if(userData === undefined) throw new GraphQLError("Failed to Fetch Current User!");
 
       return {
-        organizationId: userData.organizationId
+        id: user.id,
+        ...userData
       }
     },
   },
@@ -57,7 +58,7 @@ export const resolvers: Resolvers = {
 
         transaction.create(userRef, {
           organizationId: orgRef.id,
-          privilege: Privilege.admin
+          privilege: Privilege.Admin
         })
       })
 

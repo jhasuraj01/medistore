@@ -23,7 +23,9 @@ export type Branch = {
 
 export type CurrentUser = {
   __typename?: 'CurrentUser';
+  branchId?: Maybe<Scalars['ID']>;
   organizationId: Scalars['ID'];
+  privilege?: Maybe<Privilege>;
 };
 
 export type Item = {
@@ -60,6 +62,10 @@ export type Organization = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
+
+export enum Privilege {
+  Admin = 'admin'
+}
 
 export type Query = {
   __typename?: 'Query';

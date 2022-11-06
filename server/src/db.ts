@@ -1,12 +1,10 @@
+import { Privilege } from "./graphql/types"
+
 export enum Collections {
   users = "users",
   organizations = "organizations",
   branches = "branches",
   items = "items",
-}
-
-export enum Privilege {
-  admin = "admin",
 }
 
 export interface Organization {
@@ -27,6 +25,7 @@ export interface Item {
 
 export interface User {
   organizationId: string
+  branchId?: string
   privilege: Privilege
 }
 

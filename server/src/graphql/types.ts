@@ -24,7 +24,9 @@ export type Branch = {
 
 export type CurrentUser = {
   __typename?: 'CurrentUser';
+  branchId?: Maybe<Scalars['ID']>;
   organizationId: Scalars['ID'];
+  privilege?: Maybe<Privilege>;
 };
 
 export type Item = {
@@ -61,6 +63,10 @@ export type Organization = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
+
+export enum Privilege {
+  Admin = 'admin'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -198,6 +204,7 @@ export type ResolversTypes = ResolversObject<{
   MetaData: ResolverTypeWrapper<MetaData>;
   Mutation: ResolverTypeWrapper<{}>;
   Organization: ResolverTypeWrapper<Organization>;
+  Privilege: Privilege;
   Query: ResolverTypeWrapper<{}>;
   ResponseCode: ResponseCode;
   SetupOrganizationResponse: ResolverTypeWrapper<SetupOrganizationResponse>;
@@ -231,7 +238,9 @@ export type BranchResolvers<ContextType = MyContext, ParentType extends Resolver
 }>;
 
 export type CurrentUserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CurrentUser'] = ResolversParentTypes['CurrentUser']> = ResolversObject<{
+  branchId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  privilege?: Resolver<Maybe<ResolversTypes['Privilege']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
