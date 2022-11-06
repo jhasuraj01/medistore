@@ -17,7 +17,7 @@ const SETUP_ORGANIZATION = gql`
 export function CreateOrganizationPage({ navigateNext }: { navigateNext: () => void}) {
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const [mutateFunction, { data, loading, error }] = useMutation<SetupOrganizationMutation, MutationSetupOrganizationArgs>(SETUP_ORGANIZATION)
+  const [mutateFunction, { data, loading, /**error**/ }] = useMutation<SetupOrganizationMutation, MutationSetupOrganizationArgs>(SETUP_ORGANIZATION)
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     if(!inputRef.current || loading) return
