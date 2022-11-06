@@ -1,0 +1,57 @@
+@import './variables.scss';
+
+.app {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: $page-background;
+}
+
+@mixin gradient-bar {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+  background: linear-gradient(-90deg, #FF3333, #8D33FF, #33FF99, #FF33AD);
+  background-size: 250% 100%;
+  animation:
+        gradientAnimation 2s ease-in-out infinite alternate-reverse
+      , makeVisible 0.3s ease-out forwards;
+  height: 4px;
+}
+
+.loading-top, .loading-bottom {
+  position: relative;
+}
+
+.loading-top::after {
+	@include gradient-bar;
+  top: 0;
+}
+.loading-bottom::after {
+	@include gradient-bar;
+  bottom: 0;
+}
+
+@keyframes gradientAnimation {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@keyframes makeVisible {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}

@@ -32,7 +32,9 @@ export function ProfilePage() {
     await auth.signOut()
   }
 
-  return <div className={styles.container}>
+  const className = `${styles.container} ${user.loading && 'loading-top'}`
+
+  return <div className={className}>
     <h2>My Profile</h2>
     {
       records.map(([key, value]) => {

@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import styles from './index.module.scss'
 import { gql, useMutation } from '@apollo/client'
-import { MutationSetupOrganizationArgs, SetupOrganizationMutation, SetupOrganizationResponse } from '../../../gql/graphql'
+import { MutationSetupOrganizationArgs, SetupOrganizationMutation } from '../../../gql/graphql'
+import { toast } from 'react-toastify'
 
-// Define mutation
 const SETUP_ORGANIZATION = gql`
   mutation SetupOrganization($name: String!) {
     setupOrganization(name: $name) {
@@ -24,7 +24,14 @@ export function CreateOrganizationPage({ navigateNext }: { navigateNext: () => v
     event.preventDefault()
     event.stopPropagation()
     const name = inputRef.current.value
-    await mutateFunction({ variables: { name } })
+    toast.promise(
+      mutateFunction({ variables: { name } }),
+      {
+        pending: 'Creating Organization',
+        success: 'Organization Created',
+        error: 'Organization Creation Failed'
+      }
+    )
   }
 
   if(data?.setupOrganization.ok) {
@@ -34,20 +41,21 @@ export function CreateOrganizationPage({ navigateNext }: { navigateNext: () => v
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          ref={inputRef}
-          required
-          autoFocus
-          placeholder='Enter Organization Name'
-          pattern='^[a-zA-Z\s]+$'
-          title='Organization name must be at least 3 characters long and contain only English letters and spaces'
-          minLength={3}
-          maxLength={20}
-          type='text'
-          name='organizationName'
-          disabled={loading}/>
+        <div className={loading ? 'loading-bottom' : undefined}>
+          <input
+            ref={inputRef}
+            required
+            autoFocus
+            placeholder='Enter Organization Name'
+            pattern='^[a-zA-Z\s]+$'
+            title='Organization name must be at least 3 characters long and contain only English letters and spaces'
+            minLength={3}
+            maxLength={20}
+            type='text'
+            name='organizationName'
+            disabled={loading} />
+        </div>
         <button type='submit' disabled={loading}>Create Organization</button>
-        {loading && <div>Creating Organization</div>}
       </form>
     </div>
   )

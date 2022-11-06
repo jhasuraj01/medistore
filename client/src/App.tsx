@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 import { updateAuthState } from './features/Auth/authSlice'
 import { NotFoundPage } from './pages/404'
 import { AppLayout } from './components/AppLayout'
-import styles from './App.module.scss'
 import { AuthPage } from './pages/auth'
 import { HomePage } from './pages/app/home'
 import { SearchPage } from './pages/app/search'
@@ -16,6 +15,9 @@ import { StorePage } from './pages/app/store'
 import { AccountPage } from './pages/app/account'
 import { OrganizationPage } from './pages/app/organization'
 import { AccountSetupPage } from './pages/setup'
+import './App.scss'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 function App() {
 
@@ -27,7 +29,7 @@ function App() {
   }, [])
 
   return (
-    <div className={styles.app}>
+    <div className='app'>
       <Routes>
         <Route index element={<NavigatePersist to='app' />} />
         <Route path='app' element={<AppLayout />}>
@@ -44,6 +46,7 @@ function App() {
         <Route path='setup/*' element={<AccountSetupPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+      <ToastContainer />
     </div>
   )
 }
