@@ -1,16 +1,14 @@
 extend type Query {
-  currentUser: CurrentUser
+  currentUser: CurrentUser!
 }
 
 type CurrentUser {
-  organizationId: ID
+  organizationId: ID!
 }
 
 
 type SetupOrganizationResponse {
-  ok: Boolean!
-  code: ResponseCode!
-  organizationId: ID
+  organizationId: ID!
 }
 
 extend type Mutation {

@@ -1,13 +1,14 @@
 import { gql, useQuery } from '@apollo/client'
+import { useEffect } from 'react'
 import { Route, Routes, useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useAppSelector } from '../../app/hooks'
+import { LoaderRipple } from '../../components/Loader/Ripple'
 import { selectAuth } from '../../features/Auth/authSlice'
 import { GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../gql/graphql'
-import { ReactComponent as Ripple } from '../../icons/ripple.svg'
 import { NavigatePersist, useNavigatePersist } from '../../supports/Persistence'
 import { NotFoundPage } from '../404'
 import { CreateOrganizationPage } from './CreateOrganizationPage'
-import styles from './index.module.scss'
 import { OrganizationSetupLayout } from './layout'
 
 const GET_CURRENTUSER = gql`
@@ -26,6 +27,12 @@ export function AccountSetupPage() {
   const returnAddress = params.get('return') || '/app'
   const { loading, error, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
 
+  useEffect(() => {
+    if(error?.message) {
+      toast.error(error.message)
+    }
+  }, [error?.message])
+
   if(!user.active) {
     navigate({
       pathname: '/auth',
@@ -35,9 +42,7 @@ export function AccountSetupPage() {
 
   if(loading || user.loading) {
     return (
-      <div className={styles.spinnerContainer}>
-        <Ripple />
-      </div>
+      <LoaderRipple />
     )
   }
 
@@ -59,7 +64,6 @@ export function AccountSetupPage() {
     }, 1)
   }
 
-  
   if(data.currentUser?.organizationId) {
     navigateNext()
   }

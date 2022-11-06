@@ -52,7 +52,7 @@ export function useNavigatePersist() {
 
     if(typeof to == 'string') {
       const link = mergeLink(to, oldSearch)
-      pathname = link.pathname
+      pathname = to.split('?')[0]
       search = link.search
       hash = oldHash
     }

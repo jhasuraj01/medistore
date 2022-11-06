@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+import { Collections, converter, Organization, Privilege, User } from '../../../db.js';
 import { SetupOrganizationResponse, Resolvers, ResponseCode } from '../../types.js';
 
 const organizationName = new RegExp('^[a-zA-Z ]+$')
@@ -6,16 +8,19 @@ export const resolvers: Resolvers = {
   Query: {
     currentUser: async (parent, args, context, info) => {
 
-      if(context.user == null) return null
+      if(context.user == null) throw new GraphQLError("Please Login to Continue!");
 
-      const userRef = context.db.collection('users').doc(context.user.uid)
+      const userRef = context.db
+        .collection('users')
+        .withConverter(converter<User>())
+        .doc(context.user.uid)
+
       const user = await userRef.get()
 
-      if(!user.exists) return null
-
+      if(!user.exists) throw new GraphQLError("User Doesn't Exists!");
+      
       const userData = user.data()
-
-      if(userData === undefined) return null
+      if(userData === undefined) throw new GraphQLError("Failed to Fetch Current User!");
 
       return {
         organizationId: userData.organizationId
@@ -24,58 +29,41 @@ export const resolvers: Resolvers = {
   },
   Mutation: {
     setupOrganization: async (parent, args, context, info) => {
-    
-      let response: SetupOrganizationResponse = {
-        ok: false,
-        code: ResponseCode.Unauthenticated
-      }
 
-      if(!context.user) return {
-        ok: false,
-        code: ResponseCode.Unauthenticated
-      }
-  
-      if(!organizationName.test(args.name)) return {
-        ok: false,
-        code: ResponseCode.Invalidinput
-      }
+      if(!context.user) throw new GraphQLError('Please Login to Setup an Organization');
 
-      const userRef = context.db.collection('users').doc(context.user.uid)
-      const orgRef = context.db.collection('organizations').doc()
+      if(!organizationName.test(args.name)) throw new GraphQLError("Organization Name is invalid");
 
-      try {
-        const result = await context.db.runTransaction(async transaction => {
-          const user = await transaction.get(userRef)
-          const userData = user.data()
+      const userRef = context.db
+        .collection(Collections.users)
+        .withConverter(converter<User>())
+        .doc(context.user.uid)
+      const orgRef = context.db
+        .collection(Collections.organizations)
+        .withConverter(converter<Organization>())
+        .doc()
+
+      await context.db.runTransaction(async transaction => {
+        const user = await transaction.get(userRef)
+        const userData = user.data()
+
+        if(user.exists && userData?.organizationId) {
+          throw new GraphQLError("Organization Setup is Already Completed!");
+        }
   
-          if(user.exists && userData?.organizationId) {
-            throw new Error("User Account is Already Set!");
-          }
-  
-          transaction.create(orgRef, {
-            name: args.name
-          })
-  
-          transaction.create(userRef, {
-            organizationId: orgRef.id,
-            privilege: 'admin'
-          })
-  
+        transaction.create(orgRef, {
+          name: args.name,
         })
 
-        response.ok = true
-        response.code = ResponseCode.Ok
-        response.organizationId = orgRef.id
+        transaction.create(userRef, {
+          organizationId: orgRef.id,
+          privilege: Privilege.admin
+        })
+      })
 
-        return response
-
-      } catch (error) {
-        console.error(error)
+      return {
+        organizationId: orgRef.id
       }
-
-      response.ok = false
-      response.code = ResponseCode.Unknownerror
-      return response
     }
   },
 };

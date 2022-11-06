@@ -14,7 +14,7 @@
   left: 0;
   width: 100%;
   z-index: 200;
-  background: linear-gradient(-90deg, #FF3333, #8D33FF, #33FF99, #FF33AD);
+  background: linear-gradient(-90deg, hsl(0, 100%, 50%), hsl(266, 100%, 50%), hsl(150, 100%, 50%), hsl(324, 100%, 50%));
   background-size: 250% 100%;
   animation:
         gradientAnimation 2s ease-in-out infinite alternate-reverse

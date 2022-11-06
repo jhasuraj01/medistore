@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
-import { useAppDispatch } from './app/hooks'
+import { useAppDispatch, useAppSelector } from './app/hooks'
 import { NavigatePersist } from './supports/Persistence'
 import { auth } from './firebase'
 import { onAuthStateChanged, Unsubscribe } from 'firebase/auth'
 import { useEffect } from 'react'
-import { updateAuthState } from './features/Auth/authSlice'
+import { selectAuth, updateAuthState } from './features/Auth/authSlice'
 import { NotFoundPage } from './pages/404'
 import { AppLayout } from './components/AppLayout'
 import { AuthPage } from './pages/auth'
@@ -22,11 +22,18 @@ import 'react-toastify/dist/ReactToastify.min.css'
 function App() {
 
   const dispatch = useAppDispatch()
+  const user = useAppSelector(selectAuth)
 
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, async () => await dispatch(updateAuthState()))
     return () => unsubscribe()
   }, [])
+
+  if(user.loading) {
+    return (
+      <div className='loading-top'></div>
+    )
+  }
 
   return (
     <div className='app'>

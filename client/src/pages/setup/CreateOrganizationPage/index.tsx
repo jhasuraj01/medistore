@@ -3,12 +3,11 @@ import styles from './index.module.scss'
 import { gql, useMutation } from '@apollo/client'
 import { MutationSetupOrganizationArgs, SetupOrganizationMutation } from '../../../gql/graphql'
 import { toast } from 'react-toastify'
+import { GraphQLError } from 'graphql'
 
 const SETUP_ORGANIZATION = gql`
   mutation SetupOrganization($name: String!) {
     setupOrganization(name: $name) {
-      ok
-      code
       organizationId
     }
   }
@@ -17,24 +16,28 @@ const SETUP_ORGANIZATION = gql`
 export function CreateOrganizationPage({ navigateNext }: { navigateNext: () => void}) {
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const [mutateFunction, { data, loading, /**error**/ }] = useMutation<SetupOrganizationMutation, MutationSetupOrganizationArgs>(SETUP_ORGANIZATION)
+  const [mutateFunction, { data, loading, error }] = useMutation<SetupOrganizationMutation, MutationSetupOrganizationArgs>(SETUP_ORGANIZATION)
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     if(!inputRef.current || loading) return
     event.preventDefault()
     event.stopPropagation()
     const name = inputRef.current.value
-    toast.promise(
+    toast.promise<unknown, GraphQLError>(
       mutateFunction({ variables: { name } }),
       {
         pending: 'Creating Organization',
         success: 'Organization Created',
-        error: 'Organization Creation Failed'
+        error: {
+          render(error){
+            return error.data?.message
+          }
+        }
       }
     )
   }
 
-  if(data?.setupOrganization.ok) {
+  if(data?.setupOrganization.organizationId) {
     navigateNext()
   }
 

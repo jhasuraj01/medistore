@@ -24,7 +24,7 @@ export type Branch = {
 
 export type CurrentUser = {
   __typename?: 'CurrentUser';
-  organizationId?: Maybe<Scalars['ID']>;
+  organizationId: Scalars['ID'];
 };
 
 export type Item = {
@@ -66,7 +66,7 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   branch?: Maybe<Branch>;
-  currentUser?: Maybe<CurrentUser>;
+  currentUser: CurrentUser;
   item?: Maybe<Item>;
   items: Array<Item>;
   metadata: MetaData;
@@ -110,9 +110,7 @@ export enum ResponseCode {
 
 export type SetupOrganizationResponse = {
   __typename?: 'SetupOrganizationResponse';
-  code: ResponseCode;
-  ok: Scalars['Boolean'];
-  organizationId?: Maybe<Scalars['ID']>;
+  organizationId: Scalars['ID'];
 };
 
 export type Store = {
@@ -233,7 +231,7 @@ export type BranchResolvers<ContextType = MyContext, ParentType extends Resolver
 }>;
 
 export type CurrentUserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CurrentUser'] = ResolversParentTypes['CurrentUser']> = ResolversObject<{
-  organizationId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -269,7 +267,7 @@ export type OrganizationResolvers<ContextType = MyContext, ParentType extends Re
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   branch?: Resolver<Maybe<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchID' | 'organizationID'>>;
-  currentUser?: Resolver<Maybe<ResolversTypes['CurrentUser']>, ParentType, ContextType>;
+  currentUser?: Resolver<ResolversTypes['CurrentUser'], ParentType, ContextType>;
   item?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'itemId' | 'organizationId'>>;
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemsArgs, 'branchId' | 'organizationId'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
@@ -278,9 +276,7 @@ export type QueryResolvers<ContextType = MyContext, ParentType extends Resolvers
 }>;
 
 export type SetupOrganizationResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['SetupOrganizationResponse'] = ResolversParentTypes['SetupOrganizationResponse']> = ResolversObject<{
-  code?: Resolver<ResolversTypes['ResponseCode'], ParentType, ContextType>;
-  ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  organizationId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
