@@ -11,7 +11,7 @@ import { AuthPage } from './pages/auth'
 import { HomePage } from './pages/app/home'
 import { SearchPage } from './pages/app/search'
 import { CartPage } from './pages/app/carts'
-import { StorePage } from './pages/app/store'
+import { BranchesPage } from './pages/app/branches'
 import { AccountPage } from './pages/app/account'
 import { OrganizationPage } from './pages/app/organization'
 import { AccountSetupPage } from './pages/setup'
@@ -44,7 +44,7 @@ function App() {
           <Route path='home/*' element={<HomePage />} />
           <Route path='search/*' element={<SearchPage />} />
           <Route path='carts/*' element={<CartPage />} />
-          <Route path='store/*' element={<StorePage />} />
+          <Route path='branches/*' element={<BranchesPage />} />
           <Route path='account/*' element={<AccountPage />} />
           <Route path='organization/*' element={<OrganizationPage />} />
           <Route path='*' element={<NotFoundPage />} />

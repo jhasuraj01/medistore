@@ -45,7 +45,7 @@ export function Nav() {
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='store'
+          to='branches'
           title='Store'
         ><Store /></NavLinkPersist>
 

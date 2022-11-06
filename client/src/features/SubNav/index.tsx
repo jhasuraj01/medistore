@@ -45,11 +45,12 @@ export function SubNavSection({ children }: SubNavSectionProps) {
 export interface SubNavProps {
   title: string,
   children: React.ReactNode | React.ReactNode[]
+  className?: string
 }
 
-export function SubNav({ title, children }: SubNavProps) {  
+export function SubNav({ title, children, className }: SubNavProps) {  
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${className}`}>
       <div className={styles.header}>{title}</div>
       <div className={styles.subnav}>
         {children}
