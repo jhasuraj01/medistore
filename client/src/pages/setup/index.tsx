@@ -33,10 +33,6 @@ export function AccountSetupPage() {
     })
   }
 
-  console.table({
-    loading, error, data: JSON.stringify(data), active: user.active, token: user.token
-  })
-
   if(loading || user.loading) {
     return (
       <div className={styles.spinnerContainer}>
@@ -55,7 +51,6 @@ export function AccountSetupPage() {
   }
 
   const navigateNext = () => {
-    console.log('Called!!')
     setTimeout(() => {
       navigate({
         pathname: returnAddress,
