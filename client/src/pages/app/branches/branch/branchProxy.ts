@@ -17,21 +17,45 @@ export class BranchProxy implements Branch {
 }
 
 export class ItemProxy implements Item {
-  costPerUnit: number;
-  discount: number;
+  organizationId: string;
+  branchId: string;
   id: string;
-  name: string;
+  brandName: string;
+  companyName: string;
+  costPerUnit: number;
   pricePerUnit: number;
+  discount: number;
   quantity: number;
+  manufactureAt: number;
+  expireAt: number | null | undefined;
 
-  constructor({ costPerUnit, discount, id, name, pricePerUnit, quantity }: Item) {
-    this.costPerUnit = costPerUnit
-    this.discount = discount
-    this.id = id
-    this.name = name
-    this.pricePerUnit = pricePerUnit
-    this.quantity = quantity
+  constructor(item: Item) {
+    this.organizationId = item.organizationId
+    this.branchId = item.branchId
+    this.id = item.id
+    this.brandName = item.brandName
+    this.companyName = item.companyName
+    this.costPerUnit = item.costPerUnit
+    this.pricePerUnit = item.pricePerUnit
+    this.discount = item.discount
+    this.quantity = item.quantity
+    this.manufactureAt = item.manufactureAt
+    this.expireAt = item.expireAt
   }
 
+  public get marginPerUnit() {
+    return this.pricePerUnit - this.costPerUnit
+  }
 
+  public get profitLossPerUnit() {
+    return this.pricePerUnit * (1 - this.discount) - this.costPerUnit
+  }
+
+  public get marginTotal() {
+    return this.marginPerUnit * this.quantity
+  }
+
+  public get profitLossTotal() {
+    return this.profitLossPerUnit * this.quantity
+  }
 }

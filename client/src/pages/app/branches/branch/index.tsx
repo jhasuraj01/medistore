@@ -18,11 +18,9 @@ interface StockPageProps {
 
 export function StockPage({ organizationId }: StockPageProps) {
 
-  
-
-
   return (
     <div className={styles.container}>
+      Organization: {organizationId}
       <div className={styles.header}>Stock Management Page</div>
       <Table className={styles.stockTable}>
         <TableHead>

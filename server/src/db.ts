@@ -40,6 +40,11 @@ export interface User {
   privilege: Privilege
 }
 
+/**
+ * Transcode Firebase document to TypeScript
+ * @todo Handle Case for Document Reference Type 
+ * @throws TypeError: Cannot read property 'constructor' of undefined
+ */
 const transcode = (data: FirebaseFirestore.DocumentData) => {
   const initialObject: Record<string, any> = {}
   return Object.keys(data).reduce((result, key) => {
