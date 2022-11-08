@@ -1,0 +1,17 @@
+scalar Date
+scalar DateFuture
+scalar DatePast
+
+scalar IntPositive
+scalar IntNonNegative
+scalar IntNegative
+scalar IntNonPositive
+scalar IntNonZero
+scalar FloatPositive
+scalar FloatNonNegative
+scalar FloatNegative
+scalar FloatNonPositive
+scalar FloatNonZero
+scalar Float0To1
+
+scalar StringNonEmpty

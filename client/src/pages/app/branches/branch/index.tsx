@@ -12,7 +12,15 @@ const stock = [
   },
 ]
 
-export function StockPage() {
+interface StockPageProps {
+  organizationId: string
+}
+
+export function StockPage({ organizationId }: StockPageProps) {
+
+  
+
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>Stock Management Page</div>

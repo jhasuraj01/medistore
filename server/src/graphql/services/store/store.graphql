@@ -1,7 +1,0 @@
-extend type Branch {
-  store: Store
-}
-
-type Store {
-  items: [Item!]!
-}

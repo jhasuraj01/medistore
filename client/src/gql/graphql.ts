@@ -12,13 +12,27 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
+  DateFuture: any;
+  DatePast: any;
+  Float0To1: any;
+  FloatNegative: any;
+  FloatNonNegative: any;
+  FloatNonPositive: any;
+  FloatNonZero: any;
+  FloatPositive: any;
+  IntNegative: any;
+  IntNonNegative: any;
+  IntNonPositive: any;
+  IntNonZero: any;
+  IntPositive: any;
+  StringNonEmpty: any;
 };
 
 export type Branch = {
   __typename?: 'Branch';
   id: Scalars['ID'];
   name: Scalars['String'];
-  store?: Maybe<Store>;
 };
 
 export type CurrentUser = {
@@ -30,12 +44,17 @@ export type CurrentUser = {
 
 export type Item = {
   __typename?: 'Item';
-  costPerUnit: Scalars['Float'];
-  discount: Scalars['Float'];
-  id: Scalars['String'];
-  name: Scalars['String'];
-  pricePerUnit: Scalars['Float'];
-  quantity: Scalars['Int'];
+  branchId: Scalars['ID'];
+  brandName: Scalars['StringNonEmpty'];
+  companyName: Scalars['StringNonEmpty'];
+  costPerUnit: Scalars['FloatNonNegative'];
+  discount: Scalars['Float0To1'];
+  expireAt?: Maybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt: Scalars['DatePast'];
+  organizationId: Scalars['ID'];
+  pricePerUnit: Scalars['FloatNonNegative'];
+  quantity: Scalars['IntPositive'];
 };
 
 export type MetaData = {
@@ -47,8 +66,32 @@ export type MetaData = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  _empty?: Maybe<Scalars['String']>;
+  addItem?: Maybe<Scalars['Boolean']>;
+  deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
+  updateItem?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationAddItemArgs = {
+  branchId: Scalars['ID'];
+  brandName: Scalars['StringNonEmpty'];
+  companyName: Scalars['StringNonEmpty'];
+  costPerUnit: Scalars['FloatNonNegative'];
+  discount?: InputMaybe<Scalars['Float0To1']>;
+  expireAt?: InputMaybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt: Scalars['DatePast'];
+  organizationId: Scalars['ID'];
+  pricePerUnit: Scalars['FloatNonNegative'];
+  quantity: Scalars['IntPositive'];
+};
+
+
+export type MutationDeleteItemArgs = {
+  branchId: Scalars['ID'];
+  id: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -56,9 +99,23 @@ export type MutationSetupOrganizationArgs = {
   name: Scalars['String'];
 };
 
+
+export type MutationUpdateItemArgs = {
+  branchId: Scalars['ID'];
+  brandName?: InputMaybe<Scalars['StringNonEmpty']>;
+  companyName?: InputMaybe<Scalars['StringNonEmpty']>;
+  costPerUnit?: InputMaybe<Scalars['FloatNonNegative']>;
+  discount?: InputMaybe<Scalars['Float0To1']>;
+  expireAt?: InputMaybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt?: InputMaybe<Scalars['DatePast']>;
+  organizationId: Scalars['ID'];
+  pricePerUnit?: InputMaybe<Scalars['FloatNonNegative']>;
+  quantity?: InputMaybe<Scalars['IntPositive']>;
+};
+
 export type Organization = {
   __typename?: 'Organization';
-  branches: Array<Branch>;
   id: Scalars['ID'];
   name: Scalars['String'];
 };
@@ -69,20 +126,23 @@ export enum Privilege {
 
 export type Query = {
   __typename?: 'Query';
-  _empty?: Maybe<Scalars['String']>;
-  branch?: Maybe<Branch>;
+  branch: Branch;
+  branches: Array<Branch>;
   currentUser: CurrentUser;
   item?: Maybe<Item>;
   items: Array<Item>;
   metadata: MetaData;
-  organization?: Maybe<Organization>;
-  organizations: Array<Organization>;
 };
 
 
 export type QueryBranchArgs = {
-  branchID: Scalars['ID'];
-  organizationID: Scalars['ID'];
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
+};
+
+
+export type QueryBranchesArgs = {
+  organizationId: Scalars['ID'];
 };
 
 
@@ -98,29 +158,9 @@ export type QueryItemsArgs = {
   organizationId: Scalars['ID'];
 };
 
-
-export type QueryOrganizationArgs = {
-  id: Scalars['ID'];
-};
-
-export enum ResponseCode {
-  Alreadyexists = 'ALREADYEXISTS',
-  Invalidinput = 'INVALIDINPUT',
-  Notfound = 'NOTFOUND',
-  Ok = 'OK',
-  Unauthenticated = 'UNAUTHENTICATED',
-  Unauthorized = 'UNAUTHORIZED',
-  Unknownerror = 'UNKNOWNERROR'
-}
-
 export type SetupOrganizationResponse = {
   __typename?: 'SetupOrganizationResponse';
   organizationId: Scalars['ID'];
-};
-
-export type Store = {
-  __typename?: 'Store';
-  items: Array<Item>;
 };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
@@ -133,7 +173,7 @@ export type GetBranchesQueryVariables = Exact<{
 }>;
 
 
-export type GetBranchesQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', branches: Array<{ __typename?: 'Branch', id: string, name: string }> } | null };
+export type GetBranchesQuery = { __typename?: 'Query', branches: Array<{ __typename?: 'Branch', id: string, name: string }> };
 
 export type GetMetaDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -149,6 +189,6 @@ export type SetupOrganizationMutation = { __typename?: 'Mutation', setupOrganiza
 
 
 export const GetCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetBranchesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBranches"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"branches"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<GetBranchesQuery, GetBranchesQueryVariables>;
+export const GetBranchesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBranches"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"branches"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"organizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetBranchesQuery, GetBranchesQueryVariables>;
 export const GetMetaDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMetaData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"metadata"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"platform"}},{"kind":"Field","name":{"kind":"Name","value":"buildAt"}},{"kind":"Field","name":{"kind":"Name","value":"version"}}]}}]}}]} as unknown as DocumentNode<GetMetaDataQuery, GetMetaDataQueryVariables>;
 export const SetupOrganizationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetupOrganization"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setupOrganization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizationId"}}]}}]}}]} as unknown as DocumentNode<SetupOrganizationMutation, SetupOrganizationMutationVariables>;

@@ -3,7 +3,7 @@ import { AppSectionLayout } from '../../../components/AppSectionLayout'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../features/SubNav'
 import { useNavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
-import { StockPage } from './stock'
+import { StockPage } from './branch'
 import styles from './index.module.scss'
 import { BranchesHomePage } from './BranchesHomePage'
 import { gql, useQuery } from '@apollo/client'
@@ -22,11 +22,9 @@ const GET_CURRENTUSER = gql`
 
 const GET_BRANCHES = gql`
   query GetBranches($organizationId: ID!) {
-    organization(id: $organizationId) {
-      branches {
-        id
-        name
-      }
+    branches(organizationId: $organizationId) {
+      id
+      name
     }
   }
 `
@@ -43,7 +41,7 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
       <SubNavSection>
         <SubNavButton className={styles.newStoreButton}>Create New Branch</SubNavButton>
         {
-          data?.organization?.branches.map(branch => {
+          data?.branches.map(branch => {
             return (
               <SubNavLink key={branch.id} to={branch.id}>{branch.name}</SubNavLink>
             )
@@ -84,7 +82,7 @@ export function BranchesPage() {
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<BranchesPageSubNav {...{organizationId}}/>}  />} >
         <Route index element={<BranchesHomePage />} />
-        <Route path='stock' element={<StockPage />} />
+        <Route path=':branchId' element={<StockPage organizationId={organizationId} />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>

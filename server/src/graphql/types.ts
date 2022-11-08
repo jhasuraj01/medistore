@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { MyContext } from '../index.js';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -13,13 +13,27 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: Date;
+  DateFuture: Date;
+  DatePast: Date;
+  Float0To1: number;
+  FloatNegative: number;
+  FloatNonNegative: number;
+  FloatNonPositive: number;
+  FloatNonZero: number;
+  FloatPositive: number;
+  IntNegative: number;
+  IntNonNegative: number;
+  IntNonPositive: number;
+  IntNonZero: number;
+  IntPositive: number;
+  StringNonEmpty: string;
 };
 
 export type Branch = {
   __typename?: 'Branch';
   id: Scalars['ID'];
   name: Scalars['String'];
-  store?: Maybe<Store>;
 };
 
 export type CurrentUser = {
@@ -31,12 +45,17 @@ export type CurrentUser = {
 
 export type Item = {
   __typename?: 'Item';
-  costPerUnit: Scalars['Float'];
-  discount: Scalars['Float'];
-  id: Scalars['String'];
-  name: Scalars['String'];
-  pricePerUnit: Scalars['Float'];
-  quantity: Scalars['Int'];
+  branchId: Scalars['ID'];
+  brandName: Scalars['StringNonEmpty'];
+  companyName: Scalars['StringNonEmpty'];
+  costPerUnit: Scalars['FloatNonNegative'];
+  discount: Scalars['Float0To1'];
+  expireAt?: Maybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt: Scalars['DatePast'];
+  organizationId: Scalars['ID'];
+  pricePerUnit: Scalars['FloatNonNegative'];
+  quantity: Scalars['IntPositive'];
 };
 
 export type MetaData = {
@@ -48,8 +67,32 @@ export type MetaData = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  _empty?: Maybe<Scalars['String']>;
+  addItem?: Maybe<Scalars['Boolean']>;
+  deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
+  updateItem?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationAddItemArgs = {
+  branchId: Scalars['ID'];
+  brandName: Scalars['StringNonEmpty'];
+  companyName: Scalars['StringNonEmpty'];
+  costPerUnit: Scalars['FloatNonNegative'];
+  discount?: InputMaybe<Scalars['Float0To1']>;
+  expireAt?: InputMaybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt: Scalars['DatePast'];
+  organizationId: Scalars['ID'];
+  pricePerUnit: Scalars['FloatNonNegative'];
+  quantity: Scalars['IntPositive'];
+};
+
+
+export type MutationDeleteItemArgs = {
+  branchId: Scalars['ID'];
+  id: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -57,9 +100,23 @@ export type MutationSetupOrganizationArgs = {
   name: Scalars['String'];
 };
 
+
+export type MutationUpdateItemArgs = {
+  branchId: Scalars['ID'];
+  brandName?: InputMaybe<Scalars['StringNonEmpty']>;
+  companyName?: InputMaybe<Scalars['StringNonEmpty']>;
+  costPerUnit?: InputMaybe<Scalars['FloatNonNegative']>;
+  discount?: InputMaybe<Scalars['Float0To1']>;
+  expireAt?: InputMaybe<Scalars['DateFuture']>;
+  id: Scalars['ID'];
+  manufactureAt?: InputMaybe<Scalars['DatePast']>;
+  organizationId: Scalars['ID'];
+  pricePerUnit?: InputMaybe<Scalars['FloatNonNegative']>;
+  quantity?: InputMaybe<Scalars['IntPositive']>;
+};
+
 export type Organization = {
   __typename?: 'Organization';
-  branches: Array<Branch>;
   id: Scalars['ID'];
   name: Scalars['String'];
 };
@@ -70,20 +127,23 @@ export enum Privilege {
 
 export type Query = {
   __typename?: 'Query';
-  _empty?: Maybe<Scalars['String']>;
-  branch?: Maybe<Branch>;
+  branch: Branch;
+  branches: Array<Branch>;
   currentUser: CurrentUser;
   item?: Maybe<Item>;
   items: Array<Item>;
   metadata: MetaData;
-  organization?: Maybe<Organization>;
-  organizations: Array<Organization>;
 };
 
 
 export type QueryBranchArgs = {
-  branchID: Scalars['ID'];
-  organizationID: Scalars['ID'];
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
+};
+
+
+export type QueryBranchesArgs = {
+  organizationId: Scalars['ID'];
 };
 
 
@@ -99,29 +159,9 @@ export type QueryItemsArgs = {
   organizationId: Scalars['ID'];
 };
 
-
-export type QueryOrganizationArgs = {
-  id: Scalars['ID'];
-};
-
-export enum ResponseCode {
-  Alreadyexists = 'ALREADYEXISTS',
-  Invalidinput = 'INVALIDINPUT',
-  Notfound = 'NOTFOUND',
-  Ok = 'OK',
-  Unauthenticated = 'UNAUTHENTICATED',
-  Unauthorized = 'UNAUTHORIZED',
-  Unknownerror = 'UNKNOWNERROR'
-}
-
 export type SetupOrganizationResponse = {
   __typename?: 'SetupOrganizationResponse';
   organizationId: Scalars['ID'];
-};
-
-export type Store = {
-  __typename?: 'Store';
-  items: Array<Item>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -197,19 +237,30 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Branch: ResolverTypeWrapper<Branch>;
   CurrentUser: ResolverTypeWrapper<CurrentUser>;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
+  DateFuture: ResolverTypeWrapper<Scalars['DateFuture']>;
+  DatePast: ResolverTypeWrapper<Scalars['DatePast']>;
+  Float0To1: ResolverTypeWrapper<Scalars['Float0To1']>;
+  FloatNegative: ResolverTypeWrapper<Scalars['FloatNegative']>;
+  FloatNonNegative: ResolverTypeWrapper<Scalars['FloatNonNegative']>;
+  FloatNonPositive: ResolverTypeWrapper<Scalars['FloatNonPositive']>;
+  FloatNonZero: ResolverTypeWrapper<Scalars['FloatNonZero']>;
+  FloatPositive: ResolverTypeWrapper<Scalars['FloatPositive']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  IntNegative: ResolverTypeWrapper<Scalars['IntNegative']>;
+  IntNonNegative: ResolverTypeWrapper<Scalars['IntNonNegative']>;
+  IntNonPositive: ResolverTypeWrapper<Scalars['IntNonPositive']>;
+  IntNonZero: ResolverTypeWrapper<Scalars['IntNonZero']>;
+  IntPositive: ResolverTypeWrapper<Scalars['IntPositive']>;
   Item: ResolverTypeWrapper<Item>;
   MetaData: ResolverTypeWrapper<MetaData>;
   Mutation: ResolverTypeWrapper<{}>;
   Organization: ResolverTypeWrapper<Organization>;
   Privilege: Privilege;
   Query: ResolverTypeWrapper<{}>;
-  ResponseCode: ResponseCode;
   SetupOrganizationResponse: ResolverTypeWrapper<SetupOrganizationResponse>;
-  Store: ResolverTypeWrapper<Store>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  StringNonEmpty: ResolverTypeWrapper<Scalars['StringNonEmpty']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -217,23 +268,34 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Branch: Branch;
   CurrentUser: CurrentUser;
-  Float: Scalars['Float'];
+  Date: Scalars['Date'];
+  DateFuture: Scalars['DateFuture'];
+  DatePast: Scalars['DatePast'];
+  Float0To1: Scalars['Float0To1'];
+  FloatNegative: Scalars['FloatNegative'];
+  FloatNonNegative: Scalars['FloatNonNegative'];
+  FloatNonPositive: Scalars['FloatNonPositive'];
+  FloatNonZero: Scalars['FloatNonZero'];
+  FloatPositive: Scalars['FloatPositive'];
   ID: Scalars['ID'];
-  Int: Scalars['Int'];
+  IntNegative: Scalars['IntNegative'];
+  IntNonNegative: Scalars['IntNonNegative'];
+  IntNonPositive: Scalars['IntNonPositive'];
+  IntNonZero: Scalars['IntNonZero'];
+  IntPositive: Scalars['IntPositive'];
   Item: Item;
   MetaData: MetaData;
   Mutation: {};
   Organization: Organization;
   Query: {};
   SetupOrganizationResponse: SetupOrganizationResponse;
-  Store: Store;
   String: Scalars['String'];
+  StringNonEmpty: Scalars['StringNonEmpty'];
 }>;
 
 export type BranchResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Branch'] = ResolversParentTypes['Branch']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  store?: Resolver<Maybe<ResolversTypes['Store']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -244,13 +306,74 @@ export type CurrentUserResolvers<ContextType = MyContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export interface DateFutureScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateFuture'], any> {
+  name: 'DateFuture';
+}
+
+export interface DatePastScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DatePast'], any> {
+  name: 'DatePast';
+}
+
+export interface Float0To1ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Float0To1'], any> {
+  name: 'Float0To1';
+}
+
+export interface FloatNegativeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['FloatNegative'], any> {
+  name: 'FloatNegative';
+}
+
+export interface FloatNonNegativeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['FloatNonNegative'], any> {
+  name: 'FloatNonNegative';
+}
+
+export interface FloatNonPositiveScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['FloatNonPositive'], any> {
+  name: 'FloatNonPositive';
+}
+
+export interface FloatNonZeroScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['FloatNonZero'], any> {
+  name: 'FloatNonZero';
+}
+
+export interface FloatPositiveScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['FloatPositive'], any> {
+  name: 'FloatPositive';
+}
+
+export interface IntNegativeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IntNegative'], any> {
+  name: 'IntNegative';
+}
+
+export interface IntNonNegativeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IntNonNegative'], any> {
+  name: 'IntNonNegative';
+}
+
+export interface IntNonPositiveScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IntNonPositive'], any> {
+  name: 'IntNonPositive';
+}
+
+export interface IntNonZeroScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IntNonZero'], any> {
+  name: 'IntNonZero';
+}
+
+export interface IntPositiveScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IntPositive'], any> {
+  name: 'IntPositive';
+}
+
 export type ItemResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = ResolversObject<{
-  costPerUnit?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  discount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  pricePerUnit?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  branchId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  brandName?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  companyName?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  costPerUnit?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
+  discount?: Resolver<ResolversTypes['Float0To1'], ParentType, ContextType>;
+  expireAt?: Resolver<Maybe<ResolversTypes['DateFuture']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  manufactureAt?: Resolver<ResolversTypes['DatePast'], ParentType, ContextType>;
+  organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  pricePerUnit?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['IntPositive'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -262,26 +385,25 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 }>;
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  addItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddItemArgs, 'branchId' | 'brandName' | 'companyName' | 'costPerUnit' | 'id' | 'manufactureAt' | 'organizationId' | 'pricePerUnit' | 'quantity'>>;
+  deleteItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   setupOrganization?: Resolver<ResolversTypes['SetupOrganizationResponse'], ParentType, ContextType, RequireFields<MutationSetupOrganizationArgs, 'name'>>;
+  updateItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUpdateItemArgs, 'branchId' | 'id' | 'organizationId'>>;
 }>;
 
 export type OrganizationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']> = ResolversObject<{
-  branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  branch?: Resolver<Maybe<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchID' | 'organizationID'>>;
+  branch?: Resolver<ResolversTypes['Branch'], ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchId' | 'organizationId'>>;
+  branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchesArgs, 'organizationId'>>;
   currentUser?: Resolver<ResolversTypes['CurrentUser'], ParentType, ContextType>;
   item?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'itemId' | 'organizationId'>>;
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemsArgs, 'branchId' | 'organizationId'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
-  organization?: Resolver<Maybe<ResolversTypes['Organization']>, ParentType, ContextType, RequireFields<QueryOrganizationArgs, 'id'>>;
-  organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;
 }>;
 
 export type SetupOrganizationResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['SetupOrganizationResponse'] = ResolversParentTypes['SetupOrganizationResponse']> = ResolversObject<{
@@ -289,20 +411,33 @@ export type SetupOrganizationResponseResolvers<ContextType = MyContext, ParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type StoreResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = ResolversObject<{
-  items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
+export interface StringNonEmptyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['StringNonEmpty'], any> {
+  name: 'StringNonEmpty';
+}
 
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
   Branch?: BranchResolvers<ContextType>;
   CurrentUser?: CurrentUserResolvers<ContextType>;
+  Date?: GraphQLScalarType;
+  DateFuture?: GraphQLScalarType;
+  DatePast?: GraphQLScalarType;
+  Float0To1?: GraphQLScalarType;
+  FloatNegative?: GraphQLScalarType;
+  FloatNonNegative?: GraphQLScalarType;
+  FloatNonPositive?: GraphQLScalarType;
+  FloatNonZero?: GraphQLScalarType;
+  FloatPositive?: GraphQLScalarType;
+  IntNegative?: GraphQLScalarType;
+  IntNonNegative?: GraphQLScalarType;
+  IntNonPositive?: GraphQLScalarType;
+  IntNonZero?: GraphQLScalarType;
+  IntPositive?: GraphQLScalarType;
   Item?: ItemResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Organization?: OrganizationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SetupOrganizationResponse?: SetupOrganizationResponseResolvers<ContextType>;
-  Store?: StoreResolvers<ContextType>;
+  StringNonEmpty?: GraphQLScalarType;
 }>;
 

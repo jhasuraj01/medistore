@@ -1,5 +1,5 @@
-import metadata from '../../../metadata.js';
-import { Resolvers } from '../../types';
+import metadata from '../../metadata.js';
+import { Resolvers } from '../types';
 
 export const resolvers: Resolvers = {
   Query: {

@@ -15,3 +15,20 @@ generates:
       # More on this below!
       contextType: "../index.js#MyContext"
       resolverTypeWrapperSignature: "T | Promise<T> | Partial<T> | Promise<Partial<T>>"
+      scalars:
+        Date: Date
+        DateFuture: Date
+        DatePast: Date
+        IntPositive: number
+        IntNonNegative: number
+        IntNegative: number
+        IntNonPositive: number
+        IntNonZero: number
+        FloatPositive: number
+        FloatNonNegative: number
+        FloatNegative: number
+        FloatNonPositive: number
+        FloatNonZero: number
+        Float0To1: number
+        StringNonEmpty: string
+

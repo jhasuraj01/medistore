@@ -1,0 +1,99 @@
+type Query {
+  metadata: MetaData!
+
+  # Organization Queries
+  # organization: Organization
+
+  # Branch Queries
+  branch(organizationId: ID!, branchId: ID!): Branch!
+  branches(organizationId: ID!): [Branch!]!
+  
+  # Item Queries
+  item(organizationId: ID!, branchId: ID!, itemId: ID!): Item
+  items(organizationId: ID!, branchId: ID!): [Item!]!
+
+  # Current User Queries
+  currentUser: CurrentUser!
+}
+
+type Mutation {
+  setupOrganization(name: String!): SetupOrganizationResponse!
+  addItem(
+    organizationId: ID!
+    branchId: ID!
+    id: ID!
+    brandName: StringNonEmpty!
+    companyName: StringNonEmpty!
+    quantity: IntPositive!
+    costPerUnit: FloatNonNegative!
+    pricePerUnit: FloatNonNegative!
+    discount: Float0To1
+    manufactureAt: DatePast!
+    expireAt: DateFuture
+  ): Boolean
+  updateItem(
+    organizationId: ID!
+    branchId: ID!
+    id: ID!
+    brandName: StringNonEmpty
+    companyName: StringNonEmpty
+    quantity: IntPositive
+    costPerUnit: FloatNonNegative
+    pricePerUnit: FloatNonNegative
+    discount: Float0To1
+    manufactureAt: DatePast
+    expireAt: DateFuture
+  ): Boolean
+  deleteItem(
+    organizationId: ID!
+    branchId: ID!
+    id: ID!
+  ): Boolean
+}
+
+type MetaData {
+  version: String!
+  buildAt: String!
+  platform: String!
+}
+
+type Organization {
+  id: ID!
+  name: String!
+}
+
+type Branch {
+  id: ID!
+  name: String!
+}
+
+type Item {
+  organizationId: ID!
+  branchId: ID!
+  id: ID!
+  brandName: StringNonEmpty!
+  companyName: StringNonEmpty!
+  quantity: IntPositive!
+  costPerUnit: FloatNonNegative!
+  pricePerUnit: FloatNonNegative!
+  discount: Float0To1!
+  manufactureAt: DatePast!
+  expireAt: DateFuture
+}
+
+type CurrentUser {
+  organizationId: ID!
+  branchId: ID
+  privilege: Privilege
+}
+
+# Constants
+enum Privilege {
+  admin
+}
+
+# Mutation I/O Types
+
+type SetupOrganizationResponse {
+  organizationId: ID!
+}

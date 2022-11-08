@@ -1,6 +1,6 @@
-import { GraphQLError } from 'graphql';
-import { Collections, converter, Organization, User } from '../../../db.js';
-import { Resolvers, Privilege } from '../../types.js';
+import { GraphQLError } from "graphql"
+import * as DBT from "../../db.js"
+import { Privilege, Resolvers } from "../types.js"
 
 const organizationName = new RegExp('^[a-zA-Z ]+$')
 
@@ -11,16 +11,14 @@ export const resolvers: Resolvers = {
       if(context.user == null) throw new GraphQLError("Please Login to Continue!");
 
       const userRef = context.db
-        .collection('users')
-        .withConverter(converter<User>())
+        .collection(DBT.Collections.users)
         .doc(context.user.uid)
+        .withConverter(DBT.converter<DBT.User>())
 
       const user = await userRef.get()
-
-      if(!user.exists) throw new GraphQLError("User Doesn't Exists!");
-      
       const userData = user.data()
-      if(userData === undefined) throw new GraphQLError("Failed to Fetch Current User!");
+
+      if(userData === undefined) throw new GraphQLError("User Doesn't Exists!");
 
       return {
         id: user.id,
@@ -36,12 +34,12 @@ export const resolvers: Resolvers = {
       if(!organizationName.test(args.name)) throw new GraphQLError("Organization Name is invalid");
 
       const userRef = context.db
-        .collection(Collections.users)
-        .withConverter(converter<User>())
+        .collection(DBT.Collections.users)
+        .withConverter(DBT.converter<DBT.User>())
         .doc(context.user.uid)
       const orgRef = context.db
-        .collection(Collections.organizations)
-        .withConverter(converter<Organization>())
+        .collection(DBT.Collections.organizations)
+        .withConverter(DBT.converter<DBT.Organization>())
         .doc()
 
       await context.db.runTransaction(async transaction => {
@@ -67,4 +65,4 @@ export const resolvers: Resolvers = {
       }
     }
   },
-};
+}

@@ -19,6 +19,7 @@ const devenv = process.env.NODE_ENV === 'development'
 
 initializeApp({ credential: applicationDefault() })
 const db = getFirestore();
+db.settings({ ignoreUndefinedProperties: true })
 
 export interface MyContext {
   user: DecodedIdToken | null
