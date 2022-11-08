@@ -4,3 +4,20 @@ documents: 'src/**/*.tsx'
 generates:
   src/gql/:
     preset: 'client'
+    config:
+      scalars:
+        Date: number
+        DateFuture: number
+        DatePast: number
+        IntPositive: number
+        IntNonNegative: number
+        IntNegative: number
+        IntNonPositive: number
+        IntNonZero: number
+        FloatPositive: number
+        FloatNonNegative: number
+        FloatNegative: number
+        FloatNonPositive: number
+        FloatNonZero: number
+        Float0To1: number
+        StringNonEmpty: string

@@ -12,21 +12,21 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
-  DateFuture: any;
-  DatePast: any;
-  Float0To1: any;
-  FloatNegative: any;
-  FloatNonNegative: any;
-  FloatNonPositive: any;
-  FloatNonZero: any;
-  FloatPositive: any;
-  IntNegative: any;
-  IntNonNegative: any;
-  IntNonPositive: any;
-  IntNonZero: any;
-  IntPositive: any;
-  StringNonEmpty: any;
+  Date: number;
+  DateFuture: number;
+  DatePast: number;
+  Float0To1: number;
+  FloatNegative: number;
+  FloatNonNegative: number;
+  FloatNonPositive: number;
+  FloatNonZero: number;
+  FloatPositive: number;
+  IntNegative: number;
+  IntNonNegative: number;
+  IntNonPositive: number;
+  IntNonZero: number;
+  IntPositive: number;
+  StringNonEmpty: string;
 };
 
 export type Branch = {
