@@ -12,6 +12,10 @@ type Query {
   item(organizationId: ID!, branchId: ID!, itemId: ID!): Item
   items(organizationId: ID!, branchId: ID!): [Item!]!
 
+  # Item Queries
+  bill(organizationId: ID!, branchId: ID!, billId: ID!): Bill
+  bills(organizationId: ID!, branchId: ID!): [Bill!]!
+
   # Current User Queries
   currentUser: CurrentUser!
 }
@@ -49,6 +53,14 @@ type Mutation {
     branchId: ID!
     id: ID!
   ): Boolean
+  createBill(
+    organizationId: ID!
+    branchId: ID!
+    customerEmail: StringNonEmpty!
+    customerPhone: StringNonEmpty!
+    customerName: StringNonEmpty!
+    items: [itemInput!]!
+  ): Bill
 }
 
 type MetaData {
@@ -81,6 +93,21 @@ type Item {
   expireAt: DateFuture
 }
 
+type Bill {
+  organizationId: ID!
+  branchId: ID!
+  id: ID!
+  customerEmail: StringNonEmpty!
+  customerPhone: StringNonEmpty!
+  customerName: StringNonEmpty!
+  costTotal: FloatNonNegative!
+  priceTotal: FloatNonNegative!
+  profitLoss: Float!
+  totalItems: IntPositive!
+  items: [Item!]!
+  createdAt: Date
+}
+
 type CurrentUser {
   organizationId: ID!
   branchId: ID
@@ -96,4 +123,11 @@ enum Privilege {
 
 type SetupOrganizationResponse {
   organizationId: ID!
+}
+
+# inputs
+
+input itemInput {
+  itemId: ID!
+  quantity: IntPositive!
 }

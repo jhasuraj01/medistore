@@ -6,6 +6,7 @@ export enum Collections {
   organizations = "organizations",
   branches = "branches",
   items = "items",
+  bills = "bills",
 }
 
 export interface Organization {
@@ -32,6 +33,21 @@ export interface Item {
   createdBy: DecodedIdToken["uid"]
   updatedAt: Date
   updatedBy: DecodedIdToken["uid"]
+}
+
+export interface Bill {
+  organizationId: string
+  branchId: string
+  customerEmail: string
+  customerPhone: string
+  customerName: string
+  costTotal: number
+  priceTotal: number
+  profitLoss: number
+  totalItems: number
+  items: (Item & {id: string})[]
+  createdAt: Date
+  createdBy: DecodedIdToken["uid"]
 }
 
 export interface User {

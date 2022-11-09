@@ -30,6 +30,22 @@ export type Scalars = {
   StringNonEmpty: string;
 };
 
+export type Bill = {
+  __typename?: 'Bill';
+  branchId: Scalars['ID'];
+  costTotal: Scalars['FloatNonNegative'];
+  createdAt?: Maybe<Scalars['Date']>;
+  customerEmail: Scalars['StringNonEmpty'];
+  customerName: Scalars['StringNonEmpty'];
+  customerPhone: Scalars['StringNonEmpty'];
+  id: Scalars['ID'];
+  items: Array<Item>;
+  organizationId: Scalars['ID'];
+  priceTotal: Scalars['FloatNonNegative'];
+  profitLoss: Scalars['Float'];
+  totalItems: Scalars['IntPositive'];
+};
+
 export type Branch = {
   __typename?: 'Branch';
   id: Scalars['ID'];
@@ -68,6 +84,7 @@ export type MetaData = {
 export type Mutation = {
   __typename?: 'Mutation';
   addItem?: Maybe<Scalars['Boolean']>;
+  createBill?: Maybe<Bill>;
   deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
   updateItem?: Maybe<Scalars['Boolean']>;
@@ -86,6 +103,16 @@ export type MutationAddItemArgs = {
   organizationId: Scalars['ID'];
   pricePerUnit: Scalars['FloatNonNegative'];
   quantity: Scalars['IntPositive'];
+};
+
+
+export type MutationCreateBillArgs = {
+  branchId: Scalars['ID'];
+  customerEmail: Scalars['StringNonEmpty'];
+  customerName: Scalars['StringNonEmpty'];
+  customerPhone: Scalars['StringNonEmpty'];
+  items: Array<ItemInput>;
+  organizationId: Scalars['ID'];
 };
 
 
@@ -127,12 +154,27 @@ export enum Privilege {
 
 export type Query = {
   __typename?: 'Query';
+  bill?: Maybe<Bill>;
+  bills: Array<Bill>;
   branch: Branch;
   branches: Array<Branch>;
   currentUser: CurrentUser;
   item?: Maybe<Item>;
   items: Array<Item>;
   metadata: MetaData;
+};
+
+
+export type QueryBillArgs = {
+  billId: Scalars['ID'];
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
+};
+
+
+export type QueryBillsArgs = {
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -162,6 +204,11 @@ export type QueryItemsArgs = {
 export type SetupOrganizationResponse = {
   __typename?: 'SetupOrganizationResponse';
   organizationId: Scalars['ID'];
+};
+
+export type ItemInput = {
+  itemId: Scalars['ID'];
+  quantity: Scalars['IntPositive'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -234,12 +281,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  Bill: ResolverTypeWrapper<Bill>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Branch: ResolverTypeWrapper<Branch>;
   CurrentUser: ResolverTypeWrapper<CurrentUser>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DateFuture: ResolverTypeWrapper<Scalars['DateFuture']>;
   DatePast: ResolverTypeWrapper<Scalars['DatePast']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   Float0To1: ResolverTypeWrapper<Scalars['Float0To1']>;
   FloatNegative: ResolverTypeWrapper<Scalars['FloatNegative']>;
   FloatNonNegative: ResolverTypeWrapper<Scalars['FloatNonNegative']>;
@@ -261,16 +310,19 @@ export type ResolversTypes = ResolversObject<{
   SetupOrganizationResponse: ResolverTypeWrapper<SetupOrganizationResponse>;
   String: ResolverTypeWrapper<Scalars['String']>;
   StringNonEmpty: ResolverTypeWrapper<Scalars['StringNonEmpty']>;
+  itemInput: ItemInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  Bill: Bill;
   Boolean: Scalars['Boolean'];
   Branch: Branch;
   CurrentUser: CurrentUser;
   Date: Scalars['Date'];
   DateFuture: Scalars['DateFuture'];
   DatePast: Scalars['DatePast'];
+  Float: Scalars['Float'];
   Float0To1: Scalars['Float0To1'];
   FloatNegative: Scalars['FloatNegative'];
   FloatNonNegative: Scalars['FloatNonNegative'];
@@ -291,6 +343,23 @@ export type ResolversParentTypes = ResolversObject<{
   SetupOrganizationResponse: SetupOrganizationResponse;
   String: Scalars['String'];
   StringNonEmpty: Scalars['StringNonEmpty'];
+  itemInput: ItemInput;
+}>;
+
+export type BillResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Bill'] = ResolversParentTypes['Bill']> = ResolversObject<{
+  branchId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  costTotal?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  customerEmail?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  customerName?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  customerPhone?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
+  organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  priceTotal?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
+  profitLoss?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalItems?: Resolver<ResolversTypes['IntPositive'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type BranchResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Branch'] = ResolversParentTypes['Branch']> = ResolversObject<{
@@ -386,6 +455,7 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddItemArgs, 'branchId' | 'brandName' | 'companyName' | 'costPerUnit' | 'id' | 'manufactureAt' | 'organizationId' | 'pricePerUnit' | 'quantity'>>;
+  createBill?: Resolver<Maybe<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<MutationCreateBillArgs, 'branchId' | 'customerEmail' | 'customerName' | 'customerPhone' | 'items' | 'organizationId'>>;
   deleteItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   setupOrganization?: Resolver<ResolversTypes['SetupOrganizationResponse'], ParentType, ContextType, RequireFields<MutationSetupOrganizationArgs, 'name'>>;
   updateItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUpdateItemArgs, 'branchId' | 'id' | 'organizationId'>>;
@@ -398,6 +468,8 @@ export type OrganizationResolvers<ContextType = MyContext, ParentType extends Re
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  bill?: Resolver<Maybe<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<QueryBillArgs, 'billId' | 'branchId' | 'organizationId'>>;
+  bills?: Resolver<Array<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<QueryBillsArgs, 'branchId' | 'organizationId'>>;
   branch?: Resolver<ResolversTypes['Branch'], ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchId' | 'organizationId'>>;
   branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchesArgs, 'organizationId'>>;
   currentUser?: Resolver<ResolversTypes['CurrentUser'], ParentType, ContextType>;
@@ -416,6 +488,7 @@ export interface StringNonEmptyScalarConfig extends GraphQLScalarTypeConfig<Reso
 }
 
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
+  Bill?: BillResolvers<ContextType>;
   Branch?: BranchResolvers<ContextType>;
   CurrentUser?: CurrentUserResolvers<ContextType>;
   Date?: GraphQLScalarType;

@@ -1,7 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { useEffect } from 'react'
 import { Route, Routes, useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { useAppSelector } from '../../app/hooks'
 import { LoaderRipple } from '../../components/Loader/Ripple'
 import { selectAuth } from '../../features/Auth/authSlice'
@@ -25,13 +23,7 @@ export function AccountSetupPage() {
   const navigate = useNavigatePersist()
   const [ params ] = useSearchParams()
   const returnAddress = params.get('return') || '/app'
-  const { loading, error, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
-
-  useEffect(() => {
-    if(error?.message) {
-      toast.error(error.message)
-    }
-  }, [error?.message])
+  const { loading, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
 
   if(!user.active) {
     navigate({
@@ -46,15 +38,6 @@ export function AccountSetupPage() {
     )
   }
 
-  if(error || !data) {
-    return (
-      <div>
-        <div>Some Error has occured!</div>
-        <div>{JSON.stringify(error)}</div>
-      </div>
-    )
-  }
-
   const navigateNext = () => {
     setTimeout(() => {
       navigate({
@@ -64,7 +47,7 @@ export function AccountSetupPage() {
     }, 1)
   }
 
-  if(data.currentUser?.organizationId) {
+  if(data?.currentUser?.organizationId) {
     navigateNext()
   }
 

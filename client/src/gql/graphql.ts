@@ -29,6 +29,22 @@ export type Scalars = {
   StringNonEmpty: string;
 };
 
+export type Bill = {
+  __typename?: 'Bill';
+  branchId: Scalars['ID'];
+  costTotal: Scalars['FloatNonNegative'];
+  createdAt?: Maybe<Scalars['Date']>;
+  customerEmail: Scalars['StringNonEmpty'];
+  customerName: Scalars['StringNonEmpty'];
+  customerPhone: Scalars['StringNonEmpty'];
+  id: Scalars['ID'];
+  items: Array<Item>;
+  organizationId: Scalars['ID'];
+  priceTotal: Scalars['FloatNonNegative'];
+  profitLoss: Scalars['Float'];
+  totalItems: Scalars['IntPositive'];
+};
+
 export type Branch = {
   __typename?: 'Branch';
   id: Scalars['ID'];
@@ -67,6 +83,7 @@ export type MetaData = {
 export type Mutation = {
   __typename?: 'Mutation';
   addItem?: Maybe<Scalars['Boolean']>;
+  createBill?: Maybe<Bill>;
   deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
   updateItem?: Maybe<Scalars['Boolean']>;
@@ -85,6 +102,16 @@ export type MutationAddItemArgs = {
   organizationId: Scalars['ID'];
   pricePerUnit: Scalars['FloatNonNegative'];
   quantity: Scalars['IntPositive'];
+};
+
+
+export type MutationCreateBillArgs = {
+  branchId: Scalars['ID'];
+  customerEmail: Scalars['StringNonEmpty'];
+  customerName: Scalars['StringNonEmpty'];
+  customerPhone: Scalars['StringNonEmpty'];
+  items: Array<ItemInput>;
+  organizationId: Scalars['ID'];
 };
 
 
@@ -126,12 +153,27 @@ export enum Privilege {
 
 export type Query = {
   __typename?: 'Query';
+  bill?: Maybe<Bill>;
+  bills: Array<Bill>;
   branch: Branch;
   branches: Array<Branch>;
   currentUser: CurrentUser;
   item?: Maybe<Item>;
   items: Array<Item>;
   metadata: MetaData;
+};
+
+
+export type QueryBillArgs = {
+  billId: Scalars['ID'];
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
+};
+
+
+export type QueryBillsArgs = {
+  branchId: Scalars['ID'];
+  organizationId: Scalars['ID'];
 };
 
 
@@ -161,6 +203,11 @@ export type QueryItemsArgs = {
 export type SetupOrganizationResponse = {
   __typename?: 'SetupOrganizationResponse';
   organizationId: Scalars['ID'];
+};
+
+export type ItemInput = {
+  itemId: Scalars['ID'];
+  quantity: Scalars['IntPositive'];
 };
 
 export type GetItemsQueryVariables = Exact<{
