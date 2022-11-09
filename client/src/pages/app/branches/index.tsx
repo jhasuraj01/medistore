@@ -82,7 +82,7 @@ export function BranchesPage() {
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<BranchesPageSubNav {...{organizationId}}/>}  />} >
         <Route index element={<BranchesHomePage />} />
-        <Route path=':branchId' element={<StockPage organizationId={organizationId} />} />
+        <Route path=':branchId/*' element={<StockPage organizationId={organizationId} />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>

@@ -1,33 +1,34 @@
-import { Branch, Item } from "../../../../gql/graphql";
+import { Branch, Item } from '../../../../gql/graphql'
 
 export class BranchProxy implements Branch {
-  public id: string;
-  public name: string;
+  public id: string
+  public name: string
   public items: ItemProxy[] = []
 
   constructor({ id, name }: Branch) {
-    this.name = name;
-    this.id = id;
+    this.name = name
+    this.id = id
   }
 
-  set item(items: Item[]) {
+  public setItems(items: Item[]) {
     this.items = items.map(item => new ItemProxy(item))
+    return this
   }
 
 }
 
 export class ItemProxy implements Item {
-  organizationId: string;
-  branchId: string;
-  id: string;
-  brandName: string;
-  companyName: string;
-  costPerUnit: number;
-  pricePerUnit: number;
-  discount: number;
-  quantity: number;
-  manufactureAt: number;
-  expireAt: number | null | undefined;
+  organizationId: string
+  branchId: string
+  id: string
+  brandName: string
+  companyName: string
+  costPerUnit: number
+  pricePerUnit: number
+  discount: number
+  quantity: number
+  manufactureAt: number
+  expireAt: number | null | undefined
 
   constructor(item: Item) {
     this.organizationId = item.organizationId

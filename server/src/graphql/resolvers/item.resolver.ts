@@ -59,8 +59,6 @@ export const resolvers: Resolvers = {
         }
       })
 
-      console.log(branchesData)
-
       return branchesData
     },
   },
