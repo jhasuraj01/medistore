@@ -8,6 +8,7 @@ import styles from './index.module.scss'
 const GET_BRANCHES = gql`
   query GetBranches($organizationId: ID!) {
     branches(organizationId: $organizationId) {
+      __typename
       id
       name
     }
@@ -17,6 +18,7 @@ const GET_BRANCHES = gql`
 const CREATE_BRANCH = gql`
   mutation CreateBranch($name: String!, $organizationId: ID!) {
     createBranch(name: $name, organizationId: $organizationId) {
+      __typename
       id
       name
     }
@@ -48,7 +50,12 @@ export function BranchesPage({ organizationId }: BranchesPageProps) {
       organizationId: organizationId
     }
   })
-  const [createBranch] = useMutation<CreateBranchMutation, CreateBranchMutationVariables>(CREATE_BRANCH)
+  const [createBranch] = useMutation<CreateBranchMutation, CreateBranchMutationVariables>(CREATE_BRANCH, {
+    refetchQueries: [
+      {query: GET_BRANCHES}, // DocumentNode object parsed with gql
+      'GetBranches' // Query name
+    ],
+  })
 
   const handleCreateBranch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -57,7 +64,7 @@ export function BranchesPage({ organizationId }: BranchesPageProps) {
     const data = new FormData(event.currentTarget)
     const branchName = data.get('branchName') as string | null
     if(branchName === null)
-      throw new Error("Branch Name is Null!")
+      throw new Error('Branch Name is Null!')
 
     toast.promise<unknown, GraphQLError>(
       createBranch({
