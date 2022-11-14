@@ -1,0 +1,27 @@
+.newStoreButton {
+  position: sticky;
+  top: 10px;
+  background: #F1E5FF;
+  width: auto;
+  height: 40px;
+  border-radius: 40px;
+  margin: 0 8px 8px 8px;
+  padding: 0 22px;
+}
+
+.homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+  gap: 48px;
+  text-align: center;
+
+  .icon {
+    color: #D4B2FF;
+    flex-grow: 0;
+    flex-basis: 256px;
+  }
+}

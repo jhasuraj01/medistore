@@ -18,6 +18,7 @@ import { AccountSetupPage } from './pages/setup'
 import './App.scss'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
+import { BillsPage } from './pages/app/bills'
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
           <Route path='search/*' element={<SearchPage />} />
           <Route path='carts/*' element={<CartPage />} />
           <Route path='branches/*' element={<BranchesPage />} />
+          <Route path='bills/*' element={<BillsPage />} />
           <Route path='account/*' element={<AccountPage />} />
           <Route path='organization/*' element={<OrganizationPage />} />
           <Route path='*' element={<NotFoundPage />} />

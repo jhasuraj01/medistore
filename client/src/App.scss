@@ -35,6 +35,12 @@
   bottom: 0;
 }
 
+.loading-shine {
+  background: linear-gradient(110deg, transparent 8%, hsla(0, 0%, 50%, 0.1) 18%, transparent 33%);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
 @keyframes gradientAnimation {
 	0% {
 		background-position: 0% 50%;
@@ -53,5 +59,11 @@
   }
   to {
       opacity: 1;
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
   }
 }

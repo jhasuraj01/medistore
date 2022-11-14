@@ -3,10 +3,10 @@ import { AppSectionLayout } from '../../../components/AppSectionLayout'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../features/SubNav'
 import { useNavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
-import { StockPage } from './branch'
+import { BillPage } from './branch'
 import styles from './index.module.scss'
-import { BranchesHomePage } from './BranchesHomePage'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { BillsHomePage } from './BillsHomePage'
+import { gql, useQuery } from '@apollo/client'
 import { GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
@@ -52,7 +52,7 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   )
 }
 
-export function BranchesPage() {
+export function BillsPage() {
 
   const { loading, error, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
   const navigate = useNavigatePersist()
@@ -81,8 +81,8 @@ export function BranchesPage() {
   return (
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<BranchesPageSubNav {...{organizationId}}/>}  />} >
-        <Route index element={<BranchesHomePage />} />
-        <Route path=':branchId/*' element={<StockPage organizationId={organizationId} />} />
+        <Route index element={<BillsHomePage />} />
+        <Route path=':branchId/*' element={<BillPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>
