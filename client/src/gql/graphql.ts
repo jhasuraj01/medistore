@@ -84,6 +84,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addItem?: Maybe<Scalars['Boolean']>;
   createBill?: Maybe<Bill>;
+  createBranch: Branch;
   deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
   updateItem?: Maybe<Scalars['Boolean']>;
@@ -111,6 +112,12 @@ export type MutationCreateBillArgs = {
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
   items: Array<ItemInput>;
+  organizationId: Scalars['ID'];
+};
+
+
+export type MutationCreateBranchArgs = {
+  name: Scalars['String'];
   organizationId: Scalars['ID'];
 };
 

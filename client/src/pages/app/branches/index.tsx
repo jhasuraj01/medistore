@@ -30,7 +30,7 @@ const GET_BRANCHES = gql`
 `
 
 function BranchesPageSubNav({organizationId}: {organizationId: string}) {
-  const { loading, error, data } = useQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES, {
+  const { loading, data } = useQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES, {
     variables: {
       organizationId: organizationId
     }
@@ -39,7 +39,7 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   return (
     <SubNav title='Branches' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
-        <SubNavButton className={styles.newStoreButton}>Create New Branch</SubNavButton>
+        {/* <SubNavButton className={styles.newStoreButton}>Create New Branch</SubNavButton> */}
         {
           data?.branches.map(branch => {
             return (

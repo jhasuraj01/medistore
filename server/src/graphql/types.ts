@@ -85,6 +85,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addItem?: Maybe<Scalars['Boolean']>;
   createBill?: Maybe<Bill>;
+  createBranch: Branch;
   deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
   updateItem?: Maybe<Scalars['Boolean']>;
@@ -112,6 +113,12 @@ export type MutationCreateBillArgs = {
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
   items: Array<ItemInput>;
+  organizationId: Scalars['ID'];
+};
+
+
+export type MutationCreateBranchArgs = {
+  name: Scalars['String'];
   organizationId: Scalars['ID'];
 };
 
@@ -456,6 +463,7 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddItemArgs, 'branchId' | 'brandName' | 'companyName' | 'costPerUnit' | 'id' | 'manufactureAt' | 'organizationId' | 'pricePerUnit' | 'quantity'>>;
   createBill?: Resolver<Maybe<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<MutationCreateBillArgs, 'branchId' | 'customerEmail' | 'customerName' | 'customerPhone' | 'items' | 'organizationId'>>;
+  createBranch?: Resolver<ResolversTypes['Branch'], ParentType, ContextType, RequireFields<MutationCreateBranchArgs, 'name' | 'organizationId'>>;
   deleteItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   setupOrganization?: Resolver<ResolversTypes['SetupOrganizationResponse'], ParentType, ContextType, RequireFields<MutationSetupOrganizationArgs, 'name'>>;
   updateItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUpdateItemArgs, 'branchId' | 'id' | 'organizationId'>>;

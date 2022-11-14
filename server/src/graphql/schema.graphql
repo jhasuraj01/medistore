@@ -22,6 +22,9 @@ type Query {
 
 type Mutation {
   setupOrganization(name: String!): SetupOrganizationResponse!
+
+  createBranch(name: String!, organizationId: ID!): Branch!
+
   addItem(
     organizationId: ID!
     branchId: ID!
@@ -53,6 +56,7 @@ type Mutation {
     branchId: ID!
     id: ID!
   ): Boolean
+  
   createBill(
     organizationId: ID!
     branchId: ID!

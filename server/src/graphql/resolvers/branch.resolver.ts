@@ -46,4 +46,30 @@ export const resolvers: Resolvers = {
       return branchesData
     },
   },
+  Mutation: {
+    createBranch: async (parent, args, context, info) => {
+
+      if(context.user === null) throw new GraphQLError('Please Login to Create New Branch');
+
+      const branchRef = context.db
+        .collection(DBT.Collections.organizations)
+        .doc(args.organizationId)
+        .collection(DBT.Collections.branches)
+        .withConverter(DBT.converter<DBT.Branch>())
+        .doc()
+
+      const branchData = {
+        name: args.name,
+        organizationId: args.organizationId,
+        createdAt: new Date(),
+        createdBy: context.user.uid,
+      }
+      await branchRef.create(branchData)
+
+      return {
+        id: branchRef.id,
+        ...branchData
+      }
+    },
+  },
 }

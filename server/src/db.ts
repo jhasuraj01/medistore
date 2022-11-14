@@ -16,6 +16,8 @@ export interface Organization {
 export interface Branch {
   organizationId: string
   name: string
+  createdAt: Date
+  createdBy: DecodedIdToken["uid"]
 }
 
 export interface Item {
