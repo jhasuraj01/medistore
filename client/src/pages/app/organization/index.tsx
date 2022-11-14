@@ -23,7 +23,7 @@ function OrganizationPageSubNav() {
     <SubNav title='Organization'>
       <SubNavSection>
         <SubNavLink to='branches'>Branches</SubNavLink>
-        <SubNavLink to='staffs'>Staffs</SubNavLink>
+        {/* <SubNavLink to='staffs'>Staffs</SubNavLink> */}
       </SubNavSection>
     </SubNav>
   )

@@ -37,7 +37,7 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   })
 
   return (
-    <SubNav title='Branches' className={loading ? 'loading-top' : undefined}>
+    <SubNav title='Customer Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
         {/* <SubNavButton className={styles.newStoreButton}>Create New Branch</SubNavButton> */}
         {
