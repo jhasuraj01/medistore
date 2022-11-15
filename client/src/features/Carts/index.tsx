@@ -33,6 +33,8 @@ const percent = new Intl.NumberFormat('en-IN', {
 })
 
 interface CartRowProps {
+  organizationId: string,
+  branchId: string,
   cartId: string,
   id: string,
   index: number,
@@ -79,12 +81,12 @@ const itemTotal = ({ quantity, pricePerUnit, discount }: CartItemInterface): num
   return pricePerUnit * quantity * (1 - discount)
 }
 
-function CartRow({cartId, id, index, quantity, onDelete, onUpdate }: CartRowProps) {
+function CartRow({organizationId, branchId, cartId, id, index, quantity, onDelete, onUpdate }: CartRowProps) {
 
   const { loading, error, data } = useQuery<GetItemQuery, GetItemQueryVariables>(GET_ITEM, {
     variables: {
-      organizationId: '6KJwVogFJITXND5LNFlx',
-      branchId: 'FZb6FsGUWVmvxuFkT7zm',
+      organizationId,
+      branchId,
       id: id,
     }
   })
@@ -175,7 +177,7 @@ function CartRow({cartId, id, index, quantity, onDelete, onUpdate }: CartRowProp
 }
 
 export interface CartProps {
-  organizationId?: string
+  organizationId: string
   branches: Branch[]
 }
 export function Cart({ organizationId, branches }: CartProps) {
@@ -187,8 +189,11 @@ export function Cart({ organizationId, branches }: CartProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigatePersist()
   const cart = useAppSelector(selectCart(id))
-  const [branchId, setBranchId] = useState<string | null>(branches[0]?.id || null)
-  const [createBill] = useMutation<CreateBillMutation, CreateBillMutationVariables>(CREATE_BILL)
+  const [createBill] = useMutation<CreateBillMutation, CreateBillMutationVariables>(CREATE_BILL, {
+    refetchQueries: [
+      'BillsIds'
+    ]
+  })
 
   if(!cart) {
     return <NotFoundPage />
@@ -200,10 +205,6 @@ export function Cart({ organizationId, branches }: CartProps) {
   const handleGenerateBill = () => {
     if(organizationId === undefined) {
       toast.error('Organization Id is undefined')
-      return
-    }
-    if(branchId === null) {
-      toast.error('Branch is not selected')
       return
     }
     if(cart.items.length === 0) {
@@ -232,7 +233,7 @@ export function Cart({ organizationId, branches }: CartProps) {
       createBill({
         variables: {
           organizationId,
-          branchId,
+          branchId: cart.branchId,
           customerName: cart.customer.name,
           customerEmail: cart.customer.email,
           customerPhone: cart.customer.phone,
@@ -289,14 +290,14 @@ export function Cart({ organizationId, branches }: CartProps) {
         <div className={styles.actionButtons}>
           {
             branches.length > 0 &&
-            <select onChange={(event) => setBranchId(event.currentTarget.value)}>
+            <select value={cart.branchId} disabled={cart.locked} onChange={(event) => dispatch(updateCart({cartId: cart.id, branchId: event.currentTarget.value}))}>
               {branches.map(branch => <option key={branch.id} value={branch.id}>{branch.name}</option>)}
             </select>
           }
           <IconButton title='Delete Cart' onClick={handleDeleteCart}><TrashIcon /></IconButton>
           {
             cart.billId ?
-              <IconLink to={`/app/bills/${branchId}/${cart.billId}`} title='Open Bill'><FileDocumentIcon /></IconLink> :
+              <IconLink to={`/app/bills/${cart.branchId}/${cart.billId}`} title='Open Bill'><FileDocumentIcon /></IconLink> :
               <IconButton title='Generate Bill' onClick={handleGenerateBill}><FileAddIcon /></IconButton>
           }
         </div>
@@ -353,6 +354,8 @@ export function Cart({ organizationId, branches }: CartProps) {
             <CartRow
               key={item.id}
               quantity={item.quantity}
+              organizationId={organizationId}
+              branchId={cart.branchId}
               id={item.id}
               cartId={id}
               index={index}

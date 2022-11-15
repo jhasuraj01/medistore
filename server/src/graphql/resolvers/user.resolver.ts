@@ -18,7 +18,7 @@ export const resolvers: Resolvers = {
       const user = await userRef.get()
       const userData = user.data()
 
-      if(userData === undefined) throw new GraphQLError("User Doesn't Exists!");
+      if(userData === undefined) throw new GraphQLError("Please Setup Your Organization to Continue");
 
       return {
         id: user.id,

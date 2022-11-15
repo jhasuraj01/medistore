@@ -38,7 +38,7 @@ export function OrganizationPage() {
   const errorMessage = error?.message
 
   useEffect(() => {
-    if(organizationId === null && !loading) {
+    if(organizationId === undefined && !loading) {
       toast.error('Setup Your Organization to Continue!')
       navigate({pathname: '/setup', search: 'return=/app/organization'})
     }

@@ -20,6 +20,7 @@ export interface CartInterface {
   }
   items: CartItemInterface[],
   locked: boolean,
+  branchId: string
 }
 
 export interface CartState {
@@ -28,6 +29,11 @@ export interface CartState {
 
 const initialState: CartState = {
   carts: [],
+}
+
+interface CartCreatePayload {
+  id: string
+  branchId: string
 }
 
 interface CartActionsPayload {
@@ -56,7 +62,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addNewCart: (state, { payload }: PayloadAction<CartActionsPayload> ) => {
+    addNewCart: (state, { payload }: PayloadAction<CartCreatePayload> ) => {
       state.carts.unshift({
         id: payload.id,
         items: [],
@@ -66,7 +72,8 @@ export const cartSlice = createSlice({
           phone: null
         },
         billId: null,
-        locked: false
+        locked: false,
+        branchId: payload.branchId,
       })
     },
     removeCart: (state, { payload }: PayloadAction<CartActionsPayload> ) => {
@@ -147,7 +154,7 @@ export const cartSlice = createSlice({
       if(payload.name) cart.customer.name = payload.name
       if(payload.phone) cart.customer.phone = payload.phone
     },
-    updateCart: (state, { payload }: PayloadAction<{ cartId: string, billId?: string, locked?: boolean }>) => {
+    updateCart: (state, { payload }: PayloadAction<{ cartId: string, billId?: string, locked?: boolean, branchId?: string }>) => {
       const carts = state.carts.filter(cart => cart.id == payload.cartId)
 
       if(carts.length > 1) throw new Error('Exception: Duplicate Cart ID Found')
@@ -156,6 +163,9 @@ export const cartSlice = createSlice({
       const cart = carts[0]
       if(payload.billId !== undefined) cart.billId = payload.billId
       if(payload.locked !== undefined) cart.locked = payload.locked
+
+      if(cart.locked) return
+      if(payload.branchId !== undefined) cart.branchId = payload.branchId
     }
   },
 })

@@ -9,8 +9,10 @@ import { useNavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
 import { CartHomePage } from './CartHomePage'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
-import { GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
+import { Branch, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { toast } from 'react-toastify'
+import { useEffect } from 'react'
+import { LoaderRipple } from '../../../components/Loader/Ripple'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -29,21 +31,25 @@ const GET_BRANCHES = gql`
   }
 `
 
-function CartPageSubNav() {
+function CartPageSubNav({ branches }: { branches: Branch[]}) {
   const carts = useAppSelector(selectCarts)
   const dispatch = useAppDispatch()
   const navigate = useNavigatePersist()
 
   const createNewCart = () => {
     const id = String(Date.now())
-    dispatch(addNewCart({ id }))
+    dispatch(addNewCart({ id, branchId: branches[0].id }))
     navigate(id)
   }
 
   return (
     <SubNav title='Carts'>
       <SubNavSection>
-        <SubNavButton className={styles.newCartButton} onClick={createNewCart}>Create New Cart</SubNavButton>
+        {
+          branches.length > 0 ?
+            <SubNavButton className={styles.newCartButton} onClick={createNewCart}>Create New Cart</SubNavButton> :
+            <div>Create Branch to Create New Cart</div>
+        }
         { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
       </SubNavSection>
     </SubNav>
@@ -51,6 +57,8 @@ function CartPageSubNav() {
 }
 
 export function CartPage() {
+
+  const navigate = useNavigatePersist()
   
   const {
     loading: currentUserLoading,
@@ -67,6 +75,8 @@ export function CartPage() {
       error: branchesError,
     }
   ] = useLazyQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES)
+  
+  const organizationId = currentUserData?.currentUser.organizationId
 
   if(!currentUserLoading && currentUserData && !loadBranchesCalled) {
     loadBranches({
@@ -84,12 +94,15 @@ export function CartPage() {
     toast.error(branchesError.message)
   }
 
-  const organizationId = currentUserData?.currentUser.organizationId
   const branches = branchesData?.branches || []
+
+  if(organizationId == undefined) {
+    return <LoaderRipple />
+  }
 
   return (
     <Routes>
-      <Route path='/' element={<AppSectionLayout subnav={<CartPageSubNav />}  />} >
+      <Route path='/' element={<AppSectionLayout subnav={<CartPageSubNav branches={branches} />}  />} >
         <Route index element={<CartHomePage />} />
         <Route path=':id' element={<Cart organizationId={organizationId} branches={branches}/>} />
         <Route path='*' element={<NotFoundPage />} />

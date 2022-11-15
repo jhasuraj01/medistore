@@ -50,7 +50,6 @@ export function BranchesPage({ organizationId }: BranchesPageProps) {
   })
   const [createBranch] = useMutation<CreateBranchMutation, CreateBranchMutationVariables>(CREATE_BRANCH, {
     refetchQueries: [
-      {query: GET_BRANCHES}, // DocumentNode object parsed with gql
       'GetBranches' // Query name
     ],
   })
