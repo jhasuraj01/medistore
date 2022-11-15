@@ -55,7 +55,7 @@ function App() {
         <Route path='setup/*' element={<AccountSetupPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer position='bottom-right' />
     </div>
   )
 }
