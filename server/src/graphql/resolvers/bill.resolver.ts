@@ -1,7 +1,7 @@
 import { FieldValue } from "firebase-admin/firestore"
 import { GraphQLError } from "graphql"
 import * as DBT from "../../db.js"
-import { Bill, Item, Resolvers } from "../types"
+import { Bill, Resolvers } from "../types"
 
 export const resolvers: Resolvers = {
   Query: {
@@ -30,6 +30,7 @@ export const resolvers: Resolvers = {
         customerName: billData.customerName,
         costTotal: billData.costTotal,
         priceTotal: billData.priceTotal,
+        discountedPriceTotal: billData.discountedPriceTotal,
         profitLoss: billData.profitLoss,
         totalItems: billData.totalItems,
         createdAt: billData.createdAt,
@@ -52,7 +53,7 @@ export const resolvers: Resolvers = {
 
       if(itemsSnapshot.empty) return []
       
-      const branchesData: Bill[] = itemsSnapshot.docs.map(doc => {
+      const billsData: Bill[] = itemsSnapshot.docs.map(doc => {
         const billData: DBT.Bill = doc.data()
         return {
           id: doc.id,
@@ -60,7 +61,7 @@ export const resolvers: Resolvers = {
         }
       })
 
-      return branchesData
+      return billsData
     },
   },
   Mutation: {
@@ -98,6 +99,7 @@ export const resolvers: Resolvers = {
           customerName: args.customerName,
           costTotal: 0,
           priceTotal: 0,
+          discountedPriceTotal: 0,
           profitLoss: 0,
           totalItems: 0,
           createdAt: new Date(),
@@ -118,7 +120,8 @@ export const resolvers: Resolvers = {
             throw new Error(`Item Out of Stock: ${itemId}! Max Available: ${itemData.quantity}`)
 
           bill.costTotal += itemData.costPerUnit * quantity
-          bill.priceTotal += itemData.pricePerUnit * quantity * (1 - itemData.discount)
+          bill.priceTotal += itemData.pricePerUnit * quantity
+          bill.discountedPriceTotal += itemData.pricePerUnit * quantity * (1 - itemData.discount)
           bill.totalItems += quantity
           bill.items.push({
             ...itemData,
@@ -147,6 +150,7 @@ export const resolvers: Resolvers = {
         customerName: bill.customerName,
         costTotal: bill.costTotal,
         priceTotal: bill.priceTotal,
+        discountedPriceTotal: bill.discountedPriceTotal,
         profitLoss: bill.profitLoss,
         totalItems: bill.totalItems,
         items: bill.items,

@@ -106,6 +106,7 @@ type Bill {
   customerName: StringNonEmpty!
   costTotal: FloatNonNegative!
   priceTotal: FloatNonNegative!
+  discountedPriceTotal: FloatNonNegative!
   profitLoss: Float!
   totalItems: IntPositive!
   items: [Item!]!

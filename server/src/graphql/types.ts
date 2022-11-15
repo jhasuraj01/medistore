@@ -38,6 +38,7 @@ export type Bill = {
   customerEmail: Scalars['StringNonEmpty'];
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
+  discountedPriceTotal: Scalars['FloatNonNegative'];
   id: Scalars['ID'];
   items: Array<Item>;
   organizationId: Scalars['ID'];
@@ -360,6 +361,7 @@ export type BillResolvers<ContextType = MyContext, ParentType extends ResolversP
   customerEmail?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
   customerName?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
   customerPhone?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
+  discountedPriceTotal?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
   organizationId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;

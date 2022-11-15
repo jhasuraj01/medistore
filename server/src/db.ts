@@ -45,6 +45,7 @@ export interface Bill {
   customerName: string
   costTotal: number
   priceTotal: number
+  discountedPriceTotal: number
   profitLoss: number
   totalItems: number
   items: (Item & {id: string})[]

@@ -37,6 +37,7 @@ export type Bill = {
   customerEmail: Scalars['StringNonEmpty'];
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
+  discountedPriceTotal: Scalars['FloatNonNegative'];
   id: Scalars['ID'];
   items: Array<Item>;
   organizationId: Scalars['ID'];
