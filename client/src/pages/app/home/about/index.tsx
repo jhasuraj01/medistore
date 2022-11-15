@@ -1,4 +1,5 @@
 import { useQuery, gql } from '@apollo/client'
+import { Page } from '../../../../components/AppSectionLayout'
 import { GetMetaDataQuery, GetMetaDataQueryVariables } from '../../../../gql/graphql'
 import styles from './index.module.scss'
 
@@ -44,7 +45,7 @@ export function AboutPage() {
   
 
   return (
-    <div className={styles.container}>
+    <Page className={styles.container}>
       <h2>About App</h2>
       {
         metadata.map(([key, value]) => {
@@ -54,6 +55,6 @@ export function AboutPage() {
           </div>
         })
       }
-    </div>
+    </Page>
   )
 }

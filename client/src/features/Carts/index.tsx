@@ -17,6 +17,7 @@ import { Branch, CreateBillMutation, CreateBillMutationVariables, GetItemQuery, 
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { GraphQLError } from 'graphql'
+import { Page } from '../../components/AppSectionLayout'
 
 const currency = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -279,7 +280,7 @@ export function Cart({ organizationId, branches }: CartProps) {
   const total = cartTotal(cart)
 
   return (
-    <div className={styles.container}>
+    <Page className={styles.container}>
       <div className={styles.header}>
         <InputButton placeholder='Item ID: 1234567' onSubmit={handleAddItem}><MathPlusIcon /></InputButton>
         {
@@ -364,6 +365,6 @@ export function Cart({ organizationId, branches }: CartProps) {
           <td>{currency.format(total)}</td>
         </TableFooter>
       </Table>
-    </div>
+    </Page>
   )
 }

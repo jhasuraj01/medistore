@@ -11,6 +11,7 @@ import { NotFoundPage } from '../../../404'
 import { BranchProxy } from './branchProxy'
 import styles from './index.module.scss'
 import { ReactComponent as TrashIcon } from '../../../../icons/trash.svg'
+import { Page } from '../../../../components/AppSectionLayout'
 
 const currency = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -257,7 +258,7 @@ export function StockPage({ organizationId }: StockPageProps) {
     stock.setItems(items.data.items)
 
   return (
-    <div className={containerClassName}>
+    <Page className={containerClassName}>
       <ItemsEditor organizationId={organizationId} branchId={branchId} refreshItems={items.refetch} />
       <div className={styles.header}>Stock Management Page</div>
       <Table className={styles.stockTable}>
@@ -296,6 +297,6 @@ export function StockPage({ organizationId }: StockPageProps) {
           }
         </TableBody>
       </Table>
-    </div>
+    </Page>
   )
 }

@@ -1,7 +1,9 @@
+import { Page } from '../../../../components/AppSectionLayout'
+
 export function BillPage() {
   return (
-    <div>
+    <Page>
       Here All the bills generated will appear
-    </div>
+    </Page>
   )
 }

@@ -2,6 +2,7 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import { GraphQLError } from 'graphql'
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
+import { Page } from '../../../../components/AppSectionLayout'
 import { CreateBranchMutation, CreateBranchMutationVariables, GetBranchesQuery, GetBranchesQueryVariables } from '../../../../gql/graphql'
 import styles from './index.module.scss'
 
@@ -84,7 +85,7 @@ export function BranchesPage({ organizationId }: BranchesPageProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <Page className={styles.container}>
       <form onSubmit={handleCreateBranch} className={styles.createBranchForm}>
         <input
           type="text"
@@ -108,6 +109,6 @@ export function BranchesPage({ organizationId }: BranchesPageProps) {
             ))
         }
       </div>
-    </div>
+    </Page>
   )
 }
