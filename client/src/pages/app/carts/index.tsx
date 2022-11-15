@@ -8,8 +8,26 @@ import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../featur
 import { useNavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
 import { CartHomePage } from './CartHomePage'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
+import { toast } from 'react-toastify'
 
+const GET_CURRENTUSER = gql`
+  query GetCurrentUser {
+    currentUser {
+      organizationId
+    }
+  }
+`
 
+const GET_BRANCHES = gql`
+  query GetBranches($organizationId: ID!) {
+    branches(organizationId: $organizationId) {
+      id
+      name
+    }
+  }
+`
 
 function CartPageSubNav() {
   const carts = useAppSelector(selectCarts)
@@ -33,11 +51,47 @@ function CartPageSubNav() {
 }
 
 export function CartPage() {
+  
+  const {
+    loading: currentUserLoading,
+    error: currentUserError,
+    data: currentUserData,
+  } = useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GET_CURRENTUSER)
+
+  const [
+    loadBranches,
+    {
+      called: loadBranchesCalled,
+      loading: branchesLoading,
+      data: branchesData,
+      error: branchesError,
+    }
+  ] = useLazyQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES)
+
+  if(!currentUserLoading && currentUserData && !loadBranchesCalled) {
+    loadBranches({
+      variables: {
+        organizationId: currentUserData.currentUser.organizationId
+      }
+    })
+  }
+
+  if(currentUserError) {
+    toast.error(currentUserError.message)
+  }
+
+  if(branchesError) {
+    toast.error(branchesError.message)
+  }
+
+  const organizationId = currentUserData?.currentUser.organizationId
+  const branches = branchesData?.branches || []
+
   return (
     <Routes>
       <Route path='/' element={<AppSectionLayout subnav={<CartPageSubNav />}  />} >
         <Route index element={<CartHomePage />} />
-        <Route path=':id' element={<Cart />} />
+        <Route path=':id' element={<Cart organizationId={organizationId} branches={branches}/>} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>

@@ -67,6 +67,7 @@ export const resolvers: Resolvers = {
     createBill: async (parent, args, context, info) => {
 
       if(context.user === null) throw new GraphQLError('Please Login to Add New Items to Stock');
+      if(args.items.length === 0) throw new GraphQLError('Can\'t Generate bill for empty cart');
 
       const billRef = context.db
         .collection(DBT.Collections.organizations)

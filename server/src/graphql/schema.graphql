@@ -9,11 +9,11 @@ type Query {
   branches(organizationId: ID!): [Branch!]!
   
   # Item Queries
-  item(organizationId: ID!, branchId: ID!, itemId: ID!): Item
+  item(organizationId: ID!, branchId: ID!, id: ID!): Item!
   items(organizationId: ID!, branchId: ID!): [Item!]!
 
   # Item Queries
-  bill(organizationId: ID!, branchId: ID!, billId: ID!): Bill
+  bill(organizationId: ID!, branchId: ID!, billId: ID!): Bill!
   bills(organizationId: ID!, branchId: ID!): [Bill!]!
 
   # Current User Queries
@@ -64,7 +64,7 @@ type Mutation {
     customerPhone: StringNonEmpty!
     customerName: StringNonEmpty!
     items: [itemInput!]!
-  ): Bill
+  ): Bill!
 }
 
 type MetaData {

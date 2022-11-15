@@ -1,27 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 import { AppThunk, RootState } from '../../app/store'
 
-export interface CartItem {
+export interface CartItemInterface {
   id: string,
-  name: string,
-  pricePerQuantity: number,
+  brandName: string,
+  pricePerUnit: number,
   discount: number,
-  quantity: number
+  quantity: number,
 }
 
-export interface Cart {
+export interface CartInterface {
+  billId: string | null
   id: string,
   customer: {
     name: string | null,
     email: string | null,
     phone: string | null
   }
-  totalBillValue: number
-  items: CartItem[]
+  items: CartItemInterface[],
+  locked: boolean,
 }
 
 export interface CartState {
-  carts: Cart[];
+  carts: CartInterface[];
 }
 
 const initialState: CartState = {
@@ -37,8 +39,11 @@ interface AddItemToCartPayload {
   itemID: string
 }
 
-interface UpdateItemQuantityPayload extends AddItemToCartPayload {
-  quantity: number
+interface UpdateItemPayload extends AddItemToCartPayload {
+  quantity?: number
+  brandName?: string
+  pricePerUnit?: number
+  discount?: number
 }
 
 interface UpdateCustomerDetailsPayload extends CartActionsPayload {
@@ -60,7 +65,8 @@ export const cartSlice = createSlice({
           email: null,
           phone: null
         },
-        totalBillValue: 0
+        billId: null,
+        locked: false
       })
     },
     removeCart: (state, { payload }: PayloadAction<CartActionsPayload> ) => {
@@ -74,7 +80,12 @@ export const cartSlice = createSlice({
 
       const cart = carts[0]
 
-      let item: CartItem | undefined = cart.items.filter(item => item.id == payload.itemID)[0]
+      if(cart.locked) {
+        toast.error(`Cart (${cart.id}) is Locked, Failed to add Item`)
+        return
+      }
+
+      let item: CartItemInterface | undefined = cart.items.filter(item => item.id == payload.itemID)[0]
 
       if(item) {
         item.quantity += 1
@@ -82,31 +93,35 @@ export const cartSlice = createSlice({
       else {
         item = {
           id: payload.itemID,
-          name: 'Lorem Ipsum Dolar Shit',
+          brandName: '',
           quantity: 1,
-          discount: 0.1,
-          pricePerQuantity: 100
+          discount: 0,
+          pricePerUnit: 0
         }
         cart.items.unshift(item)
       }
-      cart.totalBillValue += item.pricePerQuantity * (1 - item.discount)
     },
-    updateItemQuantity: (state, { payload }: PayloadAction<UpdateItemQuantityPayload> ) => {
+    updateItem: (state, { payload }: PayloadAction<UpdateItemPayload> ) => {
 
       const carts = state.carts.filter(cart => cart.id == payload.cartID)
 
       if(carts.length > 1) throw new Error('Exception: Duplicate Cart ID Found')
-      if(carts.length == 0) throw new Error('Exception: Invalid Cart ID')
+      if(carts.length == 0) throw new Error(`Exception: Invalid Cart ID ${payload.cartID}`)
 
       const cart = carts[0]
 
-      const item: CartItem | undefined = cart.items.filter(item => item.id == payload.itemID)[0]
+      if(cart.locked) {
+        toast.error(`Cart (${cart.id}) is Locked, Failed to update Item`)
+        return
+      }
+
+      const item: CartItemInterface | undefined = cart.items.filter(item => item.id == payload.itemID)[0]
 
       if(item) {
-        const difference = Math.max(payload.quantity, 0) - item.quantity
-        item.quantity = Math.max(payload.quantity, 0)
-        cart.totalBillValue += difference * item.pricePerQuantity * (1 - item.discount)
-
+        if(payload.quantity !== undefined) item.quantity = payload.quantity
+        if(payload.brandName !== undefined) item.brandName = payload.brandName
+        if(payload.pricePerUnit !== undefined) item.pricePerUnit = payload.pricePerUnit
+        if(payload.discount !== undefined) item.discount = payload.discount
         if(item.quantity === 0) {
           cart.items = cart.items.filter(item => item.id != payload.itemID)
         }
@@ -122,15 +137,30 @@ export const cartSlice = createSlice({
       if(carts.length > 1) throw new Error('Exception: Duplicate Cart ID Found')
 
       const cart = carts[0]
+      
+      if(cart.locked) {
+        toast.error(`Cart (${cart.id}) is Locked, Failed to update Item`)
+        return
+      }
 
       if(payload.email) cart.customer.email = payload.email
       if(payload.name) cart.customer.name = payload.name
       if(payload.phone) cart.customer.phone = payload.phone
     },
+    updateCart: (state, { payload }: PayloadAction<{ cartId: string, billId?: string, locked?: boolean }>) => {
+      const carts = state.carts.filter(cart => cart.id == payload.cartId)
+
+      if(carts.length > 1) throw new Error('Exception: Duplicate Cart ID Found')
+      if(carts.length == 0) throw new Error(`Exception: Invalid Cart ID ${payload.cartId}`)
+
+      const cart = carts[0]
+      if(payload.billId !== undefined) cart.billId = payload.billId
+      if(payload.locked !== undefined) cart.locked = payload.locked
+    }
   },
 })
 
-export const { addNewCart, removeCart, addItemToCart, updateCustomerDetails, updateItemQuantity } = cartSlice.actions
+export const { addNewCart, removeCart, addItemToCart, updateCustomerDetails, updateItem, updateCart } = cartSlice.actions
 
 export const selectCarts = (state: RootState) => state.carts.carts
 
@@ -138,14 +168,14 @@ export const selectCart = (id: string) => (state: RootState) => {
   return state.carts.carts.filter(cart => cart.id == id)[0]
 }
 
-export const selectNextCart = (id: string) => (state: RootState): null | Cart => {
+export const selectNextCart = (id: string) => (state: RootState): null | CartInterface => {
   const index = state.carts.carts.findIndex(cart => cart.id == id)
   if(index === -1) return null
   if(index === state.carts.carts.length - 1) return null
   return state.carts.carts[index + 1]
 }
 
-export const selectPrevCart = (id: string) => (state: RootState): null | Cart => {
+export const selectPrevCart = (id: string) => (state: RootState): null | CartInterface => {
   const index = state.carts.carts.findIndex(cart => cart.id == id)
   if(index === -1) return null
   if(index === 0) return null
@@ -153,8 +183,7 @@ export const selectPrevCart = (id: string) => (state: RootState): null | Cart =>
 }
 
 export const removeItemFromCart = (payload: AddItemToCartPayload): AppThunk => (dispatch) => {
-  dispatch(updateItemQuantity({...payload, quantity: 0}))
+  dispatch(updateItem({...payload, quantity: 0}))
 }
-
 
 export default cartSlice.reducer

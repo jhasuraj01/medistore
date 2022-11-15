@@ -8,7 +8,6 @@ import styles from './index.module.scss'
 const GET_BRANCHES = gql`
   query GetBranches($organizationId: ID!) {
     branches(organizationId: $organizationId) {
-      __typename
       id
       name
     }
@@ -18,7 +17,6 @@ const GET_BRANCHES = gql`
 const CREATE_BRANCH = gql`
   mutation CreateBranch($name: String!, $organizationId: ID!) {
     createBranch(name: $name, organizationId: $organizationId) {
-      __typename
       id
       name
     }

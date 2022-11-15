@@ -84,7 +84,7 @@ export type MetaData = {
 export type Mutation = {
   __typename?: 'Mutation';
   addItem?: Maybe<Scalars['Boolean']>;
-  createBill?: Maybe<Bill>;
+  createBill: Bill;
   createBranch: Branch;
   deleteItem?: Maybe<Scalars['Boolean']>;
   setupOrganization: SetupOrganizationResponse;
@@ -161,12 +161,12 @@ export enum Privilege {
 
 export type Query = {
   __typename?: 'Query';
-  bill?: Maybe<Bill>;
+  bill: Bill;
   bills: Array<Bill>;
   branch: Branch;
   branches: Array<Branch>;
   currentUser: CurrentUser;
-  item?: Maybe<Item>;
+  item: Item;
   items: Array<Item>;
   metadata: MetaData;
 };
@@ -198,7 +198,7 @@ export type QueryBranchesArgs = {
 
 export type QueryItemArgs = {
   branchId: Scalars['ID'];
-  itemId: Scalars['ID'];
+  id: Scalars['ID'];
   organizationId: Scalars['ID'];
 };
 
@@ -462,7 +462,7 @@ export type MetaDataResolvers<ContextType = MyContext, ParentType extends Resolv
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddItemArgs, 'branchId' | 'brandName' | 'companyName' | 'costPerUnit' | 'id' | 'manufactureAt' | 'organizationId' | 'pricePerUnit' | 'quantity'>>;
-  createBill?: Resolver<Maybe<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<MutationCreateBillArgs, 'branchId' | 'customerEmail' | 'customerName' | 'customerPhone' | 'items' | 'organizationId'>>;
+  createBill?: Resolver<ResolversTypes['Bill'], ParentType, ContextType, RequireFields<MutationCreateBillArgs, 'branchId' | 'customerEmail' | 'customerName' | 'customerPhone' | 'items' | 'organizationId'>>;
   createBranch?: Resolver<ResolversTypes['Branch'], ParentType, ContextType, RequireFields<MutationCreateBranchArgs, 'name' | 'organizationId'>>;
   deleteItem?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   setupOrganization?: Resolver<ResolversTypes['SetupOrganizationResponse'], ParentType, ContextType, RequireFields<MutationSetupOrganizationArgs, 'name'>>;
@@ -476,12 +476,12 @@ export type OrganizationResolvers<ContextType = MyContext, ParentType extends Re
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  bill?: Resolver<Maybe<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<QueryBillArgs, 'billId' | 'branchId' | 'organizationId'>>;
+  bill?: Resolver<ResolversTypes['Bill'], ParentType, ContextType, RequireFields<QueryBillArgs, 'billId' | 'branchId' | 'organizationId'>>;
   bills?: Resolver<Array<ResolversTypes['Bill']>, ParentType, ContextType, RequireFields<QueryBillsArgs, 'branchId' | 'organizationId'>>;
   branch?: Resolver<ResolversTypes['Branch'], ParentType, ContextType, RequireFields<QueryBranchArgs, 'branchId' | 'organizationId'>>;
   branches?: Resolver<Array<ResolversTypes['Branch']>, ParentType, ContextType, RequireFields<QueryBranchesArgs, 'organizationId'>>;
   currentUser?: Resolver<ResolversTypes['CurrentUser'], ParentType, ContextType>;
-  item?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'itemId' | 'organizationId'>>;
+  item?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemsArgs, 'branchId' | 'organizationId'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
 }>;

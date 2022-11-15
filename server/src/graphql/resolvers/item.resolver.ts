@@ -13,7 +13,7 @@ export const resolvers: Resolvers = {
         .collection(DBT.Collections.branches)
         .doc(args.branchId)
         .collection(DBT.Collections.items)
-        .doc(args.itemId)
+        .doc(args.id)
         .withConverter(DBT.converter<DBT.Item>())
 
       const item = await itemRef.get()
