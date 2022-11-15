@@ -1,13 +1,12 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import { AppSectionLayout } from '../../../components/AppSectionLayout'
-import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../features/SubNav'
+import { SubNav, SubNavLink, SubNavSection } from '../../../features/SubNav'
 import { useNavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
-import { BillPage } from './branch'
-import styles from './index.module.scss'
+import { BillPage } from './bill'
 import { BillsHomePage } from './BillsHomePage'
 import { gql, useQuery } from '@apollo/client'
-import { GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
+import { BillsIdsQuery, BillsIdsQueryVariables, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
@@ -25,6 +24,14 @@ const GET_BRANCHES = gql`
     branches(organizationId: $organizationId) {
       id
       name
+    }
+  }
+`
+
+const GET_BILL_IDS = gql`
+  query BillsIds($organizationId: ID!, $branchId: ID!) {
+    bills(organizationId: $organizationId, branchId: $branchId) {
+      id
     }
   }
 `
@@ -52,9 +59,16 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
 }
 
 function BillsSubNav({organizationId}: {organizationId: string}) {
-  const { loading, data } = useQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES, {
+
+  const { branchId } = useParams()
+
+  if(branchId === undefined)
+    throw new Error('[BillsSubNav]: Branch Id is Needed to Fetch Bills')
+
+  const { loading, error, data } = useQuery<BillsIdsQuery, BillsIdsQueryVariables>(GET_BILL_IDS, {
     variables: {
-      organizationId: organizationId
+      organizationId: organizationId,
+      branchId: branchId,
     }
   })
 
@@ -62,9 +76,12 @@ function BillsSubNav({organizationId}: {organizationId: string}) {
     <SubNav title='Customer Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
         {
-          data?.branches.map(branch => {
+          data?.bills.length == 0 && <div style={{textAlign: 'center'}}>No Bills</div>
+        }
+        {
+          data?.bills.map(bill => {
             return (
-              <SubNavLink key={branch.id} to={branch.id}>{branch.name}</SubNavLink>
+              <SubNavLink key={bill.id} to={bill.id}>{bill.id}</SubNavLink>
             )
           })
         }
@@ -104,7 +121,7 @@ export function BillsPage() {
       <Route path='/' element={<AppSectionLayout subnav={<BranchesPageSubNav {...{organizationId}}/>}  />} >
         <Route index element={<BillsHomePage />} />
         <Route path=':branchId' element={<AppSectionLayout subnav={<BillsSubNav  {...{organizationId}}/>} />}>
-          <Route path=':billId' element={<BillPage />} />
+          <Route path=':billId' element={<BillPage {...{organizationId}} />} />
         </Route>
         <Route path='*' element={<NotFoundPage />} />
       </Route>

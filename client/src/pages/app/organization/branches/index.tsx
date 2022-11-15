@@ -1,6 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { GraphQLError } from 'graphql'
-import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { Page } from '../../../../components/AppSectionLayout'
 import { CreateBranchMutation, CreateBranchMutationVariables, GetBranchesQuery, GetBranchesQueryVariables } from '../../../../gql/graphql'
