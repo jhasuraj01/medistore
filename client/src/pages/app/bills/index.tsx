@@ -39,7 +39,6 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   return (
     <SubNav title='Customer Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
-        {/* <SubNavButton className={styles.newStoreButton}>Create New Branch</SubNavButton> */}
         {
           data?.branches.map(branch => {
             return (

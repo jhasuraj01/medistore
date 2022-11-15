@@ -205,6 +205,10 @@ export function Cart({ organizationId, branches }: CartProps) {
       toast.error('Branch is not selected')
       return
     }
+    if(cart.items.length === 0) {
+      toast.error('Cart is Empty')
+      return
+    }
     if(cart.customer.name === null) {
       toast.error('Fill Customer Name to Continue with Billing')
       return
@@ -215,10 +219,6 @@ export function Cart({ organizationId, branches }: CartProps) {
     }
     if(cart.customer.phone === null) {
       toast.error('Fill Customer Phone to Continue with Billing')
-      return
-    }
-    if(cart.items.length === 0) {
-      toast.error('Cart is Empty')
       return
     }
     
