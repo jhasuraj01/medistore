@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom'
 import { NavLinkPersist } from '../../../supports/Persistence'
 import styles from './index.module.scss'
 

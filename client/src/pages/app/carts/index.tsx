@@ -11,7 +11,6 @@ import { CartHomePage } from './CartHomePage'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { Branch, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { toast } from 'react-toastify'
-import { useEffect } from 'react'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
 
 const GET_CURRENTUSER = gql`
@@ -57,8 +56,6 @@ function CartPageSubNav({ branches }: { branches: Branch[]}) {
 }
 
 export function CartPage() {
-
-  const navigate = useNavigatePersist()
   
   const {
     loading: currentUserLoading,
@@ -70,7 +67,7 @@ export function CartPage() {
     loadBranches,
     {
       called: loadBranchesCalled,
-      loading: branchesLoading,
+      // loading: branchesLoading,
       data: branchesData,
       error: branchesError,
     }
