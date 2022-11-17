@@ -1,7 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import { Page } from '../../../../components/AppSectionLayout'
-import { Bill, BillProvider } from '../../../../components/Bill'
+import { BillProvider } from '../../../../components/Bill'
 import styles from './index.module.scss'
 
 export interface BillPageProps {

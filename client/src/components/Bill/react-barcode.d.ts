@@ -4,14 +4,14 @@ declare module 'react-barcode' {
     width?: number;
     height?: number;
     format?:
-      | "CODE39"
-      | "CODE128"
-      | "EAN13"
-      | "ITF14"
-      | "MSI"
-      | "pharmacode"
-      | "codabar"
-      | "upc";
+      | 'CODE39'
+      | 'CODE128'
+      | 'EAN13'
+      | 'ITF14'
+      | 'MSI'
+      | 'pharmacode'
+      | 'codabar'
+      | 'upc';
     displayValue?: boolean;
     fontOptions?: string;
     font?: string;

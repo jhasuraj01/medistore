@@ -3,7 +3,6 @@ import Barcode from 'react-barcode'
 import QRCode from 'react-qr-code'
 import { BillDataQuery, BillDataQueryVariables } from '../../gql/graphql'
 import { gql, useQuery } from '@apollo/client'
-import { Page } from '../AppSectionLayout'
 
 const GET_BILL_DATA = gql`
   query BillData($organizationId: ID!, $branchId: ID!, $billId: ID!) {
