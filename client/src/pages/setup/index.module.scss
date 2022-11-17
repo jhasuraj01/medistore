@@ -1,0 +1,19 @@
+.skipButton {
+  position: fixed;
+  right: 48px;
+  bottom: 48px;
+  border-radius: 6px;
+  padding: 16px 28px;
+  font-size: inherit;
+  background: hsl(266, 100%, 95%);
+  color: #7029CC;
+  border: 2px solid #B780FF;
+
+  &:hover {
+    background: hsl(266, 100%, 90%);
+  }
+
+  &:active {
+    background: hsl(266, 100%, 85%);
+  }
+}

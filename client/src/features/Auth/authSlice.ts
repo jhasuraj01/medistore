@@ -5,6 +5,7 @@ import { auth } from '../../firebase'
 type AuthToken = string | undefined
 export interface AuthState {
   active: boolean
+  loading: boolean
   token: AuthToken
   uid: string | undefined
   email: string | null | undefined
@@ -24,6 +25,7 @@ export interface AuthState {
 const initialState: AuthState = {
   token: undefined,
   active: !auth.currentUser?.isAnonymous,
+  loading: true,
   email: auth.currentUser?.email,
   displayName: auth.currentUser?.displayName,
   photoURL: auth.currentUser ? auth.currentUser.photoURL : undefined,
@@ -33,17 +35,13 @@ const initialState: AuthState = {
   phoneNumber: auth.currentUser ? auth.currentUser.phoneNumber : undefined,
   lastSignInTime: undefined,
   creationTime: undefined,
-  providers: undefined
+  providers: undefined,
 }
 
 export const updateAuthState = createAsyncThunk(
   'auth/updateAuthState',
   async () => {
     const token: AuthToken = await auth.currentUser?.getIdToken(true) || undefined
-    if(token)
-      localStorage.setItem('token', token)
-    else
-      localStorage.removeItem('token')
     return { token }
   }
 )
@@ -56,6 +54,8 @@ export const authSlice = createSlice({
     builder.addCase(updateAuthState.pending, (state) => {
       const user = auth.currentUser
       state.timestamp = Date.now()
+      state.loading = true
+      state.token = undefined
       if(user) {
         state.active = true
         state.email = user.email
@@ -83,11 +83,12 @@ export const authSlice = createSlice({
     })
     builder.addCase(updateAuthState.fulfilled, (state, { payload }) => {
       state.token = payload.token
+      state.loading = false
     })
   },
 })
 
-// export const { } = authSlice.actions
+
 
 export const selectAuth = (state: RootState) => state.auth
 export const selectAuthActive = (state: RootState) => state.auth.active

@@ -6,8 +6,10 @@ import { ReactComponent as Menu } from '../../icons/menu.svg'
 import { ReactComponent as Cart } from '../../icons/cart.svg'
 import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
+import { ReactComponent as Organization } from '../../icons/organization.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
 import { ReactComponent as ProfileIcon } from '../../icons/profile.svg'
+import { ReactComponent as FileDocumentIcon } from '../../icons/file-document.svg'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { toggleExpansion } from '../../features/SubNav/subNavSlice'
 import { selectAuth } from '../../features/Auth/authSlice'
@@ -44,9 +46,21 @@ export function Nav() {
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='store'
+          to='items'
           title='Store'
         ><Store /></NavLinkPersist>
+  
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
+          to='bills'
+          title='Bills'
+        ><FileDocumentIcon /></NavLinkPersist>
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
+          to='organization'
+          title='Organization'
+        ><Organization /></NavLinkPersist>
 
       </div>
       <div className={styles.navSection}>

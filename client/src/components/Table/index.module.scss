@@ -35,13 +35,12 @@ table {
     padding: 4px 8px;
     min-height: 30px;
     border: 1px solid #E2CCFF;
-    background-color: $section-background;
+    background-color: $page-background;
     font-weight: normal;
     cursor: default;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    user-select: none;
   }
 
   thead, tfoot {

@@ -3,7 +3,8 @@
 .layout {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: calc(100vh - 16px);
   gap: 8px;
 }
 
@@ -13,7 +14,8 @@
 }
 
 .page {
-  background-color: $section-background;
+  position: relative;
+  background-color: $page-background;
   color: hsl(0, 0%, 25%);
   border-radius: 6px;
   overflow-y: overlay;

@@ -10,6 +10,7 @@ import bodyParser from 'body-parser';
 import { schema } from './graphql/index.js';
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
 import { DecodedIdToken, getAuth } from 'firebase-admin/auth'
+import { getFirestore } from 'firebase-admin/firestore';
 
 import * as dotenv from 'dotenv';
 dotenv.config()
@@ -17,9 +18,12 @@ dotenv.config()
 const devenv = process.env.NODE_ENV === 'development'
 
 initializeApp({ credential: applicationDefault() })
+const db = getFirestore();
+db.settings({ ignoreUndefinedProperties: true })
 
 export interface MyContext {
-  user?: DecodedIdToken;
+  user: DecodedIdToken | null
+  db: FirebaseFirestore.Firestore
 }
 
 const app = express();
@@ -58,11 +62,13 @@ app.use(
         const token = req.headers.authorization?.split(' ')[1] || ''
         const decodedToken = await getAuth().verifyIdToken(token);
         return {
-          user: decodedToken
+          user: decodedToken,
+          db,
         }
       } catch (error) {
         return {
-          user: null
+          user: null,
+          db,
         }
       }
     },
