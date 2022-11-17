@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { NotFoundPage } from '../../pages/404'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { addItemToCart, CartInterface, CartItemInterface, removeCart, removeItemFromCart, selectCart, selectNextCart, selectPrevCart, updateCart, updateCustomerDetails, updateItem } from './cartsSlice'
-import { useNavigatePersist } from '../../supports/Persistence'
+import { NavigatePersist, useNavigatePersist } from '../../supports/Persistence'
 import { InputButton, InputButtonPayload } from '../../components/InputButton'
 import { TouchInput } from '../../components/TouchInput'
 import { ReactComponent as MathPlusIcon } from '../../icons/math-plus.svg'
@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { GraphQLError } from 'graphql'
 import { Page } from '../../components/AppSectionLayout'
+import { BillProvider } from '../../components/Bill'
 
 const currency = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -189,16 +190,18 @@ export function Cart({ organizationId, branches }: CartProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigatePersist()
   const cart = useAppSelector(selectCart(id))
+
   const [createBill] = useMutation<CreateBillMutation, CreateBillMutationVariables>(CREATE_BILL, {
     refetchQueries: [
       'BillsIds'
     ]
   })
 
+  
   if(!cart) {
     return <NotFoundPage />
   }
-  
+
   const nextCart = useAppSelector(selectNextCart(id))
   const prevCart = useAppSelector(selectPrevCart(id))
 
@@ -283,7 +286,10 @@ export function Cart({ organizationId, branches }: CartProps) {
   return (
     <Page className={styles.container}>
       <div className={styles.header}>
-        <InputButton placeholder='Item ID: 1234567' onSubmit={handleAddItem}><MathPlusIcon /></InputButton>
+        {
+          cart.billId === null &&
+          <InputButton placeholder='Item ID: 1234567' onSubmit={handleAddItem}><MathPlusIcon /></InputButton>
+        }
         {
           cart.billId && <div>Generated Bill ID: {cart.billId}</div>
         }
@@ -302,72 +308,81 @@ export function Cart({ organizationId, branches }: CartProps) {
           }
         </div>
       </div>
+      { cart.billId &&
+        <BillProvider
+          organizationId={organizationId}
+          branchId={cart.branchId}
+          billId={cart.billId} />
+      }
+      { cart.billId === null &&
+        <Table className={styles.customerDetails}>
+          <TableHead>
+            <th>Cart ID</th>
+            <th>Customer Name</th>
+            <th>Email ID</th>
+            <th>Phone Number</th>
+          </TableHead>
+          <TableBody>
+            <tr>
+              <td>
+                <i>{id}</i>
+              </td>
+              <td className={styles.editableBlock}>
+                <TouchInput
+                  onSubmit={({ value }) => value != 'Enter Name' && dispatch(updateCustomerDetails({ id, name: value }))}
+                  text={cart.customer.name}
+                  default='Enter Name' />
+              </td>
+              <td className={styles.editableBlock}>
+                <TouchInput
+                  onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, email: value }))}
+                  text={cart.customer.email}
+                  default='Enter Email' />
+              </td>
+              <td className={styles.editableBlock}>
+                <TouchInput
+                  onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, phone: value }))}
+                  text={cart.customer.phone}
+                  default='Enter Phone' />
+              </td>
+            </tr>
+          </TableBody>
+        </Table>
+      }
 
-      <Table className={styles.customerDetails}>
-        <TableHead>
-          <th>Cart ID</th>
-          <th>Customer Name</th>
-          <th>Email ID</th>
-          <th>Phone Number</th>
-        </TableHead>
-        <TableBody>
-          <tr>
-            <td>
-              <i>{id}</i>
-            </td>
-            <td className={styles.editableBlock}>
-              <TouchInput
-                onSubmit={({ value }) => value != 'Enter Name' && dispatch(updateCustomerDetails({ id, name: value }))}
-                text={cart.customer.name}
-                default='Enter Name' />
-            </td>
-            <td className={styles.editableBlock}>
-              <TouchInput
-                onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, email: value }))}
-                text={cart.customer.email}
-                default='Enter Email' />
-            </td>
-            <td className={styles.editableBlock}>
-              <TouchInput
-                onSubmit={({ value }) => value != 'Enter Email' && dispatch(updateCustomerDetails({ id, phone: value }))}
-                text={cart.customer.phone}
-                default='Enter Phone' />
-            </td>
-          </tr>
-        </TableBody>
-      </Table>
-
-      <Table className={styles.cartTable}>
-        <TableHead>
-          <th scope='col'>#</th>
-          <th scope='col'></th>
-          <th scope='col'>Product ID</th>
-          <th scope='col'>Product Name</th>
-          <th scope='col' title='Price Per Quantity'>P / Q</th>
-          <th scope='col'>Discount</th>
-          <th scope='col' title='Final Price Per Quantity'>FP / Q</th>
-          <th scope='col'>Quantity</th>
-          <th scope='col'>Total</th>
-        </TableHead>
-        <TableBody>
-          {cart.items.map((item, index) => (
-            <CartRow
-              key={item.id}
-              quantity={item.quantity}
-              organizationId={organizationId}
-              branchId={cart.branchId}
-              id={item.id}
-              cartId={id}
-              index={index}
-              onDelete={() => dispatch(removeItemFromCart({ cartID: id, itemID: item.id }))}
-              onUpdate={(value: number) => dispatch(updateItem({ cartID: id, itemID: item.id, quantity: value }))} />
-          ))}
-        </TableBody>
-        <TableFooter>
-          <td colSpan={8} title='Inclusive of Taxes and Discounts (if any)'>Total Bill Value</td>
-          <td>{currency.format(total)}</td>
-        </TableFooter>
-      </Table>
+      { cart.billId === null &&
+        <Table className={styles.cartTable}>
+          <TableHead>
+            <th scope='col'>#</th>
+            <th scope='col'></th>
+            <th scope='col'>Product ID</th>
+            <th scope='col'>Product Name</th>
+            <th scope='col' title='Price Per Quantity'>P / Q</th>
+            <th scope='col'>Discount</th>
+            <th scope='col' title='Final Price Per Quantity'>FP / Q</th>
+            <th scope='col'>Quantity</th>
+            <th scope='col'>Total</th>
+          </TableHead>
+          <TableBody>
+            {cart.items.map((item, index) => (
+              <CartRow
+                key={item.id}
+                quantity={item.quantity}
+                organizationId={organizationId}
+                branchId={cart.branchId}
+                id={item.id}
+                cartId={id}
+                index={index}
+                onDelete={() => dispatch(removeItemFromCart({ cartID: id, itemID: item.id }))}
+                onUpdate={(value: number) => dispatch(updateItem({ cartID: id, itemID: item.id, quantity: value }))} />
+            ))}
+          </TableBody>
+          <TableFooter>
+            <td colSpan={8} title='Inclusive of Taxes and Discounts (if any)'>Total Bill Value</td>
+            <td>{currency.format(total)}</td>
+          </TableFooter>
+        </Table>
+      }
     </Page>
   )
 }

@@ -1,6 +1,38 @@
 import styles from './index.module.scss'
 import Barcode from 'react-barcode'
 import QRCode from 'react-qr-code'
+import { BillDataQuery, BillDataQueryVariables } from '../../gql/graphql'
+import { gql, useQuery } from '@apollo/client'
+import { Page } from '../AppSectionLayout'
+
+const GET_BILL_DATA = gql`
+  query BillData($organizationId: ID!, $branchId: ID!, $billId: ID!) {
+    bill(organizationId: $organizationId, branchId: $branchId, billId: $billId) {
+      createdAt
+      customerEmail
+      customerName
+      customerPhone
+      items {
+        id
+        brandName
+        costPerUnit
+        discount
+        pricePerUnit
+        quantity
+      }
+      priceTotal
+      costTotal
+      discountedPriceTotal
+      totalItems
+    }
+    organization(id: $organizationId) {
+      name
+    }
+    branch(organizationId: $organizationId, branchId: $branchId) {
+      name
+    }
+  }
+`
 
 const currency = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -62,7 +94,7 @@ export function Bill(props: BillProps) {
           <div className={styles.table}>
             <div className={styles.tableHeader}>
               <div className={styles.tableCell}>#</div>
-              <div className={styles.tableCell}>Name</div>
+              <div className={styles.tableCellLeft}>Name</div>
               <div className={styles.tableCell}>Price/Unit</div>
               <div className={styles.tableCell}>Qty</div>
               <div className={styles.tableCell}>Discount</div>
@@ -72,7 +104,7 @@ export function Bill(props: BillProps) {
               props.items.map((item, index) => (
                 <div className={styles.tableRow} key={item.id}>
                   <div className={styles.tableCell}>{index + 1}</div>
-                  <div className={styles.tableCell}>{item.brandName}</div>
+                  <div className={styles.tableCellLeft}>{item.brandName}</div>
                   <div className={styles.tableCellRight}>{currency.format(item.costPerUnit)}</div>
                   <div className={styles.tableCell}>{item.quantity}</div>
                   <div className={styles.tableCellRight}>{percent.format(item.discount)}</div>
@@ -109,5 +141,46 @@ export function Bill(props: BillProps) {
         </div>
       </div>
     </div>
+  )
+}
+
+export interface BillProviderProps {
+  organizationId: string
+  branchId: string
+  billId: string
+}
+
+export function BillProvider({ organizationId, branchId, billId }: BillProviderProps) {
+  const {loading, error, data} = useQuery<BillDataQuery, BillDataQueryVariables>(GET_BILL_DATA, {
+    variables: { organizationId, branchId, billId }
+  })
+
+  if(error) {
+    return (
+      <div>
+        <div>{error.message}</div>
+      </div>
+    )
+  }
+
+  if(loading || data == undefined) {
+    return (
+      <div className='loading-top'></div>
+    )
+  }
+
+  return (
+    <Bill
+      organizationName={data.organization.name}
+      organizationId={organizationId}
+      branchId={branchId}
+      branchName={data.branch.name}
+      billId={billId}
+      customerEmail={data.bill.customerEmail}
+      customerName={data.bill.customerName}
+      customerPhone={data.bill.customerPhone}
+      discountedPriceTotal={data.bill.discountedPriceTotal}
+      items={data.bill.items}
+    />
   )
 }
