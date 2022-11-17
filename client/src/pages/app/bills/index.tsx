@@ -65,7 +65,7 @@ function BillsSubNav({organizationId}: {organizationId: string}) {
   if(branchId === undefined)
     throw new Error('[BillsSubNav]: Branch Id is Needed to Fetch Bills')
 
-  const { loading, error, data } = useQuery<BillsIdsQuery, BillsIdsQueryVariables>(GET_BILL_IDS, {
+  const { loading, data } = useQuery<BillsIdsQuery, BillsIdsQueryVariables>(GET_BILL_IDS, {
     variables: {
       organizationId: organizationId,
       branchId: branchId,
