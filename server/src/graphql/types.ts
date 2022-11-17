@@ -170,6 +170,7 @@ export type Query = {
   item: Item;
   items: Array<Item>;
   metadata: MetaData;
+  organization: Organization;
 };
 
 
@@ -207,6 +208,11 @@ export type QueryItemArgs = {
 export type QueryItemsArgs = {
   branchId: Scalars['ID'];
   organizationId: Scalars['ID'];
+};
+
+
+export type QueryOrganizationArgs = {
+  id: Scalars['ID'];
 };
 
 export type SetupOrganizationResponse = {
@@ -486,6 +492,7 @@ export type QueryResolvers<ContextType = MyContext, ParentType extends Resolvers
   item?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemArgs, 'branchId' | 'id' | 'organizationId'>>;
   items?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, RequireFields<QueryItemsArgs, 'branchId' | 'organizationId'>>;
   metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
+  organization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<QueryOrganizationArgs, 'id'>>;
 }>;
 
 export type SetupOrganizationResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['SetupOrganizationResponse'] = ResolversParentTypes['SetupOrganizationResponse']> = ResolversObject<{

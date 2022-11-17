@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 
 
 export interface PageProps {
-  children: React.ReactNode | React.ReactNode[]
+  children?: React.ReactNode | React.ReactNode[]
   className?: string
 }
 export function Page({ children, className }: PageProps) {

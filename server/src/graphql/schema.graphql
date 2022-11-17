@@ -2,7 +2,7 @@ type Query {
   metadata: MetaData!
 
   # Organization Queries
-  # organization: Organization
+  organization(id: ID!): Organization!
 
   # Branch Queries
   branch(organizationId: ID!, branchId: ID!): Branch!

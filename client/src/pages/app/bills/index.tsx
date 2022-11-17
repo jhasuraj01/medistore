@@ -44,7 +44,7 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   })
 
   return (
-    <SubNav title='Branches' className={loading ? 'loading-top' : undefined}>
+    <SubNav title='Branch Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
         {
           data?.branches.map(branch => {
