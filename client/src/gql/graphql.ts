@@ -33,7 +33,7 @@ export type Bill = {
   __typename?: 'Bill';
   branchId: Scalars['ID'];
   costTotal: Scalars['FloatNonNegative'];
-  createdAt?: Maybe<Scalars['Date']>;
+  createdAt: Scalars['Date'];
   customerEmail: Scalars['StringNonEmpty'];
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
@@ -231,7 +231,7 @@ export type BillDataQueryVariables = Exact<{
 }>;
 
 
-export type BillDataQuery = { __typename?: 'Query', bill: { __typename?: 'Bill', createdAt?: number | null, customerEmail: string, customerName: string, customerPhone: string, priceTotal: number, costTotal: number, discountedPriceTotal: number, totalItems: number, items: Array<{ __typename?: 'Item', id: string, brandName: string, costPerUnit: number, discount: number, pricePerUnit: number, quantity: number }> }, organization: { __typename?: 'Organization', name: string }, branch: { __typename?: 'Branch', name: string } };
+export type BillDataQuery = { __typename?: 'Query', bill: { __typename?: 'Bill', createdAt: number, customerEmail: string, customerName: string, customerPhone: string, priceTotal: number, costTotal: number, discountedPriceTotal: number, totalItems: number, items: Array<{ __typename?: 'Item', id: string, brandName: string, costPerUnit: number, discount: number, pricePerUnit: number, quantity: number }> }, organization: { __typename?: 'Organization', name: string }, branch: { __typename?: 'Branch', name: string } };
 
 export type GetItemQueryVariables = Exact<{
   organizationId: Scalars['ID'];

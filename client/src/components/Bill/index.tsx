@@ -3,6 +3,8 @@ import Barcode from 'react-barcode'
 import QRCode from 'react-qr-code'
 import { BillDataQuery, BillDataQueryVariables } from '../../gql/graphql'
 import { gql, useQuery } from '@apollo/client'
+import { PDFExport } from '@progress/kendo-react-pdf'
+import { useRef } from 'react'
 
 const GET_BILL_DATA = gql`
   query BillData($organizationId: ID!, $branchId: ID!, $billId: ID!) {
@@ -56,6 +58,7 @@ export interface BillProps {
   customerName: string
   customerPhone: string
   discountedPriceTotal: number
+  createdAt: number
   items: {
     id: string
     brandName: string
@@ -67,17 +70,21 @@ export interface BillProps {
 }
 
 export function Bill(props: BillProps) {
+
+  const billLink = location.origin + `/bill?organizationId=${props.organizationId}&branchId=${props.branchId}&billId=${props.billId}`
+
   return (
-    <div className={styles.container}>
+    <div className={styles.billContainer}>
       <div className={styles.row}>
         <div className={styles.col}>
           <div className={styles.h1}>MediStore</div>
           <div className={styles.h2}>{props.organizationName}</div>
           <div className={styles.h3}>{props.branchName}</div>
           <div>Invoice: {props.billId}</div>
+          <div>{new Date(props.createdAt).toString()}</div>
         </div>
         <div className={styles.colQRCode}>
-          <QRCode size={150} bgColor='white' fgColor='currentColor' value={props.billId} />
+          <QRCode size={150} bgColor='white' fgColor='currentColor' value={billLink} />
         </div>
       </div>
       <div className={styles.row}>
@@ -150,6 +157,9 @@ export interface BillProviderProps {
 }
 
 export function BillProvider({ organizationId, branchId, billId }: BillProviderProps) {
+  
+  const billRef = useRef<PDFExport>(null)
+
   const {loading, error, data} = useQuery<BillDataQuery, BillDataQueryVariables>(GET_BILL_DATA, {
     variables: { organizationId, branchId, billId }
   })
@@ -168,18 +178,31 @@ export function BillProvider({ organizationId, branchId, billId }: BillProviderP
     )
   }
 
+  const downloadBill = () => {
+    if(billRef.current === null) return
+    billRef.current.save()
+  }
+
   return (
-    <Bill
-      organizationName={data.organization.name}
-      organizationId={organizationId}
-      branchId={branchId}
-      branchName={data.branch.name}
-      billId={billId}
-      customerEmail={data.bill.customerEmail}
-      customerName={data.bill.customerName}
-      customerPhone={data.bill.customerPhone}
-      discountedPriceTotal={data.bill.discountedPriceTotal}
-      items={data.bill.items}
-    />
+    <div>
+      <PDFExport ref={billRef} paperSize='A4' scale={0.5}>
+        <Bill
+          organizationName={data.organization.name}
+          organizationId={organizationId}
+          branchId={branchId}
+          branchName={data.branch.name}
+          billId={billId}
+          customerEmail={data.bill.customerEmail}
+          customerName={data.bill.customerName}
+          customerPhone={data.bill.customerPhone}
+          discountedPriceTotal={data.bill.discountedPriceTotal}
+          items={data.bill.items}
+          createdAt={data.bill.createdAt}
+        />
+      </PDFExport>
+      <div className={styles.toolbar}>
+        <button onClick={downloadBill}>Download Bill</button>
+      </div>
+    </div>
   )
 }

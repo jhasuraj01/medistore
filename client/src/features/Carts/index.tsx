@@ -286,13 +286,6 @@ export function Cart({ organizationId, branches }: CartProps) {
   return (
     <Page className={styles.container}>
       <div className={styles.header}>
-        {
-          cart.billId === null &&
-          <InputButton placeholder='Item ID: 1234567' onSubmit={handleAddItem}><MathPlusIcon /></InputButton>
-        }
-        {
-          cart.billId && <div>Generated Bill ID: {cart.billId}</div>
-        }
         <div className={styles.actionButtons}>
           {
             branches.length > 0 &&
@@ -307,6 +300,10 @@ export function Cart({ organizationId, branches }: CartProps) {
               <IconButton title='Generate Bill' onClick={handleGenerateBill}><FileAddIcon /></IconButton>
           }
         </div>
+        {
+          cart.billId === null &&
+          <InputButton placeholder='Item ID: 1234567' onSubmit={handleAddItem}><MathPlusIcon /></InputButton>
+        }
       </div>
       { cart.billId &&
         <BillProvider
