@@ -19,6 +19,7 @@ import './App.scss'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { BillsPage } from './pages/app/bills'
+import { RootBillPage } from './pages/bill'
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
           <Route path='*' element={<NotFoundPage />} />
         </Route>
         <Route path='auth' element={<AuthPage />} />
+        <Route path='bill' element={<RootBillPage />} />
         <Route path='setup/*' element={<AccountSetupPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>

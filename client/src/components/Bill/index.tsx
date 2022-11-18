@@ -71,6 +71,8 @@ export interface BillProps {
 
 export function Bill(props: BillProps) {
 
+  const billLink = location.origin + `/bill?organizationId=${props.organizationId}&branchId=${props.branchId}&billId=${props.billId}`
+
   return (
     <div className={styles.billContainer}>
       <div className={styles.row}>
@@ -82,7 +84,7 @@ export function Bill(props: BillProps) {
           <div>{new Date(props.createdAt).toString()}</div>
         </div>
         <div className={styles.colQRCode}>
-          <QRCode size={150} bgColor='white' fgColor='currentColor' value={props.billId} />
+          <QRCode size={150} bgColor='white' fgColor='currentColor' value={billLink} />
         </div>
       </div>
       <div className={styles.row}>
