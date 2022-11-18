@@ -34,7 +34,7 @@ export type Bill = {
   __typename?: 'Bill';
   branchId: Scalars['ID'];
   costTotal: Scalars['FloatNonNegative'];
-  createdAt?: Maybe<Scalars['Date']>;
+  createdAt: Scalars['Date'];
   customerEmail: Scalars['StringNonEmpty'];
   customerName: Scalars['StringNonEmpty'];
   customerPhone: Scalars['StringNonEmpty'];
@@ -363,7 +363,7 @@ export type ResolversParentTypes = ResolversObject<{
 export type BillResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Bill'] = ResolversParentTypes['Bill']> = ResolversObject<{
   branchId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   costTotal?: Resolver<ResolversTypes['FloatNonNegative'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customerEmail?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
   customerName?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;
   customerPhone?: Resolver<ResolversTypes['StringNonEmpty'], ParentType, ContextType>;

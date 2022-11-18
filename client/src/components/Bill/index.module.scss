@@ -1,4 +1,4 @@
-.container {
+.billContainer {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -113,4 +113,12 @@
   // .tableCellLeft:first-child {
   //   padding-left: 12px;
   // }
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 32px;
+  gap: 16px;
 }

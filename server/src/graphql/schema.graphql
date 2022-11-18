@@ -110,7 +110,7 @@ type Bill {
   profitLoss: Float!
   totalItems: IntPositive!
   items: [Item!]!
-  createdAt: Date
+  createdAt: Date!
 }
 
 type CurrentUser {
