@@ -79,6 +79,7 @@ export function Bill(props: BillProps) {
           <div className={styles.h2}>{props.organizationName}</div>
           <div className={styles.h3}>{props.branchName}</div>
           <div>Invoice: {props.billId}</div>
+          <div>{new Date(props.createdAt).toString()}</div>
         </div>
         <div className={styles.colQRCode}>
           <QRCode size={150} bgColor='white' fgColor='currentColor' value={props.billId} />
@@ -90,7 +91,6 @@ export function Bill(props: BillProps) {
           <div>{props.customerName}</div>
           <div>Email: {props.customerEmail}</div>
           <div>Phone: {props.customerPhone}</div>
-          <div>Date: {props.createdAt}</div>
         </div>
       </div>
       <div className={styles.row}>

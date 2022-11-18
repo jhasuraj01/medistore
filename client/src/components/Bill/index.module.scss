@@ -42,7 +42,7 @@
     padding: 0;
     border: 0;
     align-self: stretch;
-    flex-basis: 2px;
+    flex-basis: 1px;
     background-color: currentColor;
   }
 }
@@ -82,11 +82,11 @@
 
   .tableHeader {
     font-weight: bold;
-    border-bottom: 2px solid currentColor;
+    border-bottom: 1px solid currentColor;
   }
 
   .tableFooter {
-    border-top: 2px solid currentColor;
+    border-top: 1px solid currentColor;
   }
 
   .tableCell, .tableCellRight, .tableCellLeft {
@@ -103,7 +103,7 @@
   }
 
   .tableCell:first-child {
-    border-right: 2px solid currentColor;
+    border-right: 1px solid currentColor;
   }
 
   // .tableCellRight:last-child {
