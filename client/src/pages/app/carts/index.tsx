@@ -1,4 +1,3 @@
-import styles from './index.module.scss'
 import { Route, Routes } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { AppSectionLayout, Page } from '../../../components/AppSectionLayout'
@@ -14,6 +13,7 @@ import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
 import { useEffect } from 'react'
 import { PendingOrganizationSetup } from '../../errors/pending-organization-setup'
+import styles from './index.module.scss'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {

@@ -9,7 +9,7 @@ export function SubNavLink(props: NavLinkProps) {
   return (
     <NavLinkPersist
       {...props}
-      className={({ isActive }) => `${className || ''} ${isActive ? styles.selected : ''}`}>
+      className={({ isActive }) => `${className} ${isActive ? styles.selected : ''}`}>
       { props.children }
     </NavLinkPersist>
   )
