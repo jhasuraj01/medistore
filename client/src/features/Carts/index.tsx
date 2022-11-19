@@ -165,7 +165,7 @@ function CartRow({organizationId, branchId, cartId, id, index, quantity, onDelet
       <td>{data.item.brandName}</td>
       <td>{currency.format(data.item.pricePerUnit)}</td>
       <td>{percent.format(data.item.discount)}</td>
-      <td>{currency.format(data.item.pricePerUnit)}</td>
+      <td>{currency.format(data.item.pricePerUnit * (1 - data.item.discount))}</td>
       <td className={styles.editableBlock}>
         <TouchInput
           onSubmit={({ value }) => value != 'Enter Name' && !isNaN(Number(value)) && onUpdate(Number(value))}
