@@ -1,8 +1,12 @@
-.newCartButton {
+.styledSubNavButton {
   position: sticky;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   top: 10px;
-  background: #F1E5FF;
-  width: auto;
+  background: #F1E5FF !important;
+  width: fit-content !important;
   height: 40px;
   border-radius: 40px;
   margin: 0 8px 8px 8px;

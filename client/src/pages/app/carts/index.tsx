@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import { Route, Routes } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { AppSectionLayout } from '../../../components/AppSectionLayout'
+import { AppSectionLayout, Page } from '../../../components/AppSectionLayout'
 import { Cart } from '../../../features/Carts'
 import { addNewCart, selectCarts, } from '../../../features/Carts/cartsSlice'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../features/SubNav'
@@ -13,6 +13,7 @@ import { Branch, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuer
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
 import { useEffect } from 'react'
+import { PendingOrganizationSetup } from '../../errors/pending-organization-setup'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -45,12 +46,15 @@ function CartPageSubNav({ branches }: { branches: Branch[]}) {
   return (
     <SubNav title='Carts'>
       <SubNavSection>
-        {
-          branches.length > 0 ?
-            <SubNavButton className={styles.newCartButton} onClick={createNewCart}>Create New Cart</SubNavButton> :
-            <div>Create Branch to Create New Cart</div>
+        { branches.length === 0 &&
+          <SubNavLink to='../../organization/branches' className={styles.styledSubNavButton}>Create New Branch</SubNavLink>
         }
-        { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
+        { branches.length > 0 &&
+          <SubNavButton className={styles.styledSubNavButton} onClick={createNewCart}>Create New Cart</SubNavButton>
+        }
+        { branches.length > 0 &&
+          carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)
+        }
       </SubNavSection>
     </SubNav>
   )
@@ -97,8 +101,18 @@ export function CartPage() {
 
   const branches = branchesData?.branches || []
 
-  if(organizationId == undefined) {
+  if(currentUserLoading) {
     return <LoaderRipple />
+  }
+
+  if(organizationId === undefined) {
+    return (
+      <Page>
+        <PendingOrganizationSetup
+          header='Customer Billing Point'
+          message='Create New Cart, Scan Product&apos;s BarCode, Collect Payment, Generate Bill'/>
+      </Page>
+    )
   }
 
   return (

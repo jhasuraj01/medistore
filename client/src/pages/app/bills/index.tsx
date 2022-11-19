@@ -1,5 +1,5 @@
 import { Route, Routes, useParams } from 'react-router-dom'
-import { AppSectionLayout } from '../../../components/AppSectionLayout'
+import { AppSectionLayout, Page } from '../../../components/AppSectionLayout'
 import { SubNav, SubNavLink, SubNavSection, SubNavText } from '../../../features/SubNav'
 import { NotFoundPage } from '../../404'
 import { BillPage } from './bill'
@@ -9,6 +9,8 @@ import { BillsIdsQuery, BillsIdsQueryVariables, GetBranchesQuery, GetBranchesQue
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
+import { PendingOrganizationSetup } from '../../errors/pending-organization-setup'
+import styles from './index.module.scss'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -45,6 +47,9 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   return (
     <SubNav title='Branch Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
+        { data?.branches.length == 0 &&
+          <SubNavLink to='../../organization/branches' className={styles.styledSubNavButton}>Create New Branch</SubNavLink>
+        }
         {
           data?.branches.map(branch => {
             return (
@@ -103,8 +108,18 @@ export function BillsPage() {
     }
   }, [errorMessage, loading])
 
-  if(loading || !organizationId) {
+  if(loading) {
     return <LoaderRipple />
+  }
+
+  if(organizationId === undefined) {
+    return (
+      <Page>
+        <PendingOrganizationSetup
+          header='Invoices Store'
+          message='View All Generated Invoices, Download Invoices'/>
+      </Page>
+    )
   }
 
   return (

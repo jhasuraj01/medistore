@@ -5,11 +5,11 @@ import styles from './index.module.scss'
 
 
 export function SubNavLink(props: NavLinkProps) {
-  const className = `${props.className && ''} ${styles.subnavOption}`
+  const className = `${props.className || ''} ${styles.subnavOption}`
   return (
     <NavLinkPersist
       {...props}
-      className={({ isActive }) => `${className || ''} ${isActive && styles.selected}`}>
+      className={({ isActive }) => `${className || ''} ${isActive ? styles.selected : ''}`}>
       { props.children }
     </NavLinkPersist>
   )
@@ -18,7 +18,6 @@ export function SubNavLink(props: NavLinkProps) {
 interface SubNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
 }
-
 export function SubNavButton(props: SubNavButtonProps) {
   const className = `${props.className || ''} ${styles.subnavOption}`
   return (
@@ -48,7 +47,6 @@ export function SubNavText(props: SubNavTextProps) {
 export interface SubNavSectionProps {
   children: React.ReactNode
 }
-
 export function SubNavSection({ children }: SubNavSectionProps) {
   return (
     <div className={styles.subnavSection}>
