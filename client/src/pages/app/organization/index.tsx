@@ -6,7 +6,7 @@ import { AppSectionLayout } from '../../../components/AppSectionLayout'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
 import { SubNav, SubNavLink, SubNavSection } from '../../../features/SubNav'
 import { GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
-import { NavigatePersist, useNavigatePersist } from '../../../supports/Persistence'
+import { NavigatePersist } from '../../../supports/Persistence'
 import { NotFoundPage } from '../../404'
 import { BranchesPage } from './branches'
 
@@ -32,17 +32,9 @@ function OrganizationPageSubNav() {
 export function OrganizationPage() {
 
   const { loading, error, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
-  const navigate = useNavigatePersist()
 
   const organizationId = data?.currentUser?.organizationId
   const errorMessage = error?.message
-
-  useEffect(() => {
-    if(organizationId === undefined && !loading) {
-      toast.error('Setup Your Organization to Continue!')
-      navigate({pathname: '/setup', search: 'return=/app/organization'})
-    }
-  }, [organizationId, loading])
 
   useEffect(() => {
     if(errorMessage !== undefined && loading === false) {

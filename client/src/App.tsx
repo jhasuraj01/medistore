@@ -8,8 +8,8 @@ import { selectAuth, updateAuthState } from './features/Auth/authSlice'
 import { NotFoundPage } from './pages/404'
 import { AppLayout } from './components/AppLayout'
 import { AuthPage } from './pages/auth'
-import { HomePage } from './pages/app/home'
-import { SearchPage } from './pages/app/search'
+// import { HomePage } from './pages/app/home'
+// import { SearchPage } from './pages/app/search'
 import { CartPage } from './pages/app/carts'
 import { ItemsPage } from './pages/app/items'
 import { AccountPage } from './pages/app/account'
@@ -42,14 +42,14 @@ function App() {
       <Routes>
         <Route index element={<NavigatePersist to='app' />} />
         <Route path='app' element={<AppLayout />}>
-          <Route index element={<NavigatePersist to='home' />} />
-          <Route path='home/*' element={<HomePage />} />
-          <Route path='search/*' element={<SearchPage />} />
-          <Route path='carts/*' element={<CartPage />} />
-          <Route path='items/*' element={<ItemsPage />} />
-          <Route path='bills/*' element={<BillsPage />} />
+          <Route index element={<NavigatePersist to='organization' />} />
           <Route path='account/*' element={<AccountPage />} />
+          <Route path='bills/*' element={<BillsPage />} />
+          <Route path='carts/*' element={<CartPage />} />
+          {/* <Route path='home/*' element={<HomePage />} /> */}
+          <Route path='items/*' element={<ItemsPage />} />
           <Route path='organization/*' element={<OrganizationPage />} />
+          {/* <Route path='search/*' element={<SearchPage />} /> */}
           <Route path='*' element={<NotFoundPage />} />
         </Route>
         <Route path='auth' element={<AuthPage />} />

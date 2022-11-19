@@ -6,13 +6,13 @@ import styles from './index.module.scss'
 
 export function SubNavLink(props: NavLinkProps) {
   const className = `${props.className && ''} ${styles.subnavOption}`
-  return (<>
+  return (
     <NavLinkPersist
       {...props}
       className={({ isActive }) => `${className || ''} ${isActive && styles.selected}`}>
       { props.children }
     </NavLinkPersist>
-  </>)
+  )
 }
 
 interface SubNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,13 +21,28 @@ interface SubNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 
 export function SubNavButton(props: SubNavButtonProps) {
   const className = `${props.className || ''} ${styles.subnavOption}`
-  return (<>
+  return (
     <button
       {...props}
       className={className}>
       { props.children }
     </button>
-  </>)
+  )
+}
+
+export interface SubNavTextProps {
+  children?: string
+  className?: string
+}
+export function SubNavText(props: SubNavTextProps) {
+  const className = `${props.className || ''} ${styles.subnavText}`
+  return (
+    <div
+      {...props}
+      className={className}>
+      {props.children}
+    </div>
+  )
 }
 
 export interface SubNavSectionProps {

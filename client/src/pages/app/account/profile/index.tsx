@@ -1,4 +1,5 @@
 import { useAppSelector } from '../../../../app/hooks'
+import { Page } from '../../../../components/AppSectionLayout'
 import { selectAuth } from '../../../../features/Auth/authSlice'
 import { auth } from '../../../../firebase'
 import { NavLinkPersist } from '../../../../supports/Persistence'
@@ -34,7 +35,7 @@ export function ProfilePage() {
 
   const className = `${styles.container} ${user.loading && 'loading-top'}`
 
-  return <div className={className}>
+  return <Page className={className}>
     <h2>My Profile</h2>
     {
       records.map(([key, value]) => {
@@ -53,5 +54,5 @@ export function ProfilePage() {
       }
     </div>
 
-  </div>
+  </Page>
 }

@@ -12,6 +12,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { Branch, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
+import { useEffect } from 'react'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -72,8 +73,15 @@ export function CartPage() {
       error: branchesError,
     }
   ] = useLazyQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES)
-  
+
   const organizationId = currentUserData?.currentUser.organizationId
+  const currentUserErrorMessage = currentUserError?.message
+
+  useEffect(() => {
+    if(currentUserErrorMessage !== undefined && currentUserLoading === false) {
+      toast.error(currentUserErrorMessage)
+    }
+  }, [currentUserErrorMessage, currentUserLoading])
 
   if(!currentUserLoading && currentUserData && !loadBranchesCalled) {
     loadBranches({
@@ -81,10 +89,6 @@ export function CartPage() {
         organizationId: currentUserData.currentUser.organizationId
       }
     })
-  }
-
-  if(currentUserError) {
-    toast.error(currentUserError.message)
   }
 
   if(branchesError) {
