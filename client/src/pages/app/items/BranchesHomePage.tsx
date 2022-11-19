@@ -6,7 +6,7 @@ export function BranchesHomePage() {
     <div className={styles.homepage}>
       <h1>Branch Management Point</h1>
       <CartIcon className={styles.icon} />
-      <p>Create New Branch, Add Products, Collect Payment, Generate Bill</p>
+      <p>Add New Products, Update Existing Products, View Available Stocks</p>
     </div>
   )
 }

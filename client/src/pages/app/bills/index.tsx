@@ -1,7 +1,6 @@
 import { Route, Routes, useParams } from 'react-router-dom'
-import { AppSectionLayout } from '../../../components/AppSectionLayout'
-import { SubNav, SubNavLink, SubNavSection } from '../../../features/SubNav'
-import { useNavigatePersist } from '../../../supports/Persistence'
+import { AppSectionLayout, Page } from '../../../components/AppSectionLayout'
+import { SubNav, SubNavLink, SubNavSection, SubNavText } from '../../../features/SubNav'
 import { NotFoundPage } from '../../404'
 import { BillPage } from './bill'
 import { BillsHomePage } from './BillsHomePage'
@@ -10,6 +9,8 @@ import { BillsIdsQuery, BillsIdsQueryVariables, GetBranchesQuery, GetBranchesQue
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
+import { PendingOrganizationSetup } from '../../errors/pending-organization-setup'
+import styles from './index.module.scss'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -46,6 +47,9 @@ function BranchesPageSubNav({organizationId}: {organizationId: string}) {
   return (
     <SubNav title='Branch Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
+        { data?.branches.length == 0 &&
+          <SubNavLink to='../../organization/branches' className={styles.styledSubNavButton}>Create New Branch</SubNavLink>
+        }
         {
           data?.branches.map(branch => {
             return (
@@ -76,7 +80,7 @@ function BillsSubNav({organizationId}: {organizationId: string}) {
     <SubNav title='Customer Bills' className={loading ? 'loading-top' : undefined}>
       <SubNavSection>
         {
-          data?.bills.length == 0 && <div style={{textAlign: 'center'}}>No Bills</div>
+          data?.bills.length == 0 && <SubNavText>No Bills!</SubNavText>
         }
         {
           data?.bills.map(bill => {
@@ -93,17 +97,9 @@ function BillsSubNav({organizationId}: {organizationId: string}) {
 export function BillsPage() {
 
   const { loading, error, data } = useQuery<GetCurrentUserQuery,GetCurrentUserQueryVariables>(GET_CURRENTUSER)
-  const navigate = useNavigatePersist()
 
   const organizationId = data?.currentUser?.organizationId
   const errorMessage = error?.message
-
-  useEffect(() => {
-    if(organizationId === null && !loading) {
-      toast.error('Setup Your Organization to Continue!')
-      navigate({pathname: '/setup', search: 'return=/app/branches'})
-    }
-  }, [organizationId, loading])
 
   useEffect(() => {
     if(errorMessage !== undefined && loading === false) {
@@ -112,8 +108,18 @@ export function BillsPage() {
     }
   }, [errorMessage, loading])
 
-  if(loading || !organizationId) {
+  if(loading) {
     return <LoaderRipple />
+  }
+
+  if(organizationId === undefined) {
+    return (
+      <Page>
+        <PendingOrganizationSetup
+          header='Invoices Store'
+          message='View All Generated Invoices, Download Invoices'/>
+      </Page>
+    )
   }
 
   return (

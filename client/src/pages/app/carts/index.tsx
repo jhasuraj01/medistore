@@ -1,7 +1,6 @@
-import styles from './index.module.scss'
 import { Route, Routes } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { AppSectionLayout } from '../../../components/AppSectionLayout'
+import { AppSectionLayout, Page } from '../../../components/AppSectionLayout'
 import { Cart } from '../../../features/Carts'
 import { addNewCart, selectCarts, } from '../../../features/Carts/cartsSlice'
 import { SubNav, SubNavButton, SubNavLink, SubNavSection } from '../../../features/SubNav'
@@ -12,6 +11,9 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { Branch, GetBranchesQuery, GetBranchesQueryVariables, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '../../../gql/graphql'
 import { toast } from 'react-toastify'
 import { LoaderRipple } from '../../../components/Loader/Ripple'
+import { useEffect } from 'react'
+import { PendingOrganizationSetup } from '../../errors/pending-organization-setup'
+import styles from './index.module.scss'
 
 const GET_CURRENTUSER = gql`
   query GetCurrentUser {
@@ -44,12 +46,15 @@ function CartPageSubNav({ branches }: { branches: Branch[]}) {
   return (
     <SubNav title='Carts'>
       <SubNavSection>
-        {
-          branches.length > 0 ?
-            <SubNavButton className={styles.newCartButton} onClick={createNewCart}>Create New Cart</SubNavButton> :
-            <div>Create Branch to Create New Cart</div>
+        { branches.length === 0 &&
+          <SubNavLink to='../../organization/branches' className={styles.styledSubNavButton}>Create New Branch</SubNavLink>
         }
-        { carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)}
+        { branches.length > 0 &&
+          <SubNavButton className={styles.styledSubNavButton} onClick={createNewCart}>Create New Cart</SubNavButton>
+        }
+        { branches.length > 0 &&
+          carts.map(cart => <SubNavLink key={cart.id} to={cart.id}>{cart.id}</SubNavLink>)
+        }
       </SubNavSection>
     </SubNav>
   )
@@ -72,8 +77,15 @@ export function CartPage() {
       error: branchesError,
     }
   ] = useLazyQuery<GetBranchesQuery, GetBranchesQueryVariables>(GET_BRANCHES)
-  
+
   const organizationId = currentUserData?.currentUser.organizationId
+  const currentUserErrorMessage = currentUserError?.message
+
+  useEffect(() => {
+    if(currentUserErrorMessage !== undefined && currentUserLoading === false) {
+      toast.error(currentUserErrorMessage)
+    }
+  }, [currentUserErrorMessage, currentUserLoading])
 
   if(!currentUserLoading && currentUserData && !loadBranchesCalled) {
     loadBranches({
@@ -83,18 +95,24 @@ export function CartPage() {
     })
   }
 
-  if(currentUserError) {
-    toast.error(currentUserError.message)
-  }
-
   if(branchesError) {
     toast.error(branchesError.message)
   }
 
   const branches = branchesData?.branches || []
 
-  if(organizationId == undefined) {
+  if(currentUserLoading) {
     return <LoaderRipple />
+  }
+
+  if(organizationId === undefined) {
+    return (
+      <Page>
+        <PendingOrganizationSetup
+          header='Customer Billing Point'
+          message='Create New Cart, Scan Product&apos;s BarCode, Collect Payment, Generate Bill'/>
+      </Page>
+    )
   }
 
   return (

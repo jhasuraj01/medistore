@@ -55,6 +55,15 @@
   }
 }
 
+.subnavText {
+  user-select: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+}
+
 .selected {
   background-color: #e2ccff;
 }

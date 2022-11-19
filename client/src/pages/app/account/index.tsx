@@ -11,9 +11,6 @@ function AccountPageSubNav() {
       <SubNavSection>
         <SubNavLink to='profile'>My Profile</SubNavLink>
       </SubNavSection>
-      <SubNavSection>
-        <SubNavLink to='support'>Help and Support</SubNavLink>
-      </SubNavSection>
     </SubNav>
   )
 }

@@ -1,10 +1,10 @@
 import styles from './index.module.scss'
 import { NavLinkPersist } from '../../supports/Persistence'
 // import { ReactComponent as PlaceHolderIcon } from '../../icons/placeholder.svg'
-import { ReactComponent as Home } from '../../icons/home.svg'
+// import { ReactComponent as Home } from '../../icons/home.svg'
 import { ReactComponent as Menu } from '../../icons/menu.svg'
 import { ReactComponent as Cart } from '../../icons/cart.svg'
-import { ReactComponent as Search } from '../../icons/search.svg'
+// import { ReactComponent as Search } from '../../icons/search.svg'
 import { ReactComponent as Store } from '../../icons/store.svg'
 import { ReactComponent as Organization } from '../../icons/organization.svg'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
@@ -26,17 +26,23 @@ export function Nav() {
     <nav className={styles.nav}>
       <div className={styles.navSection}>
         <button className={styles.navOption} onClick={handleMenuClick}><Menu /></button>
-        <NavLinkPersist
+        {/* <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
           to='home'
           title='Home'
-        ><Home /></NavLinkPersist>
+        ><Home /></NavLinkPersist> */}
 
-        <NavLinkPersist
+        {/* <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
           to='search'
           title='Search'
-        ><Search /></NavLinkPersist>
+        ><Search /></NavLinkPersist> */}
+
+        <NavLinkPersist
+          className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
+          to='organization'
+          title='Organization'
+        ><Organization /></NavLinkPersist>
 
         <NavLinkPersist
           className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
@@ -55,12 +61,6 @@ export function Nav() {
           to='bills'
           title='Bills'
         ><FileDocumentIcon /></NavLinkPersist>
-
-        <NavLinkPersist
-          className={({ isActive }) => isActive ? `${styles.navOption} ${styles.selected}` : `${styles.navOption}`}
-          to='organization'
-          title='Organization'
-        ><Organization /></NavLinkPersist>
 
       </div>
       <div className={styles.navSection}>
