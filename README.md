@@ -36,7 +36,9 @@ Automate Medical Store with Smart Inventory Management, Fast Billing, Invoices a
 ## Tech Stack
 
 - [Apollo Graphql](https://www.apollographql.com/)
+- [Cloud Firestore Database](https://firebase.google.com/docs/firestore)
 - [Express.js](https://expressjs.com/)
+- [Firebase Authentication](https://firebase.google.com/docs/auth)
 - [React.js](https://reactjs.org)
 - [React Router](https://reactrouter.com/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
